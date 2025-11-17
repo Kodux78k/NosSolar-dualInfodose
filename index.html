@@ -1,0 +1,1215 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>NÓS.S°LAR · Nó Solar Infodose</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#03040a" />
+  <style>
+  /* MOBILE-FIRST VERTICAL HARD-LOCK · NOSSO LAR + NÓ SOLAR FUSION */
+  :root {
+    --bg-0: #05050c;
+    --nebula-1: #2b0b3f;
+    --nebula-2: #0b3f6f;
+    --madeira: #00ffc8;
+    --gold: #f3c766;
+    --text-main: #f5f5f7;
+    --text-soft: #c6c6d0;
+    --card-bg: rgba(6, 10, 22, 0.88);
+    --radius-lg: 24px;
+    --radius-pill: 999px;
+    --shadow-soft: 0 18px 60px rgba(0,0,0,0.55);
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    width: 100%;
+    height: 100%;
+  }
+
+  body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+    color: var(--text-main);
+    background: radial-gradient(circle at top, var(--nebula-1), #05050c 40%),
+                radial-gradient(circle at bottom, var(--nebula-2), #05050c 40%);
+    display: flex;
+    justify-content: center;
+  }
+
+  .app {
+    width: 100%;
+    max-width: 480px;
+    min-height: 100vh;
+    padding: 16px 16px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  header {
+    padding: 12px 16px;
+    border-radius: var(--radius-lg);
+    background: linear-gradient(135deg, rgba(0,0,0,0.6), rgba(12,18,32,0.85));
+    border: 1px solid rgba(243, 199, 102, 0.35);
+    box-shadow: var(--shadow-soft);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .brand-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 20%, #fff8dd, var(--gold));
+    box-shadow: 0 0 22px rgba(243, 199, 102, 0.8);
+    position: relative;
+  }
+
+  .brand-icon::after {
+    content: "";
+    position: absolute;
+    inset: 8px 6px 4px 6px;
+    border-radius: 999px 999px 40px 40px;
+    border: 2px solid rgba(12,8,2,0.9);
+  }
+
+  .brand-text {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .brand-text span:nth-child(1) {
+    font-size: 0.82rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-soft);
+  }
+
+  .brand-text span:nth-child(2) {
+    font-size: 1.02rem;
+    font-weight: 600;
+  }
+
+  .pill {
+    padding: 6px 12px;
+    border-radius: var(--radius-pill);
+    border: 1px solid rgba(0,255,200,0.6);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--madeira);
+    background: rgba(0, 20, 15, 0.6);
+  }
+
+  main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .hero {
+    padding: 18px 16px 22px;
+    border-radius: 28px;
+    background: radial-gradient(circle at top, rgba(243,199,102,0.12), rgba(0,0,0,0.9));
+    border: 1px solid rgba(243, 199, 102, 0.35);
+    box-shadow: var(--shadow-soft);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .hero-logo {
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 25% 20%, #fff5da, var(--gold));
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-logo::before {
+    content: "";
+    position: absolute;
+    inset: 24px 30px 50px;
+    border-radius: 999px 999px 60px 60px;
+    background: rgba(10, 5, 0, 0.9);
+    box-shadow: 0 0 60px rgba(0,0,0,0.9);
+  }
+
+  .hero-logo::after {
+    content: "";
+    position: absolute;
+    inset: 72px 80px 72px 80px;
+    border-radius: 999px;
+    background: var(--gold);
+    box-shadow: 0 0 45px rgba(243,199,102,0.9);
+  }
+
+  .hero-title {
+    text-align: center;
+    font-size: 1.15rem;
+    font-weight: 600;
+  }
+
+  .hero-sub {
+    text-align: center;
+    font-size: 0.9rem;
+    color: var(--text-soft);
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+    margin-top: 8px;
+  }
+
+  .btn-main {
+    border-radius: var(--radius-pill);
+    border: none;
+    padding: 13px 18px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #05050c;
+    background: linear-gradient(135deg, var(--gold), #ffe9a0);
+    box-shadow: 0 18px 40px rgba(0,0,0,0.6);
+  }
+
+  .btn-ghost {
+    border-radius: var(--radius-pill);
+    border: 1px solid rgba(243,199,102,0.6);
+    padding: 11px 16px;
+    font-size: 0.88rem;
+    color: var(--text-main);
+    background: rgba(0,0,0,0.35);
+  }
+
+  .tabs {
+    display:flex;
+    flex-wrap:nowrap;
+    overflow-x:auto;
+    gap:8px;
+    padding:4px 0 2px;
+  }
+  .tab-btn {
+    border-radius: var(--radius-pill);
+    border:1px solid rgba(255,255,255,0.12);
+    padding:7px 12px;
+    font-size:0.74rem;
+    color:var(--text-soft);
+    background:rgba(0,0,0,0.45);
+    white-space:nowrap;
+  }
+  .tab-btn.active {
+    border-color: var(--madeira);
+    color:var(--madeira);
+    background:rgba(0,40,30,0.8);
+  }
+
+  .grid {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
+  }
+
+  .grid-row {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .card {
+    flex: 1;
+    border-radius: 22px;
+    background: var(--card-bg);
+    border: 1px solid rgba(255,255,255,0.08);
+    padding: 12px 14px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.55);
+  }
+
+  .card-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+
+  .card-sub {
+    font-size: 0.8rem;
+    color: var(--text-soft);
+  }
+
+  .chip {
+    display:inline-block;
+    margin-top:4px;
+    padding:3px 8px;
+    border-radius:999px;
+    border:1px solid rgba(0,255,200,0.5);
+    font-size:0.72rem;
+    color:var(--madeira);
+  }
+
+  .card-header {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:6px;
+  }
+  .card-tag {
+    font-size:0.7rem;
+    padding:3px 8px;
+    border-radius:999px;
+    border:1px solid rgba(255,255,255,0.15);
+    color:var(--text-soft);
+  }
+  .action {
+    border-radius: var(--radius-pill);
+    border:none;
+    padding:8px 12px;
+    font-size:0.78rem;
+    background:rgba(0,255,200,0.12);
+    color:var(--madeira);
+  }
+
+  footer {
+    margin-top: 4px;
+    font-size: 0.7rem;
+    text-align: center;
+    color: var(--text-soft);
+    opacity: 0.7;
+  }
+
+  @media (min-width: 560px) {
+    .grid-row {
+      flex-direction: row;
+    }
+  }
+
+  .icon {
+    width:18px;
+    height:18px;
+    stroke:#00ffc8;
+    stroke-width:1.7;
+    fill:none;
+  }
+  .icon-gold {
+    stroke:var(--gold);
+  }
+
+  /* OVERLAY / PAINEL DE ATIVAÇÃO */
+  .overlay {
+    position:fixed;
+    inset:0;
+    display:none;
+    align-items:flex-end;
+    justify-content:center;
+    z-index:20;
+  }
+  .overlay.show {
+    display:flex;
+  }
+  .overlay-backdrop {
+    position:absolute;
+    inset:0;
+    background:rgba(0,0,0,0.6);
+  }
+  .overlay-panel {
+    position:relative;
+    width:100%;
+    max-width:480px;
+    max-height:90vh;
+    background:radial-gradient(circle at top,#121525,#04040a);
+    border-radius:26px 26px 0 0;
+    border:1px solid rgba(243,199,102,0.45);
+    box-shadow:0 -20px 50px rgba(0,0,0,0.8);
+    padding:14px 16px 18px;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .overlay-header {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:8px;
+  }
+  .overlay-title {
+    font-size:0.96rem;
+    font-weight:600;
+  }
+  .overlay-sub {
+    font-size:0.75rem;
+    color:var(--text-soft);
+  }
+  .overlay-close {
+    border:none;
+    background:rgba(0,0,0,0.4);
+    border-radius:999px;
+    padding:4px 10px;
+    font-size:0.8rem;
+    color:var(--text-soft);
+  }
+  .overlay-body {
+    margin-top:4px;
+    overflow-y:auto;
+    padding-right:2px;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .field-label {
+    font-size:0.75rem;
+    margin-bottom:2px;
+  }
+  .field-input,
+  .field-textarea {
+    width:100%;
+    margin-top:2px;
+    padding:6px 8px;
+    border-radius:10px;
+    border:none;
+    outline:none;
+    font-size:0.8rem;
+    background:rgba(0,0,0,0.4);
+    color:var(--text-main);
+  }
+  .field-textarea {
+    resize:vertical;
+  }
+  .locais-row {
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+    padding:8px;
+    border-radius:14px;
+    background:rgba(0,0,0,0.35);
+    border:1px solid rgba(255,255,255,0.08);
+    margin-bottom:6px;
+  }
+  .locais-row-header {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-size:0.78rem;
+  }
+  .tiny {
+    font-size:0.7rem;
+    color:var(--text-soft);
+  }
+  .btn-small {
+    border-radius:999px;
+    border:none;
+    padding:4px 9px;
+    font-size:0.72rem;
+    background:rgba(0,255,200,0.14);
+    color:var(--madeira);
+  }
+  .btn-share {
+    background:linear-gradient(135deg,#00ffc8,#f3c766);
+    color:#03040a;
+  }
+  .result-box {
+    margin-top:4px;
+    padding:8px;
+    border-radius:12px;
+    background:rgba(0,0,0,0.45);
+    font-size:0.75rem;
+    white-space:pre-wrap;
+  }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header>
+      <div class="brand">
+        <div class="brand-icon"></div>
+        <div class="brand-text">
+          <span>NÓS.S°LAR · NÓ SOLAR</span>
+          <span>Nosso Lar · Parque · Afrikafuturo</span>
+        </div>
+      </div>
+      <div class="pill">mvp · hub solar</div>
+    </header>
+
+    <main>
+      <!-- HERO PRINCIPAL -->
+      <section class="hero">
+        <div class="hero-logo" id="logo-slot"></div>
+        <div class="hero-title">Um lar que respira Sol. Uma cidade que acende a mente.</div>
+        <div class="hero-sub">
+          Conecte o seu lar, o Parque Tecnológico, a usina solar e o Blueprint Afrikafuturo:
+          emprego, negócios, educação e servidores solares urbanos.
+        </div>
+        <div class="hero-actions">
+          <button class="btn-main" id="btn-ativar">Ativar Nosso Lar / Nó Solar</button>
+          <button class="btn-ghost" id="btn-modo-ritual">Entrar em modo ritual solar</button>
+        </div>
+      </section>
+
+      <!-- ABAS / TABS -->
+      <section class="tabs" id="tabs">
+        <button class="tab-btn active" data-tab="visao">Visão Geral</button>
+        <button class="tab-btn" data-tab="parque">Parque & Usina</button>
+        <button class="tab-btn" data-tab="energia">Energia & Emprego</button>
+        <button class="tab-btn" data-tab="empreender">Empreender Solar</button>
+        <button class="tab-btn" data-tab="educacao">Educação & Telhados</button>
+        <button class="tab-btn" data-tab="bairro">Comércio & Bairro Solar</button>
+        <button class="tab-btn" data-tab="servidores">Servidores & Afrikafuturo</button>
+      </section>
+
+      <!-- HUB DE CONTEÚDO MUTÁVEL -->
+      <section class="grid" id="hub"></section>
+    </main>
+
+    <footer>
+      NÓS.S°LAR · Nó Solar Infodose · Kodux — protótipo vivo (MVP unificado)
+    </footer>
+  </div>
+
+  <!-- OVERLAY: PERFIL + REDE SOLAR + MD + SHARE -->
+  <div class="overlay" id="overlay-solar">
+    <div class="overlay-backdrop" onclick="closeSolarOverlay()"></div>
+    <div class="overlay-panel">
+      <div class="overlay-header">
+        <div>
+          <div class="overlay-title">Nó Solar do Seu Lar</div>
+          <div class="overlay-sub">Perfil · Rede Solar · Servidor · Compartilhar</div>
+        </div>
+        <button class="overlay-close" onclick="closeSolarOverlay()">fechar</button>
+      </div>
+
+      <div class="overlay-body">
+        <!-- PERFIL -->
+        <section class="card">
+          <div class="card-header">
+            <div class="card-title">Perfil do Lar</div>
+            <div class="card-tag">config</div>
+          </div>
+          <p class="tiny">
+            Nome, assistente, cidade e intenção ficam salvos no aparelho (localStorage).
+          </p>
+
+          <div style="display:flex;flex-direction:column;gap:6px;margin-top:6px;">
+            <div>
+              <div class="field-label">Seu nome</div>
+              <input id="perfilNome" class="field-input" type="text" placeholder="Seu nome">
+            </div>
+            <div>
+              <div class="field-label">Nome do assistente</div>
+              <input id="perfilAssistente" class="field-input" type="text" placeholder="Ex: Nosso Lar, Nó Solar, Alumini...">
+            </div>
+            <div>
+              <div class="field-label">Cidade / Região</div>
+              <input id="perfilCidade" class="field-input" type="text" placeholder="Cidade / bairro">
+            </div>
+            <div>
+              <div class="field-label">Intenção do Lar</div>
+              <textarea id="perfilIntencao" class="field-textarea" rows="2"
+                placeholder="Ex: Cuidar melhor da casa, da mente e da energia."></textarea>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;">
+            <button class="action" onclick="saveProfile()">salvar perfil</button>
+            <button class="action btn-share" onclick="exportProfileJson()">exportar json infodose</button>
+          </div>
+
+          <details style="margin-top:6px;font-size:0.75rem;opacity:0.9;">
+            <summary>Ver JSON atual</summary>
+            <pre id="perfilJsonView" style="margin-top:4px;font-size:0.7rem;white-space:pre-wrap;"></pre>
+          </details>
+        </section>
+
+        <!-- REDE SOLAR & SERVIDORES -->
+        <section class="card">
+          <div class="card-header">
+            <div class="card-title">Rede Solar & Servidores</div>
+            <div class="card-tag">cálculo simbólico</div>
+          </div>
+          <p class="tiny">
+            Adicione lugares (casa, estúdio, escritório...). O app estima tamanho do sistema solar,
+            custo aproximado, economia e quantos mini-servidores poderiam rodar ali.
+          </p>
+
+          <div style="margin-top:6px;">
+            <div class="field-label">Custo médio por kWp instalado (R$)</div>
+            <input id="inputCustoKwp" class="field-input" type="number" value="5000" min="1000" step="100">
+            <div class="tiny">Valor genérico (ajustável). Ex: R$ 4.000–6.000 / kWp.</div>
+          </div>
+
+          <div style="margin-top:8px;">
+            <div class="locais-row-header">
+              <span class="tiny">Locais na rede</span>
+              <button class="btn-small" onclick="addLocal()">+ adicionar local</button>
+            </div>
+            <div id="locaisContainer"></div>
+          </div>
+
+          <button class="action" style="margin-top:4px;" onclick="calcularRedeSolar()">
+            calcular rede solar
+          </button>
+
+          <div id="resultadoRede" class="result-box" style="display:none;"></div>
+        </section>
+
+        <!-- BLOCO MD COPIÁVEL -->
+        <section class="card">
+          <div class="card-header">
+            <div class="card-title">Bloco MD · Explicação NÓS.S°LAR</div>
+            <div class="card-tag">md</div>
+          </div>
+          <p class="tiny">
+            Copie este Markdown e cole em qualquer IA ou editor para explicar seu Nó Solar.
+          </p>
+
+          <pre id="md-nosslar-basico" style="margin-top:6px;font-size:0.75rem;white-space:pre-wrap;background:rgba(0,0,0,0.5);padding:8px;border-radius:10px;">
+# NÓS.S°LAR · Nosso Lar  
+Um hub solar-vivo que conecta lares, bairros, parque tecnológico e Afrikafuturo.  
+Cada casa vira um nó: energia fotovoltaica, mini-servidores, rotinas de cuidado e rede de apoio local.  
+
+- Perfil do lar salvo localmente (nome, assistente, cidade, intenção)  
+- Simulação simbólica de sistema solar (custo, payback, servidores possíveis)  
+- Expansão em rede: quanto mais lares conectados, menor o custo médio e maior o ganho coletivo.  
+          </pre>
+
+          <button class="action" style="margin-top:4px;" onclick="copyMarkdownBlock('md-nosslar-basico')">
+            copiar md
+          </button>
+        </section>
+
+        <!-- COMPARTILHAR -->
+        <section class="card">
+          <div class="card-header">
+            <div class="card-title">Compartilhar Nó Solar</div>
+            <div class="card-tag">rede</div>
+          </div>
+          <p class="tiny">
+            Envie o link ou resumo do seu Nó Solar para amigos, vizinhos ou grupos.
+            Quanto mais nós, menor o custo médio e maior a redistribuição.
+          </p>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;">
+            <button class="btn-small btn-share" onclick="shareNoSolar()">compartilhar agora</button>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  const log = (...args) => console.log("[NOS_SLAR_NOSOLAR]", ...args);
+  const PROFILE_KEY = "nosSlarProfile";
+  let lastLocation = null;
+  let locaisIndex = 0;
+
+  // ---------------- INIT ----------------
+  function initApp() {
+    log("App iniciado.");
+    wireMainButtons();
+    wireTabs();
+    setView("visao");
+    loadProfile();
+    registerServiceWorker();
+    askLocationOnce();
+    // inicial: um local padrão
+    addLocal("Casa", 350);
+  }
+
+  function registerServiceWorker() {
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("sw.js")
+        .then(() => log("Service Worker registrado."))
+        .catch(err => console.warn("SW erro:", err));
+    }
+  }
+
+  // ---------------- BOTÕES PRINCIPAIS / OVERLAY ----------------
+  function wireMainButtons() {
+    const ativar = document.getElementById("btn-ativar");
+    const ritual = document.getElementById("btn-modo-ritual");
+    if (ativar) {
+      ativar.addEventListener("click", () => {
+        openSolarOverlay();
+      });
+    }
+    if (ritual) {
+      ritual.addEventListener("click", () => {
+        log("Modo Ritual Solar");
+        alert("Modo Ritual iniciado.\nRespira, sente o espaço, imagina o Sol percorrendo telhado, servidor e mente.");
+      });
+    }
+  }
+
+  function openSolarOverlay() {
+    const overlay = document.getElementById("overlay-solar");
+    if (!overlay) return;
+    overlay.classList.add("show");
+  }
+  function closeSolarOverlay() {
+    const overlay = document.getElementById("overlay-solar");
+    if (!overlay) return;
+    overlay.classList.remove("show");
+  }
+
+  // ---------------- VIEWS / TABS ----------------
+  const hub = document.getElementById("hub");
+
+  const views = {
+    visao: `
+      <div class="grid-row">
+        <article class="card">
+          <div class="card-title">
+            <svg class="icon icon-gold" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="4"></circle>
+              <g stroke-linecap="round">
+                <line x1="12" y1="2" x2="12" y2="5"/>
+                <line x1="12" y1="19" x2="12" y2="22"/>
+                <line x1="2" y1="12" x2="5" y2="12"/>
+                <line x1="19" y1="12" x2="22" y2="12"/>
+              </g>
+            </svg>
+            Um Ponto Solar
+          </div>
+          <div class="card-sub">
+            O núcleo que conecta energia, servidor, comunicação e comunidade.
+            <div class="chip">Energia · Servidor</div>
+          </div>
+        </article>
+        <article class="card">
+          <div class="card-title">
+            <svg class="icon" viewBox="0 0 24 24">
+              <path d="M4 19v-6a8 8 0 0 1 16 0v6" />
+              <circle cx="12" cy="9" r="3" />
+            </svg>
+            Nó de Capacitação
+          </div>
+          <div class="card-sub">
+            Treinamentos Infodose para que qualquer pessoa esteja pronta em dias, não em meses.
+            <div class="chip">Formação 24–72h</div>
+          </div>
+        </article>
+      </div>
+      <div class="grid-row">
+        <article class="card">
+          <div class="card-title">
+            <svg class="icon" viewBox="0 0 24 24">
+              <circle cx="12" cy="7" r="3"/>
+              <path d="M4 21c1-3 4-5 8-5s7 2 8 5"/>
+            </svg>
+            Hub de Mão de Obra Treinada
+          </div>
+          <div class="card-sub">
+            Um lugar digital onde empresas encontram trabalhadores prontos, e trabalhadores encontram oportunidade.
+            <div class="chip">Emprego local</div>
+          </div>
+        </article>
+        <article class="card">
+          <div class="card-title">
+            <svg class="icon" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M12 2v3M12 19v3M2 12h3M19 12h3"/>
+            </svg>
+            Centro Simbólico de Transformação
+          </div>
+          <div class="card-sub">
+            A camada de significado: rituais, Afrikafuturo, dopamina sexy, espaço da mente, 78K.
+            <div class="chip">Blueprint Vivo</div>
+          </div>
+        </article>
+      </div>
+    `,
+    parque: `
+      <div class="grid-row">
+        <article class="card">
+          <div class="card-title">
+            <svg class="icon" viewBox="0 0 24 24">
+              <path d="M3 12h18M5 12v7h14v-7M9 12V7l3-3 3 3v5"/>
+            </svg>
+            Parque Tecnológico
+          </div>
+          <div class="card-sub">
+            Polo de inovação, empresas, laboratórios, incubadoras e eventos tecnológicos.
+            <div class="chip">Inovação Sorocaba</div>
+          </div>
+        </article>
+        <article class="card">
+          <div class="card-title">
+            <svg class="icon icon-gold" viewBox="0 0 24 24">
+              <rect x="3" y="7" width="18" height="10" rx="3"/>
+              <path d="M8 7V4h8v3"/>
+            </svg>
+            Usina Solar
+          </div>
+          <div class="card-sub">
+            9.984 painéis, 10 GWh/ano. Um dos maiores rooftops solares do Estado, base física do Nó Solar.
+            <div class="chip">Infraestrutura real</div>
+          </div>
+        </article>
+      </div>
+      <div class="grid-row">
+        <article class="card">
+          <div class="card-title">
+            <svg class="icon" viewBox="0 0 24 24">
+              <path d="M6 20h12M8 16h8M10 12h4M12 2v5"/>
+            </svg>
+            Programas & Eventos
+          </div>
+          <div class="card-sub">
+            Jornadas de inovação, hackathons, eventos educacionais e feiras conectadas ao Nó Solar e à Infodose.
+            <div class="chip">Programas Abertos</div>
+          </div>
+        </article>
+      </div>
+    `,
+    energia: `
+      <div class="grid-row">
+        <article class="card">
+          <div class="card-title">
+            <svg class="icon" viewBox="0 0 24 24">
+              <path d="M13 2L3 14h7l-1 8L21 10h-7z"/>
+            </svg>
+            Energia & Emprego
+          </div>
+          <div class="card-sub">
+            Trilha que ensina instalação, manutenção, diagnóstico e vendas de sistemas fotovoltaicos.
+            <div class="chip">Trabalho Solar</div>
+          </div>
+        </article>
+        <article class="card">
+          <div class="card-title">
+            <svg class="icon" viewBox="0 0 24 24">
+              <path d="M4 4h16v6H4z"/>
+              <path d="M6 10v7h12v-7"/>
+            </svg>
+            Hub de Mão de Obra
+          </div>
+          <div class="card-sub">
+            Painel onde empresas cadastram vagas e encontram pessoas já treinadas.
+            <div class="chip">Match automático</div>
+          </div>
+        </article>
+      </div>
+    `,
+    empreender: `
+      <div class="grid-row">
+        <article class="card">
+          <div class="card-title">
+            <svg class="icon" viewBox="0 0 24 24">
+              <path d="M3 12l8-8 10 10-8 8z"/>
+              <circle cx="12" cy="12" r="2"/>
+            </svg>
+            Empreender Solar
+          </div>
+          <div class="card-sub">
+            Modelos prontos para oficinas, adegas, cafés, estúdios e serviços rodando com energia solar.
+            <div class="chip">Negócios locais</div>
+          </div>
+        </article>
+        <article class="card">
+          <div class="card-title">
+            <svg class="icon" viewBox="0 0 24 24">
+              <path d="M4 20V10l8-6 8 6v10"/>
+              <path d="M9 21v-6h6v6"/>
+            </svg>
+            Nosso Lar Solar
+          </div>
+          <div class="card-sub">
+            Cada casa como um micro-hub: energia, microservidor, rituais e conexão com o bairro.
+            <div class="chip">NÓS.S°LAR</div>
+          </div>
+        </article>
+      </div>
+    `,
+    educacao: `
+      <div class="grid-row">
+        <article class="card">
+          <div class="card-title">
+            <svg class="icon" viewBox="0 0 24 24">
+              <path d="M4 7l8-4 8 4-8 4-8-4z"/>
+              <path d="M6 10v5l6 3 6-3v-5"/>
+            </svg>
+            Educação Solar em Escolas
+          </div>
+          <div class="card-sub">
+            Programas para alunos entenderem energia, clima, tecnologia e futuro Afrikafuturo.
+            <div class="chip">Crianças & Jovens</div>
+          </div>
+        </article>
+        <article class="card">
+          <div class="card-title">
+            <svg class="icon icon-gold" viewBox="0 0 24 24">
+              <rect x="2" y="8" width="20" height="12" rx="3"/>
+              <path d="M6 8V5h12v3"/>
+            </svg>
+            Telhados Públicos
+          </div>
+          <div class="card-sub">
+            Inventário de escolas, postos de saúde, prédios públicos e espaços culturais para implantação solar.
+            <div class="chip">Mapa Solar Urbano</div>
+          </div>
+        </article>
+      </div>
+    `,
+    bairro: `
+      <div class="grid-row">
+        <article class="card">
+          <div class="card-title">
+            <svg class="icon" viewBox="0 0 24 24">
+              <path d="M3 10h18M3 16h18M5 10v10M19 10v10"/>
+            </svg>
+            Comércio Solar
+          </div>
+          <div class="card-sub">
+            Lojas, mercados, padarias, bares e serviços rodando com energia solar e suporte Infodose.
+            <div class="chip">Economia real</div>
+          </div>
+        </article>
+        <article class="card">
+          <div class="card-title">
+            <svg class="icon" viewBox="0 0 24 24">
+              <path d="M3 12l3-3 3 3 3-3 3 3 3-3 3 3"/>
+              <path d="M4 18h16"/>
+            </svg>
+            Bairro Solar
+          </div>
+          <div class="card-sub">
+            Bairros-nó que se organizam como pequenos ecossistemas, conectando lares, comércios e servidores solares.
+            <div class="chip">Bairros-Nó</div>
+          </div>
+        </article>
+      </div>
+    `,
+    servidores: `
+      <div class="grid-row">
+        <article class="card">
+          <div class="card-title">
+            <svg class="icon" viewBox="0 0 24 24">
+              <rect x="3" y="4" width="18" height="7" rx="2"/>
+              <rect x="3" y="13" width="18" height="7" rx="2"/>
+              <circle cx="8" cy="7.5" r="0.8"/>
+              <circle cx="8" cy="16.5" r="0.8"/>
+            </svg>
+            Servidores Solares Urbanos
+          </div>
+          <div class="card-sub">
+            Micro data-centers distribuídos em lares, comércios e hubs, rodando Infodose e serviços locais.
+            <div class="chip">Edge Solar</div>
+          </div>
+        </article>
+      </div>
+      <div class="grid-row">
+        <article class="card">
+          <div class="card-title">
+            <svg class="icon icon-gold" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="6"/>
+              <path d="M12 2v3M12 19v3M4 12H2M22 12h-2"/>
+            </svg>
+            Blueprint Afrikafuturo Brasil
+          </div>
+          <div class="card-sub">
+            Conexão com incubadoras africanas, hubs solares, projetos como Desert-to-Power e centros em Marrocos, Namíbia, Nigéria e Quênia.
+            <div class="chip">Eixo Brasil–África</div>
+          </div>
+        </article>
+      </div>
+    `
+  };
+
+  function setView(name){
+    if(!views[name]) return;
+    hub.innerHTML = views[name];
+  }
+
+  function wireTabs(){
+    document.querySelectorAll(".tab-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        const tab = btn.getAttribute("data-tab");
+        log("change_tab", tab);
+        setView(tab);
+      });
+    });
+  }
+
+  // ---------------- PERFIL / LOCALSTORAGE ----------------
+  function loadProfile() {
+    try {
+      const raw = localStorage.getItem(PROFILE_KEY);
+      if (!raw) return;
+      const data = JSON.parse(raw);
+      if (data.nome) document.getElementById("perfilNome").value = data.nome;
+      if (data.assistente) document.getElementById("perfilAssistente").value = data.assistente;
+      if (data.cidade) document.getElementById("perfilCidade").value = data.cidade;
+      if (data.intencao) document.getElementById("perfilIntencao").value = data.intencao;
+      updateProfileJsonView(data);
+    } catch (e) {
+      console.warn("Erro ao carregar perfil:", e);
+    }
+  }
+
+  function saveProfile() {
+    const data = {
+      nome: (document.getElementById("perfilNome").value || "").trim(),
+      assistente: (document.getElementById("perfilAssistente").value || "").trim(),
+      cidade: (document.getElementById("perfilCidade").value || "").trim(),
+      intencao: (document.getElementById("perfilIntencao").value || "").trim(),
+      updatedAt: new Date().toISOString()
+    };
+    localStorage.setItem(PROFILE_KEY, JSON.stringify(data));
+    updateProfileJsonView(data);
+    alert("Perfil salvo no aparelho. ✨");
+  }
+
+  function updateProfileJsonView(data) {
+    const el = document.getElementById("perfilJsonView");
+    if (!el) return;
+    el.textContent = JSON.stringify(data, null, 2);
+  }
+
+  function exportProfileJson() {
+    try {
+      const raw = localStorage.getItem(PROFILE_KEY) || "{}";
+      const data = JSON.parse(raw);
+      const payload = {
+        type: "infodose_profile",
+        version: "1.0",
+        symbol: "NOS_SLAR",
+        profile: data,
+        location: lastLocation
+      };
+      const json = JSON.stringify(payload, null, 2);
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(json).then(() => {
+          alert("JSON copiado! Cole direto na Infodose / IA. ⚡");
+        }).catch(() => {
+          downloadJsonFile(json);
+        });
+      } else {
+        downloadJsonFile(json);
+      }
+    } catch (e) {
+      console.warn("Erro ao exportar JSON:", e);
+      alert("Não consegui exportar o JSON agora.");
+    }
+  }
+
+  function downloadJsonFile(json) {
+    const blob = new Blob([json], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "nos_slar_profile.json";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  }
+
+  // ---------------- LOCAIS / REDE SOLAR ----------------
+  function addLocal(nome = "", gasto = "") {
+    const container = document.getElementById("locaisContainer");
+    if (!container) return;
+    const id = `local-${locaisIndex++}`;
+    const div = document.createElement("div");
+    div.className = "locais-row";
+    div.dataset.localId = id;
+    div.innerHTML = `
+      <div class="locais-row-header">
+        <span>${nome || "Local"} <span class="tiny">(casa, estúdio, escritório...)</span></span>
+        <button class="btn-small" onclick="removerLocal('${id}')">remover</button>
+      </div>
+      <div>
+        <div class="field-label">Nome do local</div>
+        <input class="field-input" type="text" placeholder="Ex: Casa Sorocaba, Estúdio, Escritório"
+               data-field="nome" value="${nome}">
+      </div>
+      <div>
+        <div class="field-label">Gasto médio mensal em energia (R$)</div>
+        <input class="field-input" type="number" min="0" step="10" placeholder="Ex: 300"
+               data-field="gasto" value="${gasto}">
+      </div>
+    `;
+    container.appendChild(div);
+  }
+
+  function removerLocal(id) {
+    const container = document.getElementById("locaisContainer");
+    if (!container) return;
+    const row = Array.from(container.children).find(el => el.dataset.localId === id);
+    if (row) container.removeChild(row);
+  }
+
+  function calcularRedeSolar() {
+    const container = document.getElementById("locaisContainer");
+    const resultado = document.getElementById("resultadoRede");
+    if (!container || !resultado) return;
+
+    const custoKwp = parseFloat(document.getElementById("inputCustoKwp").value || "0") || 0;
+    if (custoKwp <= 0) {
+      alert("Defina um custo por kWp válido.");
+      return;
+    }
+
+    const locaisEls = Array.from(container.getElementsByClassName("locais-row"));
+    if (locaisEls.length === 0) {
+      alert("Adicione pelo menos um local.");
+      return;
+    }
+
+    // Assumimos: tarifa ~ R$0,9/kWh, 1 kWp ≈ 120 kWh/mês (simplificado)
+    const tarifaKwh = 0.9;
+    const kwhPorKwpMes = 120;
+
+    let totalKwp = 0;
+    let totalCustoBruto = 0;
+    let totalConta = 0;
+    let texto = "📊 Estimativa simbólica da Rede Solar:\n\n";
+
+    locaisEls.forEach((row, idx) => {
+      const nomeInput = row.querySelector('input[data-field="nome"]');
+      const gastoInput = row.querySelector('input[data-field="gasto"]');
+      const nome = (nomeInput?.value || `Local ${idx+1}`).trim();
+      const gasto = parseFloat(gastoInput?.value || "0") || 0;
+
+      const consumoKwhMes = gasto > 0 ? gasto / tarifaKwh : 0;
+      const kwpNecessario = consumoKwhMes > 0 ? consumoKwhMes / kwhPorKwpMes : 0;
+      const custoSistema = kwpNecessario * custoKwp;
+
+      totalKwp += kwpNecessario;
+      totalCustoBruto += custoSistema;
+      totalConta += gasto;
+
+      // Servidores possíveis: kWh solar mensal / ~72 kWh/mês (servidor ~100W)
+      const servidores = kwpNecessario > 0
+        ? Math.floor((kwpNecessario * kwhPorKwpMes) / 72)
+        : 0;
+
+      texto += `• ${nome}  
+  Conta atual ≈ R$ ${gasto.toFixed(0)} / mês  
+  Sistema estimado ≈ ${kwpNecessario.toFixed(1)} kWp  
+  Custo bruto ≈ R$ ${custoSistema.toFixed(0)}  
+  Mini-servidores possíveis ≈ ${servidores} (100W contínuos)\n\n`;
+    });
+
+    const n = locaisEls.length;
+    const fatorRede = Math.pow(0.9, Math.max(0, n - 1)); // cada nó extra reduz 10% simbolicamente
+    const custoRede = totalCustoBruto * fatorRede;
+    const economiaAnual = totalConta * 12;
+    const paybackAnos = economiaAnual > 0 ? custoRede / economiaAnual : 0;
+
+    texto += `🌐 Rede com ${n} local(is)  
+Custo bruto somado ≈ R$ ${totalCustoBruto.toFixed(0)}  
+Fator de rede (desconto simbólico) ≈ ${(fatorRede*100).toFixed(0)}%  
+Custo estimado em rede ≈ R$ ${custoRede.toFixed(0)}  
+
+💰 Economia estimada (se zerar a conta):  
+≈ R$ ${totalConta.toFixed(0)} / mês  
+≈ R$ ${economiaAnual.toFixed(0)} / ano  
+
+⏳ Payback simbólico ≈ ${paybackAnos.toFixed(1)} anos  
+(Quanto mais nós na rede, mais esse número tende a cair.)`;
+
+    resultado.style.display = "block";
+    resultado.textContent = texto;
+  }
+
+  // ---------------- BLOCO MD COPIÁVEL ----------------
+  function copyMarkdownBlock(id) {
+    const el = document.getElementById(id);
+    if (!el) return alert("Bloco MD não encontrado.");
+    const text = el.textContent;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(() => {
+        alert("Markdown copiado! Cole na IA ou em qualquer editor. 💊");
+      }).catch(err => {
+        console.warn("Erro ao copiar:", err);
+        fallbackSelectText(el);
+      });
+    } else {
+      fallbackSelectText(el);
+    }
+  }
+
+  function fallbackSelectText(el) {
+    const range = document.createRange();
+    range.selectNodeContents(el);
+    const sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
+    alert("Texto selecionado. Agora toque em copiar no seu aparelho. 📋");
+  }
+
+  // ---------------- GEOLOCALIZAÇÃO (OPCIONAL) ----------------
+  function askLocationOnce() {
+    if (!("geolocation" in navigator)) return;
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        lastLocation = {
+          lat: position.coords.latitude,
+          lon: position.coords.longitude,
+          accuracy: position.coords.accuracy
+        };
+        log("Localização capturada:", lastLocation);
+      },
+      err => {
+        console.warn("Usuário não permitiu localização ou falhou:", err);
+      },
+      { enableHighAccuracy: false, timeout: 5000, maximumAge: 60000 }
+    );
+  }
+
+  // ---------------- COMPARTILHAR / SHARE ----------------
+  function shareNoSolar() {
+    const raw = localStorage.getItem(PROFILE_KEY) || "{}";
+    let profile;
+    try { profile = JSON.parse(raw); } catch { profile = {}; }
+
+    const nome = profile.nome || "Alguém";
+    const cidade = profile.cidade || "meu bairro";
+    const assistente = profile.assistente || "NÓS.S°LAR";
+
+    const text = `${nome} está ativando o Nó Solar em ${cidade} com o assistente ${assistente}.  
+Rede de lares conectados por energia solar, mini-servidores e cuidado com a casa.  
+Vamos conectar seu lar também?`;
+
+    const url = location.href;
+
+    if (navigator.share) {
+      navigator.share({ title: "NÓS.S°LAR · Nosso Lar", text, url })
+        .catch(err => console.warn("Share cancelado/erro:", err));
+    } else if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text + "\n\n" + url)
+        .then(() => alert("Texto de convite copiado! Cole no WhatsApp, Instagram, etc. ⚡"))
+        .catch(err => {
+          console.warn("Erro ao copiar convite:", err);
+          alert("Não consegui copiar, mas você pode selecionar manualmente.");
+        });
+    } else {
+      alert("Seu navegador não suporta compartilhamento direto, mas você pode copiar o link da barra.");
+    }
+  }
+
+  // ---------------- START ----------------
+  window.addEventListener("load", initApp);
+  </script>
+</body>
+</html>
