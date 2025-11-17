@@ -1,10 +1,10 @@
 {
-  "name": "Dual HTML Lab",
-  "short_name": "DualLab",
+  "name": "NosSolar",
+  "short_name": "No_Solar",
   "start_url": ".",
   "display": "standalone",
   "background_color": "#0b0e14",
-  "theme_color": "#0b0e14",
+  "theme_color": "#03040a",
   "icons": [
     {
       "src": "icons/icon-192.png",
