@@ -4,14 +4,14 @@
   <meta charset="UTF-8" />
   <title>NÓS.S°LAR · Nó Solar Infodose</title>
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-
-<link rel="manifest" href="manifest.webmanifest">
-  
-  
-  <link rel="icon" sizes="192x192" href="/icons/icon-192.png" />
-  <link rel="icon" sizes="512x512" href="/icons/icon-512.png" />
-  <link rel="apple-touch-icon" href="/icons/icon-192.png" />
   <meta name="theme-color" content="#03040a" />
+
+  <!-- PWA / MANIFEST / ICONS -->
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="/icons/icon-512.png">
+  <link rel="apple-touch-icon" sizes="192x192" href="/icons/icon-192.png">
+
   <style>
   /* MOBILE-FIRST VERTICAL HARD-LOCK · NOSSO LAR + NÓ SOLAR FUSION */
   :root {
@@ -37,6 +37,7 @@
   html, body {
     width: 100%;
     height: 100%;
+    overflow-x: hidden;
   }
 
   body {
@@ -377,6 +378,7 @@
   .overlay-body {
     margin-top:4px;
     overflow-y:auto;
+    -webkit-overflow-scrolling: touch;
     padding-right:2px;
     display:flex;
     flex-direction:column;
@@ -440,6 +442,22 @@
     background:rgba(0,0,0,0.45);
     font-size:0.75rem;
     white-space:pre-wrap;
+  }
+
+  /* LOADER GEO */
+  .loader {
+    width: 26px;
+    height: 26px;
+    border-radius: 999px;
+    border: 3px solid rgba(0, 255, 200, 0.15);
+    border-top-color: var(--gold);
+    animation: spin 0.9s linear infinite;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
   }
   </style>
 </head>
@@ -511,7 +529,8 @@
             <div class="card-tag">config</div>
           </div>
           <p class="tiny">
-            Nome, assistente, cidade e intenção ficam salvos no aparelho (localStorage).
+            Só precisa informar <strong>seu nome</strong> e <strong>WhatsApp</strong>.<br>
+            Assistente, cidade e intenção são opcionais. Tudo fica salvo no aparelho (localStorage).
           </p>
 
           <div style="display:flex;flex-direction:column;gap:6px;margin-top:6px;">
@@ -519,6 +538,12 @@
               <div class="field-label">Seu nome</div>
               <input id="perfilNome" class="field-input" type="text" placeholder="Seu nome">
             </div>
+
+            <div>
+              <div class="field-label">WhatsApp</div>
+              <input id="perfilWhatsapp" class="field-input" type="tel" placeholder="(11) 9 9999-9999">
+            </div>
+
             <div>
               <div class="field-label">Nome do assistente</div>
               <input id="perfilAssistente" class="field-input" type="text" placeholder="Ex: Nosso Lar, Nó Solar, Alumini...">
@@ -562,6 +587,11 @@
             <div class="tiny">Valor genérico (ajustável). Ex: R$ 4.000–6.000 / kWp.</div>
           </div>
 
+          <!-- solarização automática por localização -->
+          <div id="solarAutoBox" class="result-box" style="display:none;margin-top:8px;">
+            <!-- conteúdo preenchido dinamicamente -->
+          </div>
+
           <div style="margin-top:8px;">
             <div class="locais-row-header">
               <span class="tiny">Locais na rede</span>
@@ -577,16 +607,18 @@
           <div id="resultadoRede" class="result-box" style="display:none;"></div>
         </section>
 
-        <!-- BLOCO MD COPIÁVEL -->
+        <!-- BLOCOS MD -->
         <section class="card">
           <div class="card-header">
-            <div class="card-title">Bloco MD · Explicação NÓS.S°LAR</div>
+            <div class="card-title">Blocos MD · Nó & Servidor Solar</div>
             <div class="card-tag">md</div>
           </div>
           <p class="tiny">
-            Copie este Markdown e cole em qualquer IA ou editor para explicar seu Nó Solar.
+            Copie estes blocos em Markdown e cole em qualquer IA ou editor para explicar o NÓS.S°LAR
+            e a ideia de servidores solares independentes de nuvenzona.
           </p>
 
+          <!-- BLOCO 1 — VISÃO GERAL -->
           <pre id="md-nosslar-basico" style="margin-top:6px;font-size:0.75rem;white-space:pre-wrap;background:rgba(0,0,0,0.5);padding:8px;border-radius:10px;">
 # NÓS.S°LAR · Nosso Lar  
 Um hub solar-vivo que conecta lares, bairros, parque tecnológico e Afrikafuturo.  
@@ -598,7 +630,35 @@ Cada casa vira um nó: energia fotovoltaica, mini-servidores, rotinas de cuidado
           </pre>
 
           <button class="action" style="margin-top:4px;" onclick="copyMarkdownBlock('md-nosslar-basico')">
-            copiar md
+            copiar md visão geral
+          </button>
+
+          <!-- BLOCO 2 — SERVIDOR SOLAR / NUVEM LOCAL -->
+          <pre id="md-nosslar-servidor" style="margin-top:8px;font-size:0.75rem;white-space:pre-wrap;background:rgba(0,0,0,0.5);padding:8px;border-radius:10px;">
+## Servidores solares urbanos · Menos Amazon, mais bairro  
+
+O NÓS.S°LAR calcula o potencial solar da região a partir da localização (lat/long)  
+e converte isso em capacidade digital local:  
+
+- Mini-servidores solares (~100W) alimentados diretamente pelos painéis  
+- Armazenamento distribuído de fotos e vídeos da comunidade  
+- Streaming local (aulas, cultos, eventos, Infodose) sem depender só de nuvem externa  
+- Conexões simultâneas suficientes para um “pequeno data center de bairro”  
+
+Parte da energia solar que hoje iria apenas para a conta de luz  
+pode ser reservada para rodar:  
+
+- Servidores Infodose locais  
+- Portais de bairro, históricos de fotos, acervos culturais  
+- Chats e aplicações que ficam mais rápidos por estarem “dentro do território”  
+
+A ideia não é excluir a nuvem (Amazon, Google etc.),  
+mas equilibrar: o bairro vira uma camada de nuvem própria,  
+alimentada pelo sol, mais perto das pessoas e da história delas.  
+          </pre>
+
+          <button class="action" style="margin-top:4px;" onclick="copyMarkdownBlock('md-nosslar-servidor')">
+            copiar md servidores solares
           </button>
         </section>
 
@@ -625,6 +685,15 @@ Cada casa vira um nó: energia fotovoltaica, mini-servidores, rotinas de cuidado
   const PROFILE_KEY = "nosSlarProfile";
   let lastLocation = null;
   let locaisIndex = 0;
+  let localDetectadoCriado = false;
+
+  function hasProfile() {
+    try {
+      return !!localStorage.getItem(PROFILE_KEY);
+    } catch (e) {
+      return false;
+    }
+  }
 
   // ---------------- INIT ----------------
   function initApp() {
@@ -634,8 +703,7 @@ Cada casa vira um nó: energia fotovoltaica, mini-servidores, rotinas de cuidado
     setView("visao");
     loadProfile();
     registerServiceWorker();
-    askLocationOnce();
-    // inicial: um local padrão
+    // local genérico inicial (usuário pode editar ou remover)
     addLocal("Casa", 350);
   }
 
@@ -668,11 +736,34 @@ Cada casa vira um nó: energia fotovoltaica, mini-servidores, rotinas de cuidado
     const overlay = document.getElementById("overlay-solar");
     if (!overlay) return;
     overlay.classList.add("show");
+
+    // Se ainda não há perfil salvo e não temos localização,
+    // inicia fluxo de ativação com loader + geolocalização
+    if (!hasProfile() && !lastLocation) {
+      startGeoActivation();
+    }
   }
+
   function closeSolarOverlay() {
     const overlay = document.getElementById("overlay-solar");
     if (!overlay) return;
     overlay.classList.remove("show");
+  }
+
+  function startGeoActivation() {
+    const box = document.getElementById("solarAutoBox");
+    if (box) {
+      box.style.display = "block";
+      box.innerHTML = `
+        <div style="display:flex;align-items:center;gap:8px;">
+          <div class="loader"></div>
+          <div class="tiny">
+            Buscando seu Sol e calculando o potencial da sua região...
+          </div>
+        </div>
+      `;
+    }
+    askLocationOnce();
   }
 
   // ---------------- VIEWS / TABS ----------------
@@ -731,7 +822,7 @@ Cada casa vira um nó: energia fotovoltaica, mini-servidores, rotinas de cuidado
           <div class="card-title">
             <svg class="icon" viewBox="0 0 24 24">
               <circle cx="12" cy="12" r="3"/>
-              <path d="M12 2v3M12 19v3M2 12h3M19 12h3"/>
+              <path d="M12 2v3M12 19v3M4 12H2M22 12h-2"/>
             </svg>
             Centro Simbólico de Transformação
           </div>
@@ -963,6 +1054,7 @@ Cada casa vira um nó: energia fotovoltaica, mini-servidores, rotinas de cuidado
       if (!raw) return;
       const data = JSON.parse(raw);
       if (data.nome) document.getElementById("perfilNome").value = data.nome;
+      if (data.whatsapp) document.getElementById("perfilWhatsapp").value = data.whatsapp;
       if (data.assistente) document.getElementById("perfilAssistente").value = data.assistente;
       if (data.cidade) document.getElementById("perfilCidade").value = data.cidade;
       if (data.intencao) document.getElementById("perfilIntencao").value = data.intencao;
@@ -973,8 +1065,17 @@ Cada casa vira um nó: energia fotovoltaica, mini-servidores, rotinas de cuidado
   }
 
   function saveProfile() {
+    const nome = (document.getElementById("perfilNome").value || "").trim();
+    const whatsapp = (document.getElementById("perfilWhatsapp").value || "").trim();
+
+    if (!nome || !whatsapp) {
+      alert("Coloca pelo menos seu nome e WhatsApp pra ativar o Nó Solar. 🌞");
+      return;
+    }
+
     const data = {
-      nome: (document.getElementById("perfilNome").value || "").trim(),
+      nome,
+      whatsapp,
       assistente: (document.getElementById("perfilAssistente").value || "").trim(),
       cidade: (document.getElementById("perfilCidade").value || "").trim(),
       intencao: (document.getElementById("perfilIntencao").value || "").trim(),
@@ -1082,19 +1183,24 @@ Cada casa vira um nó: energia fotovoltaica, mini-servidores, rotinas de cuidado
       return;
     }
 
-    // Assumimos: tarifa ~ R$0,9/kWh, 1 kWp ≈ 120 kWh/mês (simplificado)
     const tarifaKwh = 0.9;
     const kwhPorKwpMes = 120;
+
+    const fotosPorServidor = 40000;
+    const horasStreamingPorServidorMes = 200;
+    const conexoesSimultaneasPorServidor = 40;
 
     let totalKwp = 0;
     let totalCustoBruto = 0;
     let totalConta = 0;
+    let totalServidores = 0;
+
     let texto = "📊 Estimativa simbólica da Rede Solar:\n\n";
 
     locaisEls.forEach((row, idx) => {
       const nomeInput = row.querySelector('input[data-field="nome"]');
       const gastoInput = row.querySelector('input[data-field="gasto"]');
-      const nome = (nomeInput?.value || `Local ${idx+1}`).trim();
+      const nome = (nomeInput?.value || `Local ${idx + 1}`).trim();
       const gasto = parseFloat(gastoInput?.value || "0") || 0;
 
       const consumoKwhMes = gasto > 0 ? gasto / tarifaKwh : 0;
@@ -1105,27 +1211,34 @@ Cada casa vira um nó: energia fotovoltaica, mini-servidores, rotinas de cuidado
       totalCustoBruto += custoSistema;
       totalConta += gasto;
 
-      // Servidores possíveis: kWh solar mensal / ~72 kWh/mês (servidor ~100W)
+      const kwhSolarMes = kwpNecessario * kwhPorKwpMes;
       const servidores = kwpNecessario > 0
-        ? Math.floor((kwpNecessario * kwhPorKwpMes) / 72)
+        ? Math.floor(kwhSolarMes / 72)
         : 0;
+
+      totalServidores += servidores;
 
       texto += `• ${nome}  
   Conta atual ≈ R$ ${gasto.toFixed(0)} / mês  
   Sistema estimado ≈ ${kwpNecessario.toFixed(1)} kWp  
+  Geração solar ≈ ${kwhSolarMes.toFixed(0)} kWh/mês  
   Custo bruto ≈ R$ ${custoSistema.toFixed(0)}  
-  Mini-servidores possíveis ≈ ${servidores} (100W contínuos)\n\n`;
+  Mini-servidores solares ≈ ${servidores} (100W contínuos)\n\n`;
     });
 
     const n = locaisEls.length;
-    const fatorRede = Math.pow(0.9, Math.max(0, n - 1)); // cada nó extra reduz 10% simbolicamente
+    const fatorRede = Math.pow(0.9, Math.max(0, n - 1));
     const custoRede = totalCustoBruto * fatorRede;
     const economiaAnual = totalConta * 12;
     const paybackAnos = economiaAnual > 0 ? custoRede / economiaAnual : 0;
 
+    const totalFotos = totalServidores * fotosPorServidor;
+    const totalHorasVideo = totalServidores * horasStreamingPorServidorMes;
+    const totalConexoes = totalServidores * conexoesSimultaneasPorServidor;
+
     texto += `🌐 Rede com ${n} local(is)  
 Custo bruto somado ≈ R$ ${totalCustoBruto.toFixed(0)}  
-Fator de rede (desconto simbólico) ≈ ${(fatorRede*100).toFixed(0)}%  
+Fator de rede (desconto simbólico) ≈ ${(fatorRede * 100).toFixed(0)}%  
 Custo estimado em rede ≈ R$ ${custoRede.toFixed(0)}  
 
 💰 Economia estimada (se zerar a conta):  
@@ -1133,7 +1246,18 @@ Custo estimado em rede ≈ R$ ${custoRede.toFixed(0)}
 ≈ R$ ${economiaAnual.toFixed(0)} / ano  
 
 ⏳ Payback simbólico ≈ ${paybackAnos.toFixed(1)} anos  
-(Quanto mais nós na rede, mais esse número tende a cair.)`;
+(Quanto mais nós na rede, mais esse número tende a cair.)\n\n`;
+
+    texto += `💾 Capacidade digital local (estimada)  
+Servidores solares possíveis ≈ ${totalServidores} nós de 100W  
+
+• Armazenamento distribuído ≈ ${totalFotos.toLocaleString("pt-BR")} fotos de 5MB  
+• Streaming local ≈ ${totalHorasVideo.toLocaleString("pt-BR")} horas de vídeo por mês  
+• Conexões simultâneas ≈ ${totalConexoes.toLocaleString("pt-BR")} sessões (apps, chat, Infodose)  
+
+Isso significa que uma parte das coisas que hoje iriam para a nuvem (ex: Amazon, Google, etc.)  
+poderiam rodar em servidores solares espalhados nos lares e comércios do seu bairro,  
+com menor latência, mais controle e mais sentido comunitário.`;
 
     resultado.style.display = "block";
     resultado.textContent = texto;
@@ -1165,9 +1289,17 @@ Custo estimado em rede ≈ R$ ${custoRede.toFixed(0)}
     alert("Texto selecionado. Agora toque em copiar no seu aparelho. 📋");
   }
 
-  // ---------------- GEOLOCALIZAÇÃO (OPCIONAL) ----------------
+  // ---------------- GEOLOCALIZAÇÃO (ON DEMAND) ----------------
   function askLocationOnce() {
-    if (!("geolocation" in navigator)) return;
+    if (!("geolocation" in navigator)) {
+      const box = document.getElementById("solarAutoBox");
+      if (box) {
+        box.style.display = "block";
+        box.textContent = "Seu navegador não suporta localização automática. Você pode usar os campos normalmente.";
+      }
+      return;
+    }
+
     navigator.geolocation.getCurrentPosition(
       position => {
         lastLocation = {
@@ -1176,12 +1308,106 @@ Custo estimado em rede ≈ R$ ${custoRede.toFixed(0)}
           accuracy: position.coords.accuracy
         };
         log("Localização capturada:", lastLocation);
+        updateSolarFromLocation(lastLocation);
       },
       err => {
         console.warn("Usuário não permitiu localização ou falhou:", err);
+        const box = document.getElementById("solarAutoBox");
+        if (box) {
+          box.style.display = "block";
+          box.textContent = "Não consegui pegar sua localização agora. Você ainda pode preencher os valores manualmente.";
+        }
       },
-      { enableHighAccuracy: false, timeout: 5000, maximumAge: 60000 }
+      { enableHighAccuracy: false, timeout: 8000, maximumAge: 60000 }
     );
+  }
+
+  function estimateSolarByLat(latAbs) {
+    if (latAbs < 10) {
+      return { classe: "muito alto", solHorasDia: 5.5, kwhAnoPorKwp: 1900 };
+    } else if (latAbs < 20) {
+      return { classe: "alto", solHorasDia: 5.0, kwhAnoPorKwp: 1750 };
+    } else if (latAbs < 30) {
+      return { classe: "bom", solHorasDia: 4.5, kwhAnoPorKwp: 1600 };
+    } else if (latAbs < 40) {
+      return { classe: "moderado", solHorasDia: 4.0, kwhAnoPorKwp: 1450 };
+    } else {
+      return { classe: "baixo", solHorasDia: 3.5, kwhAnoPorKwp: 1300 };
+    }
+  }
+
+  function updateSolarFromLocation(loc) {
+    const box = document.getElementById("solarAutoBox");
+    if (!box) return;
+
+    const lat = loc.lat;
+    const lon = loc.lon;
+    const latAbs = Math.abs(lat);
+
+    const est = estimateSolarByLat(latAbs);
+    const kwhAnoPorKwp = est.kwhAnoPorKwp;
+    const kwhMesPorKwp = kwhAnoPorKwp / 12;
+
+    const tarifaKwh = 0.9;
+    const economiaMensal1Kwp = kwhMesPorKwp * tarifaKwh;
+    const economiaAnual1Kwp = kwhAnoPorKwp * tarifaKwh;
+
+    const kwhServidorMes = kwhMesPorKwp * 0.25;
+    const servidores1Kwp = Math.floor(kwhServidorMes / 72);
+
+    const fotosPorServidor = 40000;
+    const horasStreamingPorServidorMes = 200;
+    const conexoesSimultaneasPorServidor = 40;
+
+    const fotos1Kwp = servidores1Kwp * fotosPorServidor;
+    const horasVideo1Kwp = servidores1Kwp * horasStreamingPorServidorMes;
+    const conexoes1Kwp = servidores1Kwp * conexoesSimultaneasPorServidor;
+
+    const sistema3KwpEconomiaMensal = economiaMensal1Kwp * 3;
+    const sistema3KwpEconomiaAnual = economiaAnual1Kwp * 3;
+
+    if (!localDetectadoCriado) {
+      let gastoInicial = economiaMensal1Kwp * 2;
+      if (gastoInicial < 150) gastoInicial = 150;
+      if (gastoInicial > 450) gastoInicial = 450;
+
+      addLocal("Local detectado (geo)", gastoInicial.toFixed(0));
+      localDetectadoCriado = true;
+
+      const cidadeInput = document.getElementById("perfilCidade");
+      if (cidadeInput && !cidadeInput.value) {
+        cidadeInput.value = `Bairro solar (lat ${lat.toFixed(2)}, lon ${lon.toFixed(2)})`;
+      }
+    }
+
+    box.style.display = "block";
+    box.textContent =
+`📍 Local detectado
+Lat ≈ ${lat.toFixed(3)}°, Lon ≈ ${lon.toFixed(3)}°
+Classe solar: ${est.classe.toUpperCase()}
+Sol pleno aproximado: ${est.solHorasDia.toFixed(1)} h/dia
+
+☀️ 1 kWp na sua região rende ≈ ${kwhAnoPorKwp.toFixed(0)} kWh/ano
+≈ ${kwhMesPorKwp.toFixed(0)} kWh/mês
+
+💰 Se usado para "zerar conta" de energia:
+• Economia ≈ R$ ${economiaMensal1Kwp.toFixed(0)}/mês por 1 kWp
+• Economia ≈ R$ ${economiaAnual1Kwp.toFixed(0)}/ano por 1 kWp
+
+Exemplo simbólico: sistema de 3 kWp
+• Economia ≈ R$ ${sistema3KwpEconomiaMensal.toFixed(0)}/mês
+• Economia ≈ R$ ${sistema3KwpEconomiaAnual.toFixed(0)}/ano
+
+💾 Se você reservar ~25% da energia de 1 kWp para servidores solares:
+• Mini-servidores de 100W 24/7 ≈ ${servidores1Kwp} nós
+• Armazenamento distribuído ≈ ${fotos1Kwp.toLocaleString("pt-BR")} fotos (5MB)
+• Streaming local ≈ ${horasVideo1Kwp.toLocaleString("pt-BR")} h de vídeo/mês
+• Conexões simultâneas ≈ ${conexoes1Kwp.toLocaleString("pt-BR")} sessões
+
+Isso é a base para:
+• Storage de fotos e vídeos do bairro sem depender só de nuvem externa
+• Servidores de chat/Infodose rodando no próprio território
+• Conexões mais rápidas e com mais sentido comunitário.`;
   }
 
   // ---------------- COMPARTILHAR / SHARE ----------------
