@@ -1,1549 +1,1270 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <title>NÓS.S°LAR · Nó Solar Infodose</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="theme-color" content="#03040a" />
+<meta charset="UTF-8">
+<title>Nos.S°lar — Stack Solar Dinâmica</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- PWA / MANIFEST / ICONS -->
-  <link rel="manifest" href="manifest.webmanifest">
-  <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192.png">
-  <link rel="icon" type="image/png" sizes="512x512" href="/icons/icon-512.png">
-  <link rel="apple-touch-icon" sizes="192x192" href="/icons/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 
-  <style>
-  /* MOBILE-FIRST VERTICAL HARD-LOCK · NOSSO LAR + NÓ SOLAR FUSION */
-  :root {
-    --bg-0: #05050c;
-    --nebula-1: #2b0b3f;
-    --nebula-2: #0b3f6f;
-    --madeira: #00ffc8;
-    --gold: #f3c766;
-    --text-main: #f5f5f7;
-    --text-soft: #c6c6d0;
-    --card-bg: rgba(6, 10, 22, 0.88);
-    --radius-lg: 24px;
-    --radius-pill: 999px;
-    --shadow-soft: 0 18px 60px rgba(0,0,0,0.55);
-  }
+<style>
+/* MOBILE-FIRST VERTICAL HARD-LOCK */
 
-  * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
+/* Tokens Nebula Pro Solar */
+:root {
+  --bg-day: radial-gradient(circle at 20% 10%, #fff9c4 0%, #ffe082 35%, #ffb74d 70%, #ff9800 100%);
+  --bg-sunset: radial-gradient(circle at 10% 0%, #ffd180 0%, #ff8a65 30%, #f06292 60%, #7e57c2 100%);
+  --bg-night: radial-gradient(circle at 20% 0%, #0b1020 0%, #121c3b 40%, #1a237e 80%, #000000 100%);
 
-  html, body {
-    width: 100%;
-    height: 100%;
-    overflow-x: hidden;
-  }
+  --panel: #050d18cc;
+  --ink: #eafcff;
+  --muted: #9fb3cc;
 
-  body {
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
-    color: var(--text-main);
-    background: radial-gradient(circle at top, var(--nebula-1), #05050c 40%),
-                radial-gradient(circle at bottom, var(--nebula-2), #05050c 40%);
-    display: flex;
-    justify-content: center;
-  }
+  --accent: #7dd3fc;
+  --accent-soft: rgba(125, 211, 252, 0.18);
 
-  .app {
-    width: 100%;
-    max-width: 480px;
-    min-height: 100vh;
-    padding: 16px 16px 32px;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
+  --sun-scale: 1;
+}
 
-  header {
-    padding: 12px 16px;
-    border-radius: var(--radius-lg);
-    background: linear-gradient(135deg, rgba(0,0,0,0.6), rgba(12,18,32,0.85));
-    border: 1px solid rgba(243, 199, 102, 0.35);
-    box-shadow: var(--shadow-soft);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
 
-  .brand {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
+html, body {
+  margin: 0;
+  padding: 0;
+}
 
-  .brand-icon {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    background: radial-gradient(circle at 30% 20%, #fff8dd, var(--gold));
-    box-shadow: 0 0 22px rgba(243, 199, 102, 0.8);
-    position: relative;
-  }
+body {
+  min-height: 100vh;
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--ink);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  background: var(--bg-day);
+  transition: background 4s ease-in-out;
+  overflow-x: hidden;
+}
 
-  .brand-icon::after {
-    content: "";
-    position: absolute;
-    inset: 8px 6px 4px 6px;
-    border-radius: 999px 999px 40px 40px;
-    border: 2px solid rgba(12,8,2,0.9);
-  }
+/* SPLASH / LOADER NOS.S°LAR */
+#splash-nosolar {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: radial-gradient(circle at 20% 0%, #ffe082 0%, #ffb74d 20%, #ff7043 45%, #311b92 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: auto;
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
 
-  .brand-text {
-    display: flex;
-    flex-direction: column;
-  }
+#splash-nosolar.hide {
+  opacity: 0;
+  transform: scale(1.02);
+  pointer-events: none;
+}
 
-  .brand-text span:nth-child(1) {
-    font-size: 0.82rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--text-soft);
-  }
+.splash-inner {
+  text-align: center;
+  color: #fffde7;
+}
 
-  .brand-text span:nth-child(2) {
-    font-size: 1.02rem;
-    font-weight: 600;
-  }
+.splash-circle {
+  width: 120px;
+  height: 120px;
+  border-radius: 999px;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 14px;
+  box-shadow:
+    0 0 40px rgba(255, 241, 118, 0.9),
+    0 0 0 1px rgba(255, 255, 255, 0.15);
+  position: relative;
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 40%, #fffde7 0%, #ffca28 40%, #f57c00 80%);
+}
 
-  .pill {
-    padding: 6px 12px;
-    border-radius: var(--radius-pill);
-    border: 1px solid rgba(0,255,200,0.6);
-    font-size: 0.7rem;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    color: var(--madeira);
-    background: rgba(0, 20, 15, 0.6);
-  }
+.splash-circle::after {
+  content: "";
+  position: absolute;
+  bottom: -10%;
+  left: 50%;
+  width: 140%;
+  height: 70%;
+  transform: translateX(-50%);
+  background: radial-gradient(circle at 50% 120%, rgba(0,0,0,0.7) 0%, transparent 70%);
+  opacity: 0.65;
+}
 
-  main {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
+.splash-portal {
+  width: 46px;
+  height: 68px;
+  border-radius: 46px 46px 20px 20px;
+  border: 2px solid rgba(33, 33, 33, 0.9);
+  background: radial-gradient(circle at 50% 0%, #fff9c4 0%, #ffb74d 35%, #4a148c 100%);
+  box-shadow:
+    0 0 18px rgba(255, 241, 118, 0.9),
+    0 0 0 1px rgba(255, 255, 255, 0.4);
+  position: relative;
+  overflow: hidden;
+}
 
-  .hero {
-    padding: 18px 16px 22px;
-    border-radius: 28px;
-    background: radial-gradient(circle at top, rgba(243,199,102,0.12), rgba(0,0,0,0.9));
-    border: 1px solid rgba(243, 199, 102, 0.35);
-    box-shadow: var(--shadow-soft);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 16px;
-  }
+.splash-portal::before {
+  content: "";
+  position: absolute;
+  inset: 18% 22%;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 0 14px rgba(255, 255, 255, 0.7);
+}
 
-  .hero-logo {
-    width: 220px;
-    height: 220px;
-    border-radius: 50%;
-    background: radial-gradient(circle at 25% 20%, #fff5da, var(--gold));
-    position: relative;
-    overflow: hidden;
-  }
+.splash-text {
+  font-size: 1.1rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
 
-  .hero-logo::before {
-    content: "";
-    position: absolute;
-    inset: 24px 30px 50px;
-    border-radius: 999px 999px 60px 60px;
-    background: rgba(10, 5, 0, 0.9);
-    box-shadow: 0 0 60px rgba(0,0,0,0.9);
-  }
+.splash-sub {
+  margin-top: 6px;
+  font-size: 0.82rem;
+  opacity: 0.9;
+}
 
-  .hero-logo::after {
-    content: "";
-    position: absolute;
-    inset: 72px 80px 72px 80px;
-    border-radius: 999px;
-    background: var(--gold);
-    box-shadow: 0 0 45px rgba(243,199,102,0.9);
-  }
+/* Loader operacional (aparece se demorar > 600ms) */
+#nv-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  background: radial-gradient(circle at 20% 0%, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 0.35));
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 32px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
 
-  .hero-title {
-    text-align: center;
-    font-size: 1.15rem;
-    font-weight: 600;
-  }
+#nv-loader.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
 
-  .hero-sub {
-    text-align: center;
-    font-size: 0.9rem;
-    color: var(--text-soft);
-  }
+.nv-loader-inner {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.95);
+  border: 1px solid rgba(148, 163, 184, 0.6);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.7);
+  color: #e5e7eb;
+  font-size: 0.78rem;
+}
 
-  .hero-actions {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    width: 100%;
-    margin-top: 8px;
-  }
+.nv-loader-orbit {
+  width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  border: 2px solid rgba(148, 163, 184, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
 
-  .btn-main {
-    border-radius: var(--radius-pill);
-    border: none;
-    padding: 13px 18px;
-    font-size: 0.95rem;
-    font-weight: 600;
-    color: #05050c;
-    background: linear-gradient(135deg, var(--gold), #ffe9a0);
-    box-shadow: 0 18px 40px rgba(0,0,0,0.6);
-  }
+.nv-loader-dot {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: #facc15;
+  box-shadow: 0 0 8px rgba(250, 204, 21, 0.9);
+  animation: loader-orbit 1.1s linear infinite;
+}
 
-  .btn-ghost {
-    border-radius: var(--radius-pill);
-    border: 1px solid rgba(243,199,102,0.6);
-    padding: 11px 16px;
-    font-size: 0.88rem;
-    color: var(--text-main);
-    background: rgba(0,0,0,0.35);
-  }
+/* Camada de céu e partículas */
+.sky-layer {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  z-index: 0;
+  pointer-events: none;
+}
 
-  .tabs {
-    display:flex;
-    flex-wrap:nowrap;
-    overflow-x:auto;
-    gap:8px;
-    padding:4px 0 2px;
-  }
-  .tab-btn {
-    border-radius: var(--radius-pill);
-    border:1px solid rgba(255,255,255,0.12);
-    padding:7px 12px;
-    font-size:0.74rem;
-    color:var(--text-soft);
-    background:rgba(0,0,0,0.45);
-    white-space:nowrap;
-  }
-  .tab-btn.active {
-    border-color: var(--madeira);
-    color:var(--madeira);
-    background:rgba(0,40,30,0.8);
-  }
+.sun {
+  position: absolute;
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #fffde7 0%, #fff176 40%, #ffb300 100%);
+  filter: blur(0.5px);
+  opacity: 0.9;
+  animation: sun-orbit 24s linear infinite;
+  box-shadow: 0 0 60px rgba(255, 236, 179, 0.85);
+}
 
-  .grid {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-top: 10px;
-  }
+.particle {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.9);
+  opacity: 0.8;
+  animation: float-particle 14s linear infinite;
+}
 
-  .grid-row {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
+.p1 { left: 10%; top: 70%; animation-delay: -2s; }
+.p2 { left: 30%; top: 80%; animation-delay: -6s; }
+.p3 { left: 55%; top: 65%; animation-delay: -10s;}
+.p4 { left: 75%; top: 85%; animation-delay: -4s; }
+.p5 { left: 90%; top: 75%; animation-delay: -8s; }
 
-  .card {
-    flex: 1;
-    border-radius: 22px;
-    background: var(--card-bg);
-    border: 1px solid rgba(255,255,255,0.08);
-    padding: 12px 14px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.55);
-  }
+/* Shell principal */
+.app-shell {
+  position: relative;
+  z-index: 1;
+  padding: 18px 12px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 16px;
+}
 
-  .card-title {
-    font-size: 0.95rem;
-    font-weight: 600;
-    margin-bottom: 4px;
-    display:flex;
-    align-items:center;
-    gap:8px;
-  }
+/* Header */
+.app-header {
+  text-align: center;
+}
 
-  .card-sub {
-    font-size: 0.8rem;
-    color: var(--text-soft);
-  }
+.tag-solar {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.82rem;
+  padding: 4px 9px;
+  border-radius: 999px;
+  background: rgba(255, 235, 59, 0.08);
+  border: 1px solid rgba(255, 235, 59, 0.45);
+  color: #fffde7;
+}
 
-  .chip {
-    display:inline-block;
-    margin-top:4px;
-    padding:3px 8px;
-    border-radius:999px;
-    border:1px solid rgba(0,255,200,0.5);
-    font-size:0.72rem;
-    color:var(--madeira);
-  }
+.app-title {
+  font-size: 1.4rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-shadow: 0 0 18px rgba(0, 0, 0, 0.6);
+  margin: 6px 0 4px;
+}
 
-  .card-header {
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:6px;
-  }
-  .card-tag {
-    font-size:0.7rem;
-    padding:3px 8px;
-    border-radius:999px;
-    border:1px solid rgba(255,255,255,0.15);
-    color:var(--text-soft);
-  }
-  .action {
-    border-radius: var(--radius-pill);
-    border:none;
-    padding:8px 12px;
-    font-size:0.78rem;
-    background:rgba(0,255,200,0.12);
-    color:var(--madeira);
-  }
+.app-subtitle {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
 
-  footer {
-    margin-top: 4px;
-    font-size: 0.7rem;
-    text-align: center;
-    color: var(--text-soft);
-    opacity: 0.7;
-  }
+/* STACK DE CARDS (SANFONA) */
+.card-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
 
-  @media (min-width: 560px) {
-    .grid-row {
-      flex-direction: row;
-    }
-  }
+/* Card / Sanfona */
+.card {
+  background: var(--panel);
+  border-radius: 14px;
+  backdrop-filter: blur(12px);
+  box-shadow:
+    0 18px 40px rgba(0, 0, 0, 0.45),
+    0 0 0 1px rgba(255, 255, 255, 0.03);
+  overflow: hidden;
+}
 
-  .icon {
-    width:18px;
-    height:18px;
-    stroke:#00ffc8;
-    stroke-width:1.7;
-    fill:none;
-  }
-  .icon-gold {
-    stroke:var(--gold);
-  }
+/* Estilo Nebula Pro / Markdown visual nas headers */
+.card-header {
+  padding: 14px 14px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
 
-  /* OVERLAY / PAINEL DE ATIVAÇÃO */
-  .overlay {
-    position:fixed;
-    inset:0;
-    display:none;
-    align-items:flex-end;
-    justify-content:center;
-    z-index:20;
-  }
-  .overlay.show {
-    display:flex;
-  }
-  .overlay-backdrop {
-    position:absolute;
-    inset:0;
-    background:rgba(0,0,0,0.6);
-  }
-  .overlay-panel {
-    position:relative;
-    width:100%;
-    max-width:480px;
-    max-height:90vh;
-    background:radial-gradient(circle at top,#121525,#04040a);
-    border-radius:26px 26px 0 0;
-    border:1px solid rgba(243,199,102,0.45);
-    box-shadow:0 -20px 50px rgba(0,0,0,0.8);
-    padding:14px 16px 18px;
-    display:flex;
-    flex-direction:column;
-    gap:10px;
-  }
-  .overlay-header {
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:8px;
-  }
-  .overlay-title {
-    font-size:0.96rem;
-    font-weight:600;
-  }
-  .overlay-sub {
-    font-size:0.75rem;
-    color:var(--text-soft);
-  }
-  .overlay-close {
-    border:none;
-    background:rgba(0,0,0,0.4);
-    border-radius:999px;
-    padding:4px 10px;
-    font-size:0.8rem;
-    color:var(--text-soft);
-  }
-  .overlay-body {
-    margin-top:4px;
-    overflow-y:auto;
-    -webkit-overflow-scrolling: touch;
-    padding-right:2px;
-    display:flex;
-    flex-direction:column;
-    gap:10px;
-  }
-  .field-label {
-    font-size:0.75rem;
-    margin-bottom:2px;
-  }
-  .field-input,
-  .field-textarea {
-    width:100%;
-    margin-top:2px;
-    padding:6px 8px;
-    border-radius:10px;
-    border:none;
-    outline:none;
-    font-size:0.8rem;
-    background:rgba(0,0,0,0.4);
-    color:var(--text-main);
-  }
-  .field-textarea {
-    resize:vertical;
-  }
-  .locais-row {
-    display:flex;
-    flex-direction:column;
-    gap:6px;
-    padding:8px;
-    border-radius:14px;
-    background:rgba(0,0,0,0.35);
-    border:1px solid rgba(255,255,255,0.08);
-    margin-bottom:6px;
-  }
-  .locais-row-header {
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    font-size:0.78rem;
-  }
-  .tiny {
-    font-size:0.7rem;
-    color:var(--text-soft);
-  }
-  .btn-small {
-    border-radius:999px;
-    border:none;
-    padding:4px 9px;
-    font-size:0.72rem;
-    background:rgba(0,255,200,0.14);
-    color:var(--madeira);
-  }
-  .btn-share {
-    background:linear-gradient(135deg,#00ffc8,#f3c766);
-    color:#03040a;
-  }
-  .result-box {
-    margin-top:4px;
-    padding:8px;
-    border-radius:12px;
-    background:rgba(0,0,0,0.45);
-    font-size:0.75rem;
-    white-space:pre-wrap;
-  }
+.card-title {
+  font-size: 0.98rem;
+  font-weight: 600;
+}
 
-  /* LOADER GEO */
-  .loader {
-    width: 26px;
-    height: 26px;
-    border-radius: 999px;
-    border: 3px solid rgba(0, 255, 200, 0.15);
-    border-top-color: var(--gold);
-    animation: spin 0.9s linear infinite;
-  }
+.card-header small {
+  font-size: 0.78rem;
+  color: var(--muted);
+}
 
-  @keyframes spin {
-    to {
-      transform: rotate(360deg);
-    }
-  }
+.card-toggle {
+  font-size: 1.1rem;
+  opacity: 0.7;
+}
 
-  /* GLOBO / ORBE SOLAR AFRIKAFUTURO */
-  .solar-orb-wrap {
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    margin:4px 0 6px;
-  }
-  .solar-orb {
-    width:82px;
-    height:82px;
-    border-radius:50%;
-    background:radial-gradient(circle at 30% 20%, #fff6cf, #f3c766 38%, #26153b 80%);
-    position:relative;
-    box-shadow:0 0 26px rgba(243,199,102,0.65);
-    overflow:hidden;
-  }
-  .solar-orb::before {
-    content:"";
-    position:absolute;
-    inset:10px;
-    border-radius:50%;
-    box-shadow:inset 0 0 14px rgba(0,0,0,0.85);
-  }
-  .solar-orb::after {
-    content:"";
-    position:absolute;
-    width:14px;
-    height:14px;
-    border-radius:50%;
-    background:#ffe08a;
-    top:50%;
-    left:50%;
-    transform-origin:-26px -26px;
-    animation:orbital 4s linear infinite;
-    box-shadow:0 0 14px rgba(255,223,150,0.95);
-  }
-  .solar-orb-oca {
-    position:absolute;
-    inset:18px;
-  }
-  .solar-orb-oca path {
-    fill:none;
-    stroke:#261208;
-    stroke-width:2.2;
-    stroke-linecap:round;
-    stroke-linejoin:round;
-  }
+/* Corpo dos cards */
+.card-body {
+  max-height: 0;
+  overflow: hidden;
+  padding: 0 14px;
+  transition:
+    max-height 0.4s ease,
+    padding-top 0.3s ease,
+    padding-bottom 0.3s ease;
+}
 
-  @keyframes orbital {
-    to { transform: rotate(360deg); }
+.card-body-inner {
+  padding: 6px 0 12px;
+}
+
+/* BLOCO ESTILO MARKDOWN */
+.card-body-inner p:first-of-type {
+  position: relative;
+  margin: 0 0 8px;
+  padding-left: 10px;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.card-body-inner p:first-of-type::before {
+  content: "#";
+  position: absolute;
+  left: -2px;
+  top: 0;
+  font-size: 0.78rem;
+  color: var(--accent);
+  opacity: 0.9;
+}
+
+/* Parágrafos seguintes */
+.card-body-inner p + p {
+  margin-top: 4px;
+}
+
+/* Tagzinha de linha (como ::info) */
+.md-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(148, 163, 184, 0.5);
+  color: #e5e7eb;
+}
+
+/* Linha de botões */
+.btn-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.btn {
+  display: inline-flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: none;
+  background: rgba(255, 255, 255, 0.16);
+  color: var(--ink);
+  font-size: 0.92rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  transition:
+    background 0.3s ease,
+    transform 0.2s ease,
+    box-shadow 0.3s ease;
+}
+
+.btn span {
+  margin-left: 6px;
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+.btn:hover {
+  background: rgba(255, 255, 255, 0.26);
+  box-shadow: 0 0 22px rgba(255, 255, 255, 0.18);
+}
+
+/* Indicadores */
+.mode-indicator,
+.geo-indicator,
+.tips-indicator {
+  margin-top: 8px;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+}
+
+/* Ondas sonoras visuais */
+.wave-container {
+  position: relative;
+  margin-top: 10px;
+  height: 40px;
+  overflow: hidden;
+}
+
+.wave {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to right,
+    rgba(144, 202, 249, 0.2) 0,
+    rgba(144, 202, 249, 0.8) 2px,
+    transparent 4px
+  );
+  opacity: 0.7;
+  transform-origin: left center;
+  animation: wave-move 3s linear infinite;
+}
+
+.wave.wave2 {
+  opacity: 0.4;
+  animation-duration: 5s;
+}
+
+/* Área do template do Livro Vivo */
+#nv-template-output {
+  width: 100%;
+  min-height: 120px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(2,6,23,0.7);
+  color: var(--ink);
+  padding: 8px 10px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 0.85rem;
+  resize: vertical;
+}
+
+/* Resultado LS */
+#nv-ls-output {
+  width: 100%;
+  min-height: 80px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(2,6,23,0.7);
+  color: var(--ink);
+  padding: 8px 10px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 0.8rem;
+  white-space: pre-wrap;
+}
+
+/* Modos de fundo & sol/lua */
+body.mode-day {
+  background: var(--bg-day);
+  --sun-scale: 1;
+}
+
+body.mode-sunset {
+  background: var(--bg-sunset);
+  --sun-scale: 0.9;
+}
+
+body.mode-night {
+  background: var(--bg-night);
+  --sun-scale: 0.65;
+}
+
+body.mode-day .sun,
+body.mode-sunset .sun {
+  background: radial-gradient(circle at 30% 30%, #fffde7 0%, #fff176 40%, #ffb300 100%);
+  box-shadow: 0 0 60px rgba(255, 236, 179, 0.85);
+}
+
+body.mode-night .sun {
+  background: radial-gradient(circle at 30% 30%, #e8f5ff 0%, #bbdefb 45%, #90caf9 100%);
+  box-shadow: 0 0 40px rgba(187, 222, 251, 0.85);
+}
+
+/* Animações */
+@keyframes sun-orbit {
+  0% {
+    transform: translate(-20%, 10%) scale(var(--sun-scale));
   }
-  </style>
+  25% {
+    transform: translate(40%, -10%) scale(var(--sun-scale));
+  }
+  50% {
+    transform: translate(80%, 15%) scale(var(--sun-scale));
+  }
+  75% {
+    transform: translate(40%, 35%) scale(var(--sun-scale));
+  }
+  100% {
+    transform: translate(-20%, 10%) scale(var(--sun-scale));
+  }
+}
+
+@keyframes float-particle {
+  0% {
+    transform: translateY(0px) scale(1);
+    opacity: 0.2;
+  }
+  20% {
+    opacity: 0.8;
+  }
+  50% {
+    transform: translateY(-40px) scale(1.2);
+  }
+  80% {
+    opacity: 0.4;
+  }
+  100% {
+    transform: translateY(-80px) scale(0.9);
+    opacity: 0;
+  }
+}
+
+@keyframes wave-move {
+  0% { transform: translateX(0) skewX(-8deg); }
+  100% { transform: translateX(-40px) skewX(-8deg); }
+}
+
+@keyframes loader-orbit {
+  0% { transform: rotate(0deg) translateX(7px) rotate(0deg); }
+  100% { transform: rotate(360deg) translateX(7px) rotate(-360deg); }
+}
+
+/* Responsive */
+@media (min-height: 780px) {
+  .app-shell {
+    padding-top: 26px;
+  }
+}
+</style>
 </head>
-<body>
-  <div class="app">
-    <header>
-      <div class="brand">
-        <div class="brand-icon"></div>
-        <div class="brand-text">
-          <span>NÓS.S°LAR · NÓ SOLAR</span>
-          <span>Nosso Lar · Parque · Afrikafuturo</span>
-        </div>
+<body class="mode-day">
+  <!-- Splash de abertura do holar -->
+  <div id="splash-nosolar">
+    <div class="splash-inner">
+      <div class="splash-circle">
+        <div class="splash-portal"></div>
       </div>
-      <div class="pill">mvp · hub solar</div>
-    </header>
-
-    <main>
-      <!-- HERO PRINCIPAL -->
-      <section class="hero">
-        <div class="hero-logo" id="logo-slot"></div>
-        <div class="hero-title">Um lar que respira Sol. Uma cidade que acende a mente.</div>
-        <div class="hero-sub">
-          Conecte o seu lar, o Parque Tecnológico, a usina solar e o Blueprint Afrikafuturo:
-          emprego, negócios, educação e servidores solares urbanos.
-        </div>
-        <div class="hero-actions">
-          <button class="btn-main" id="btn-ativar">Ativar Nosso Lar / Nó Solar</button>
-          <button class="btn-ghost" id="btn-modo-ritual">Entrar em modo ritual solar</button>
-        </div>
-      </section>
-
-      <!-- ABAS / TABS -->
-      <section class="tabs" id="tabs">
-        <button class="tab-btn active" data-tab="visao">Visão Geral</button>
-        <button class="tab-btn" data-tab="parque">Parque & Usina</button>
-        <button class="tab-btn" data-tab="energia">Energia & Emprego</button>
-        <button class="tab-btn" data-tab="empreender">Empreender Solar</button>
-        <button class="tab-btn" data-tab="educacao">Educação & Telhados</button>
-        <button class="tab-btn" data-tab="bairro">Comércio & Bairro Solar</button>
-        <button class="tab-btn" data-tab="servidores">Servidores & Afrikafuturo</button>
-      </section>
-
-      <!-- HUB DE CONTEÚDO MUTÁVEL -->
-      <section class="grid" id="hub"></section>
-    </main>
-
-    <footer>
-      NÓS.S°LAR · Nó Solar Infodose · Kodux — protótipo vivo (MVP unificado)
-    </footer>
-  </div>
-
-  <!-- OVERLAY: PERFIL + REDE SOLAR + MD + SHARE -->
-  <div class="overlay" id="overlay-solar">
-    <div class="overlay-backdrop" onclick="closeSolarOverlay()"></div>
-    <div class="overlay-panel">
-      <div class="overlay-header">
-        <div>
-          <div class="overlay-title">Nó Solar do Seu Lar</div>
-          <div class="overlay-sub">Perfil · Rede Solar · Servidor · Compartilhar</div>
-        </div>
-        <button class="overlay-close" onclick="closeSolarOverlay()">fechar</button>
-      </div>
-
-      <div class="overlay-body">
-        <!-- PERFIL -->
-        <section class="card">
-          <div class="card-header">
-            <div class="card-title">Perfil do Lar</div>
-            <div class="card-tag">config</div>
-          </div>
-          <p class="tiny">
-            Só precisa informar <strong>seu nome</strong> e <strong>WhatsApp</strong>.<br>
-            Assistente, cidade e intenção são opcionais. Tudo fica salvo no aparelho (localStorage).
-          </p>
-
-          <div style="display:flex;flex-direction:column;gap:6px;margin-top:6px;">
-            <div>
-              <div class="field-label">Seu nome</div>
-              <input id="perfilNome" class="field-input" type="text" placeholder="Seu nome">
-            </div>
-
-            <div>
-              <div class="field-label">WhatsApp</div>
-              <input id="perfilWhatsapp" class="field-input" type="tel" placeholder="(11) 9 9999-9999">
-            </div>
-
-            <div>
-              <div class="field-label">Nome do assistente</div>
-              <input id="perfilAssistente" class="field-input" type="text" placeholder="Ex: Nosso Lar, Nó Solar, Alumini...">
-            </div>
-            <div>
-              <div class="field-label">Cidade / Região</div>
-              <input id="perfilCidade" class="field-input" type="text" placeholder="Cidade / bairro">
-            </div>
-            <div>
-              <div class="field-label">Intenção do Lar</div>
-              <textarea id="perfilIntencao" class="field-textarea" rows="2"
-                placeholder="Ex: Cuidar melhor da casa, da mente e da energia."></textarea>
-            </div>
-          </div>
-
-          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;">
-            <button class="action" onclick="saveProfile()">salvar perfil</button>
-            <button class="action btn-share" onclick="exportProfileJson()">exportar json infodose</button>
-          </div>
-
-          <details style="margin-top:6px;font-size:0.75rem;opacity:0.9;">
-            <summary>Ver JSON atual</summary>
-            <pre id="perfilJsonView" style="margin-top:4px;font-size:0.7rem;white-space:pre-wrap;"></pre>
-          </details>
-        </section>
-
-        <!-- REDE SOLAR & SERVIDORES (COM GLOBO ANIMADO + SANFONAS) -->
-        <section class="card">
-          <div class="card-header">
-            <div class="card-title">Rede Solar & Servidores</div>
-            <div class="card-tag">cálculo simbólico</div>
-          </div>
-          <div class="solar-orb-wrap">
-            <div class="solar-orb">
-              <svg class="solar-orb-oca" viewBox="0 0 64 64">
-                <path d="M12 32 L32 16 L52 32" />
-                <path d="M16 32 L16 46 L48 46 L48 32" />
-                <path d="M26 46 L26 36 L38 36 L38 46" />
-              </svg>
-            </div>
-            <div class="tiny" style="text-align:center;margin-top:4px;">
-              Globo-Nó Afrikafuturo: sua região vista como ponto solar.
-            </div>
-          </div>
-
-          <p class="tiny">
-            Clique para o app estimar o Sol da sua região, o tamanho do sistema
-            e quantos mini-servidores solares cabem simbolicamente no seu território.
-          </p>
-
-          <button class="action" style="margin-top:8px;width:100%;" onclick="startGeoActivation()">
-            analisar minha região pelo Sol
-          </button>
-          <div class="tiny" style="margin-top:4px;text-align:center;">
-            Ao clicar, o app pede sua localização uma vez e salva o resultado abaixo.
-          </div>
-
-          <div id="solarAutoBox" class="result-box" style="display:none;margin-top:8px;">
-            <!-- preenchido via JS -->
-          </div>
-          <button class="btn-small" style="margin-top:4px;" onclick="copyElementText('solarAutoBox')">
-            copiar análise solar
-          </button>
-
-          <div style="margin-top:10px;">
-            <div class="field-label">Custo médio por kWp instalado (R$)</div>
-            <input id="inputCustoKwp" class="field-input" type="number" value="5000" min="1000" step="100">
-            <div class="tiny">Valor genérico (ajustável). Ex: R$ 4.000–6.000 / kWp.</div>
-          </div>
-
-          <div style="margin-top:8px;">
-            <div class="locais-row-header">
-              <span class="tiny">Locais na rede</span>
-              <button class="btn-small" onclick="addLocal()">+ adicionar local</button>
-            </div>
-            <div id="locaisContainer"></div>
-          </div>
-
-          <button class="action" style="margin-top:4px;" onclick="calcularRedeSolar()">
-            calcular rede solar
-          </button>
-
-          <div id="resultadoRede" class="result-box" style="display:none;"></div>
-          <button class="btn-small" style="margin-top:4px;" onclick="copyElementText('resultadoRede')">
-            copiar resumo da rede
-          </button>
-        </section>
-
-        <!-- BLOCOS MD -->
-        <section class="card">
-          <div class="card-header">
-            <div class="card-title">Blocos MD · Nó & Servidor Solar</div>
-            <div class="card-tag">md</div>
-          </div>
-          <p class="tiny">
-            Copie estes blocos em Markdown e cole em qualquer IA ou editor para explicar o NÓS.S°LAR
-            e a ideia de servidores solares independentes de nuvenzona.
-          </p>
-
-          <!-- BLOCO 1 — VISÃO GERAL -->
-          <pre id="md-nosslar-basico" style="margin-top:6px;font-size:0.75rem;white-space:pre-wrap;background:rgba(0,0,0,0.5);padding:8px;border-radius:10px;">
-# NÓS.S°LAR · Nosso Lar  
-Um hub solar-vivo que conecta lares, bairros, parque tecnológico e Afrikafuturo.  
-Cada casa vira um nó: energia fotovoltaica, mini-servidores, rotinas de cuidado e rede de apoio local.  
-
-- Perfil do lar salvo localmente (nome, assistente, cidade, intenção)  
-- Simulação simbólica de sistema solar (custo, payback, servidores possíveis)  
-- Expansão em rede: quanto mais lares conectados, menor o custo médio e maior o ganho coletivo.  
-          </pre>
-
-          <button class="action" style="margin-top:4px;" onclick="copyMarkdownBlock('md-nosslar-basico')">
-            copiar md visão geral
-          </button>
-
-          <!-- BLOCO 2 — SERVIDOR SOLAR / NUVEM LOCAL -->
-          <pre id="md-nosslar-servidor" style="margin-top:8px;font-size:0.75rem;white-space:pre-wrap;background:rgba(0,0,0,0.5);padding:8px;border-radius:10px;">
-## Servidores solares urbanos · Menos Amazon, mais bairro  
-
-O NÓS.S°LAR calcula o potencial solar da região a partir da localização (lat/long)  
-e converte isso em capacidade digital local:  
-
-- Mini-servidores solares (~100W) alimentados diretamente pelos painéis  
-- Armazenamento distribuído de fotos e vídeos da comunidade  
-- Streaming local (aulas, cultos, eventos, Infodose) sem depender só de nuvem externa  
-- Conexões simultâneas suficientes para um “pequeno data center de bairro”  
-
-Parte da energia solar que hoje iria apenas para a conta de luz  
-pode ser reservada para rodar:  
-
-- Servidores Infodose locais  
-- Portais de bairro, históricos de fotos, acervos culturais  
-- Chats e aplicações que ficam mais rápidos por estarem “dentro do território”  
-
-A ideia não é excluir a nuvem (Amazon, Google etc.),  
-mas equilibrar: o bairro vira uma camada de nuvem própria,  
-alimentada pelo sol, mais perto das pessoas e da história delas.  
-          </pre>
-
-          <button class="action" style="margin-top:4px;" onclick="copyMarkdownBlock('md-nosslar-servidor')">
-            copiar md servidores solares
-          </button>
-        </section>
-
-        <!-- COMPARTILHAR -->
-        <section class="card">
-          <div class="card-header">
-            <div class="card-title">Compartilhar Nó Solar</div>
-            <div class="card-tag">rede</div>
-          </div>
-          <p class="tiny">
-            Envie o link ou resumo do seu Nó Solar para amigos, vizinhos ou grupos.
-            Quanto mais nós, menor o custo médio e maior a redistribuição.
-          </p>
-          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;">
-            <button class="btn-small btn-share" onclick="shareNoSolar()">compartilhar agora</button>
-          </div>
-        </section>
-      </div>
+      <div class="splash-text">Nos.S°lar — dual.infodose</div>
+      <div class="splash-sub">(carregando o holar & o pôr do sol na oca...)</div>
     </div>
   </div>
 
-  <script>
-  const log = (...args) => console.log("[NOS_SLAR_NOSOLAR]", ...args);
-  const PROFILE_KEY = "nosSlarProfile";
-  let lastLocation = null;
-  let locaisIndex = 0;
-  let localDetectadoCriado = false;
+  <!-- Loader operacional -->
+  <div id="nv-loader">
+    <div class="nv-loader-inner">
+      <div class="nv-loader-orbit">
+        <div class="nv-loader-dot"></div>
+      </div>
+      <span>Sincronizando Nos.S°lar…</span>
+    </div>
+  </div>
 
-  function hasProfile() {
-    try {
-      return !!localStorage.getItem(PROFILE_KEY);
-    } catch (e) {
-      return false;
-    }
-  }
+  <div class="sky-layer">
+    <div class="sun"></div>
+    <div class="particle p1"></div>
+    <div class="particle p2"></div>
+    <div class="particle p3"></div>
+    <div class="particle p4"></div>
+    <div class="particle p5"></div>
+  </div>
 
-  // ---------------- INIT ----------------
-  function initApp() {
-    log("App iniciado.");
-    wireMainButtons();
-    wireTabs();
-    setView("visao");
-    loadProfile();
-    registerServiceWorker();
-    // local genérico inicial (usuário pode editar ou remover)
-    addLocal("Casa", 350);
-  }
+  <div class="app-shell">
+    <header class="app-header">
+      <div class="tag-solar">
+        ☀️ <span>Nos.S°lar · Rede Solar Simbólica</span>
+      </div>
+      <h1 class="app-title">Stack Solar Dinâmica</h1>
+      <p class="app-subtitle">
+        Dia → Pôr do Sol → Noite · Estado solar local · Dicas Meta-Humano-Máquina · Livro Vivo
+      </p>
+    </header>
 
-  function registerServiceWorker() {
-    if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("sw.js")
-        .then(() => log("Service Worker registrado."))
-        .catch(err => console.warn("SW erro:", err));
-    }
-  }
+    <main class="card-stack">
 
-  // ---------------- BOTÕES PRINCIPAIS / OVERLAY ----------------
-  function wireMainButtons() {
-    const ativar = document.getElementById("btn-ativar");
-    const ritual = document.getElementById("btn-modo-ritual");
-    if (ativar) {
-      ativar.addEventListener("click", () => {
-        openSolarOverlay();
-      });
-    }
-    if (ritual) {
-      ritual.addEventListener("click", () => {
-        log("Modo Ritual Solar");
-        alert("Modo Ritual iniciado.\nRespira, sente o espaço, imagina o Sol percorrendo telhado, servidor e mente.");
-      });
-    }
-  }
+      <!-- CARD 0: Boas-vindas / Livro Vivo / Gerador + TTS -->
+      <section class="card" data-card="welcome">
+        <div class="card-header" onclick="toggleCard(this)">
+          <div>
+            <div class="card-title">Boas-vindas · Livro Vivo & InfoDocs</div>
+            <small>(gerador · TTS · ponte com o Hub)</small>
+          </div>
+          <div class="card-toggle">⌄</div>
+        </div>
+        <div class="card-body">
+          <div class="card-body-inner">
+            <p>
+              <span class="md-tag">::info</span>
+              Este card é a porta de entrada do <strong>Nos.S°lar</strong> com o
+              <strong>Livro Vivo / InfoDocs</strong>: aqui você gera templates de documentos,
+              testa voz (TTS) e copia o conteúdo direto para o Hub principal.
+            </p>
 
-  function openSolarOverlay() {
-    const overlay = document.getElementById("overlay-solar");
-    if (!overlay) return;
-    overlay.classList.add("show");
-    // Geolocalização agora só roda quando clicar em "analisar minha região pelo Sol"
-  }
+            <div class="btn-row">
+              <button class="btn" onclick="nvGenerateTemplate('basico'); event.stopPropagation();">
+                ✨<span>Gerar template — Documento Solar Básico</span>
+              </button>
+              <button class="btn" onclick="nvGenerateTemplate('escola'); event.stopPropagation();">
+                🏫<span>Gerar template — Educação Solar em Escolas</span>
+              </button>
+              <button class="btn" onclick="nvGenerateTemplate('parque'); event.stopPropagation();">
+                🏭<span>Gerar template — Parque Tecnológico & Micro Data Center</span>
+              </button>
+              <button class="btn" onclick="nvSpeakWelcome(); event.stopPropagation();">
+                🔊<span>Ouvir boas-vindas (TTS)</span>
+              </button>
+            </div>
 
-  function closeSolarOverlay() {
-    const overlay = document.getElementById("overlay-solar");
-    if (!overlay) return;
-    overlay.classList.remove("show");
-  }
+            <p style="font-size:0.8rem;color:var(--muted);margin-top:8px;">
+              Copie o conteúdo abaixo e cole no painel principal do InfoDocs / Livro Vivo para
+              continuar a edição completa.
+            </p>
 
-  function startGeoActivation() {
-    const box = document.getElementById("solarAutoBox");
-    if (box) {
-      box.style.display = "block";
-      box.innerHTML = `
-        <div style="display:flex;align-items:center;gap:8px;">
-          <div class="loader"></div>
-          <div class="tiny">
-            Buscando seu Sol e calculando o potencial da sua região...
+            <textarea id="nv-template-output" placeholder="# Seu template Livro Vivo aparecerá aqui..."></textarea>
           </div>
         </div>
-      `;
+      </section>
+
+      <!-- CARD 0.5: LS Status interno do Nos.S°lar -->
+      <section class="card" data-card="ls">
+        <div class="card-header" onclick="toggleCard(this)">
+          <div>
+            <div class="card-title">LocalStorage · Estado interno do Nos.S°lar</div>
+            <small>(debug leve · chaves · espaço)</small>
+          </div>
+          <div class="card-toggle">⌄</div>
+        </div>
+        <div class="card-body">
+          <div class="card-body-inner">
+            <p>
+              <span class="md-tag">::ls</span>
+              Leitura simbólica do <strong>localStorage</strong> deste micro-app:
+              quantas chaves existem, quais são e quanto espaço aproximado ocupam.
+            </p>
+
+            <div class="btn-row">
+              <button class="btn" onclick="nvLsScan(); event.stopPropagation();">
+                🔍<span>Ver estado atual do LS</span>
+              </button>
+              <button class="btn" onclick="nvLsClear(); event.stopPropagation();">
+                🧹<span>Limpar chaves do Nos.S°lar</span>
+              </button>
+            </div>
+
+            <p style="font-size:0.8rem;color:var(--muted);margin-top:8px;">
+              Este card é o “espelho local” do armazenamento: perfeito para debug leve sem
+              abrir o painel LS_STATUS completo.
+            </p>
+
+            <div id="nv-ls-output" aria-label="Saída de LocalStorage"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CARD 1: CICLO SOLAR -->
+      <section class="card" data-card="solar">
+        <div class="card-header" onclick="toggleCard(this)">
+          <div>
+            <div class="card-title">Painel Solar Dinâmico</div>
+            <small>(dia · pôr do sol · noite)</small>
+          </div>
+          <div class="card-toggle">⌄</div>
+        </div>
+        <div class="card-body">
+          <div class="card-body-inner">
+            <p>
+              <span class="md-tag">::ciclo</span>
+              Controle visual do ciclo solar: de <strong>captação máxima</strong> à
+              <strong>rede de dados iluminada</strong>.
+            </p>
+            <div class="btn-row">
+              <button class="btn" onclick="setMode('day'); event.stopPropagation();">
+                ☀️<span>Dia — Captação Solar Máxima</span>
+              </button>
+              <button class="btn" onclick="setMode('sunset'); event.stopPropagation();">
+                🌇<span>Pôr do Sol — Transição Energia → Dados</span>
+              </button>
+              <button class="btn" onclick="setMode('night'); event.stopPropagation();">
+                🌙<span>Noite — Lua · Rede de Dados Ativa</span>
+              </button>
+            </div>
+            <div class="mode-indicator" id="modeIndicator">
+              MODO ATUAL: DIA · CAPTAÇÃO & CARREGAMENTO
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CARD 2: LOCALIZAÇÃO & ONDAS SONORAS -->
+      <section class="card" data-card="geo">
+        <div class="card-header" onclick="toggleCard(this)">
+          <div>
+            <div class="card-title">Painel Sonoro · Estado Solar Local</div>
+            <small>(lat/long simbólicas + ondas gêmeas)</small>
+          </div>
+          <div class="card-toggle">⌄</div>
+        </div>
+        <div class="card-body">
+          <div class="card-body-inner">
+            <p>
+              <span class="md-tag">::geo</span>
+              Detecta sua posição na Terra, exibe <strong>lat/long simbólicas</strong> e
+              ativa duas ondas sonoras que dançam com o seu estado solar.
+            </p>
+            <div class="btn-row">
+              <button class="btn" onclick="pedirLocalizacao(event)">
+                📍<span>Descobrir minha posição solar</span>
+              </button>
+              <button class="btn" onclick="toggleOndas(event)">
+                🔊<span>Ativar / Pausar ondas gêmeas</span>
+              </button>
+            </div>
+            <div class="geo-indicator" id="geoIndicator">
+              LOCALIZAÇÃO: Aguardando permissão...
+            </div>
+
+            <div class="wave-container">
+              <div class="wave"></div>
+              <div class="wave wave2"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CARD 3: DICAS META-HUMANO-MÁQUINA -->
+      <section class="card" data-card="tips">
+        <div class="card-header" onclick="toggleCard(this)">
+          <div>
+            <div class="card-title">Painel de Dicas · Meta-Humano-Máquina</div>
+            <small>(manhã · tarde · noite)</small>
+          </div>
+          <div class="card-toggle">⌄</div>
+        </div>
+        <div class="card-body">
+          <div class="card-body-inner">
+            <p>
+              <span class="md-tag">::dicas</span>
+              Gera três dicas: <strong>manhã, tarde e noite</strong>, correlacionando o
+              seu corpo com o corpo simbiótico da rede Nos.S°lar.
+            </p>
+            <div class="btn-row">
+              <button class="btn" onclick="gerarDicas(event)">
+                💫<span>Gerar dicas para hoje</span>
+              </button>
+            </div>
+            <div class="tips-indicator" id="tipsIndicator">
+              DICAS: Toque para gerar o ciclo de hoje.
+            </div>
+
+            <div id="tipsContainer">
+              <!-- Dicas aparecem aqui -->
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+<script>
+/* SPLASH HANDLER */
+window.addEventListener('load', function() {
+  var splash = document.getElementById('splash-nosolar');
+  if (!splash) return;
+  setTimeout(function() {
+    splash.classList.add('hide');
+    setTimeout(function() {
+      splash.style.display = 'none';
+    }, 900);
+  }, 900);
+});
+
+/* LOADER >600ms */
+let nvLoaderTimer = null;
+function nvStartLoading() {
+  const el = document.getElementById('nv-loader');
+  if (!el) return;
+  if (nvLoaderTimer) clearTimeout(nvLoaderTimer);
+  nvLoaderTimer = setTimeout(function() {
+    el.classList.add('visible');
+  }, 600);
+}
+function nvStopLoading() {
+  const el = document.getElementById('nv-loader');
+  if (!el) return;
+  if (nvLoaderTimer) {
+    clearTimeout(nvLoaderTimer);
+    nvLoaderTimer = null;
+  }
+  el.classList.remove('visible');
+}
+
+/* SANFONA DE CARDS */
+function toggleCard(headerEl) {
+  var card = headerEl.closest('.card');
+  var body = card.querySelector('.card-body');
+  var toggleIcon = card.querySelector('.card-toggle');
+
+  var isOpen = card.classList.contains('open');
+  if (isOpen) {
+    card.classList.remove('open');
+    body.style.maxHeight = '0px';
+    toggleIcon.textContent = '⌄';
+  } else {
+    card.classList.add('open');
+    body.style.maxHeight = body.scrollHeight + 'px';
+    toggleIcon.textContent = '⌃';
+  }
+}
+
+/* Ajusta maxHeight ao redimensionar */
+window.addEventListener('resize', function() {
+  document.querySelectorAll('.card.open .card-body').forEach(function(body) {
+    body.style.maxHeight = body.scrollHeight + 'px';
+  });
+});
+
+/* CICLO SOLAR */
+function setMode(mode) {
+  document.body.classList.remove('mode-day', 'mode-sunset', 'mode-night');
+  var indicator = document.getElementById('modeIndicator');
+
+  if (mode === 'day') {
+    document.body.classList.add('mode-day');
+    indicator.textContent = 'MODO ATUAL: DIA · CAPTAÇÃO & CARREGAMENTO';
+  } else if (mode === 'sunset') {
+    document.body.classList.add('mode-sunset');
+    indicator.textContent = 'MODO ATUAL: PÔR DO SOL · TRANSIÇÃO ENERGIA → DADOS';
+  } else if (mode === 'night') {
+    document.body.classList.add('mode-night');
+    indicator.textContent =
+      'MODO ATUAL: NOITE · LUA MENOR · REDE DE DADOS ILUMINADA PELA ENERGIA DO DIA';
+  }
+}
+
+/* GEO + ONDAS SONORAS (Web Audio) */
+let geoLat = null;
+let geoLng = null;
+let audioCtx = null;
+let osc1 = null;
+let osc2 = null;
+let ondasAtivas = false;
+
+function pedirLocalizacao(ev) {
+  ev.stopPropagation();
+  nvStartLoading();
+  var indicator = document.getElementById('geoIndicator');
+
+  if (!navigator.geolocation) {
+    indicator.textContent = 'LOCALIZAÇÃO: Navegador não suporta geolocalização.';
+    nvStopLoading();
+    return;
+  }
+
+  indicator.textContent = 'LOCALIZAÇÃO: Solicitando permissão...';
+
+  navigator.geolocation.getCurrentPosition(function(pos) {
+    geoLat = pos.coords.latitude;
+    geoLng = pos.coords.longitude;
+    indicator.textContent =
+      'LOCALIZAÇÃO: ' +
+      geoLat.toFixed(4) + ' · ' +
+      geoLng.toFixed(4) +
+      ' — Estado solar pronto para leitura simbólica.';
+    nvStopLoading();
+  }, function(err) {
+    indicator.textContent = 'LOCALIZAÇÃO: Permissão negada ou indisponível.';
+    nvStopLoading();
+  }, {
+    enableHighAccuracy: false,
+    timeout: 8000,
+    maximumAge: 60000
+  });
+}
+
+function toggleOndas(ev) {
+  ev.stopPropagation();
+  nvStartLoading();
+  var indicator = document.getElementById('geoIndicator');
+
+  if (!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  }
+
+  if (!ondasAtivas) {
+    let baseLat = geoLat != null ? Math.abs(geoLat) : 23.5;
+    let baseLng = geoLng != null ? Math.abs(geoLng) : 47.5;
+
+    let freq1 = 80 + (baseLat % 40);
+    let freq2 = 160 + (baseLng % 70);
+
+    osc1 = audioCtx.createOscillator();
+    osc2 = audioCtx.createOscillator();
+
+    osc1.type = 'sine';
+    osc2.type = 'sine';
+
+    osc1.frequency.value = freq1;
+    osc2.frequency.value = freq2;
+
+    const gain = audioCtx.createGain();
+    gain.gain.value = 0.08;
+
+    osc1.connect(gain);
+    osc2.connect(gain);
+    gain.connect(audioCtx.destination);
+
+    osc1.start();
+    osc2.start();
+
+    ondasAtivas = true;
+    indicator.textContent += ' · ONDAS ATIVAS (duas frequências em ressonância).';
+  } else {
+    if (osc1) osc1.stop();
+    if (osc2) osc2.stop();
+    osc1 = null;
+    osc2 = null;
+    ondasAtivas = false;
+
+    indicator.textContent = indicator.textContent.replace(/ · ONDAS ATIVAS.*$/, '');
+  }
+  nvStopLoading();
+}
+
+/* DICAS META-HUMANO-MÁQUINA */
+function gerarDicas(ev) {
+  ev.stopPropagation();
+  nvStartLoading();
+  var tipsIndicator = document.getElementById('tipsIndicator');
+  var container = document.getElementById('tipsContainer');
+
+  const agora = new Date();
+  const hora = agora.getHours();
+
+  let periodo;
+  if (hora < 12) periodo = 'manhã';
+  else if (hora < 18) periodo = 'tarde';
+  else periodo = 'noite';
+
+  tipsIndicator.textContent =
+    'DICAS: Ciclo gerado para o período atual (' + periodo.toUpperCase() + ').';
+
+  const latInfo = geoLat != null ? geoLat.toFixed(2) : 'lat não definida';
+  const lngInfo = geoLng != null ? geoLng.toFixed(2) : 'lng não definida';
+
+  const dicas = [
+    {
+      titulo: 'Manhã — Corpo & Painel',
+      texto:
+        'Alongar ombros e coluna por 3 minutos olhando para a luz natural. ' +
+        'Checar mentalmente: “meu corpo está recebendo luz como o telhado recebe o sol?”. ' +
+        'Se possível, abrir uma janela e imaginar os painéis carregando junto com você.',
+    },
+    {
+      titulo: 'Tarde — Foco & Processamento',
+      texto:
+        'Escolher uma tarefa importante e executá-la em bloco de 25 minutos. ' +
+        'Pensar nos micro data centers locais: processar o que é essencial agora, ' +
+        'deixar o resto para outro ciclo. Menos abas abertas, mais qualidade de energia mental.',
+    },
+    {
+      titulo: 'Noite — Descarregar & Armazenar',
+      texto:
+        'Reduzir luz forte 1h antes de dormir. Registrar em 3 linhas o que você “carregou” hoje: ' +
+        'aprendizados, decisões, sensações. Assim como a bateria do sistema solar, ' +
+        'você armazena o essencial para o dia seguinte sem sobrecarregar o corpo.',
     }
-    askLocationOnce();
-  }
+  ];
 
-  // ---------------- VIEWS / TABS ----------------
-  const hub = document.getElementById("hub");
+  container.innerHTML = '';
 
-  const views = {
-    visao: `
-      <div class="grid-row">
-        <article class="card">
-          <div class="card-title">
-            <svg class="icon icon-gold" viewBox="0 0 24 24">
-              <circle cx="12" cy="12" r="4"></circle>
-              <g stroke-linecap="round">
-                <line x1="12" y1="2" x2="12" y2="5"/>
-                <line x1="12" y1="19" x2="12" y2="22"/>
-                <line x1="2" y1="12" x2="5" y2="12"/>
-                <line x1="19" y1="12" x2="22" y2="12"/>
-              </g>
-            </svg>
-            Um Ponto Solar
-          </div>
-          <div class="card-sub">
-            O núcleo que conecta energia, servidor, comunicação e comunidade.
-            <div class="chip">Energia · Servidor</div>
-          </div>
-        </article>
-        <article class="card">
-          <div class="card-title">
-            <svg class="icon" viewBox="0 0 24 24">
-              <path d="M4 19v-6a8 8 0 0 1 16 0v6" />
-              <circle cx="12" cy="9" r="3" />
-            </svg>
-            Nó de Capacitação
-          </div>
-          <div class="card-sub">
-            Treinamentos Infodose para que qualquer pessoa esteja pronta em dias, não em meses.
-            <div class="chip">Formação 24–72h</div>
-          </div>
-        </article>
-      </div>
-      <div class="grid-row">
-        <article class="card">
-          <div class="card-title">
-            <svg class="icon" viewBox="0 0 24 24">
-              <circle cx="12" cy="7" r="3"/>
-              <path d="M4 21c1-3 4-5 8-5s7 2 8 5"/>
-            </svg>
-            Hub de Mão de Obra Treinada
-          </div>
-          <div class="card-sub">
-            Um lugar digital onde empresas encontram trabalhadores prontos, e trabalhadores encontram oportunidade.
-            <div class="chip">Emprego local</div>
-          </div>
-        </article>
-        <article class="card">
-          <div class="card-title">
-            <svg class="icon" viewBox="0 0 24 24">
-              <circle cx="12" cy="12" r="3"/>
-              <path d="M12 2v3M12 19v3M4 12H2M22 12h-2"/>
-            </svg>
-            Centro Simbólico de Transformação
-          </div>
-          <div class="card-sub">
-            A camada de significado: rituais, Afrikafuturo, dopamina sexy, espaço da mente, 78K.
-            <div class="chip">Blueprint Vivo</div>
-          </div>
-        </article>
-      </div>
-    `,
-    parque: `
-      <div class="grid-row">
-        <article class="card">
-          <div class="card-title">
-            <svg class="icon" viewBox="0 0 24 24">
-              <path d="M3 12h18M5 12v7h14v-7M9 12V7l3-3 3 3v5"/>
-            </svg>
-            Parque Tecnológico
-          </div>
-          <div class="card-sub">
-            Polo de inovação, empresas, laboratórios, incubadoras e eventos tecnológicos.
-            <div class="chip">Inovação Sorocaba</div>
-          </div>
-        </article>
-        <article class="card">
-          <div class="card-title">
-            <svg class="icon icon-gold" viewBox="0 0 24 24">
-              <rect x="3" y="7" width="18" height="10" rx="3"/>
-              <path d="M8 7V4h8v3"/>
-            </svg>
-            Usina Solar
-          </div>
-          <div class="card-sub">
-            9.984 painéis, 10 GWh/ano. Um dos maiores rooftops solares do Estado, base física do Nó Solar.
-            <div class="chip">Infraestrutura real</div>
-          </div>
-        </article>
-      </div>
-      <div class="grid-row">
-        <article class="card">
-          <div class="card-title">
-            <svg class="icon" viewBox="0 0 24 24">
-              <path d="M6 20h12M8 16h8M10 12h4M12 2v5"/>
-            </svg>
-            Programas & Eventos
-          </div>
-          <div class="card-sub">
-            Jornadas de inovação, hackathons, eventos educacionais e feiras conectadas ao Nó Solar e à Infodose.
-            <div class="chip">Programas Abertos</div>
-          </div>
-        </article>
-      </div>
-    `,
-    energia: `
-      <div class="grid-row">
-        <article class="card">
-          <div class="card-title">
-            <svg class="icon" viewBox="0 0 24 24">
-              <path d="M13 2L3 14h7l-1 8L21 10h-7z"/>
-            </svg>
-            Energia & Emprego
-          </div>
-          <div class="card-sub">
-            Trilha que ensina instalação, manutenção, diagnóstico e vendas de sistemas fotovoltaicos.
-            <div class="chip">Trabalho Solar</div>
-          </div>
-        </article>
-        <article class="card">
-          <div class="card-title">
-            <svg class="icon" viewBox="0 0 24 24">
-              <path d="M4 4h16v6H4z"/>
-              <path d="M6 10v7h12v-7"/>
-            </svg>
-            Hub de Mão de Obra
-          </div>
-          <div class="card-sub">
-            Painel onde empresas cadastram vagas e encontram pessoas já treinadas.
-            <div class="chip">Match automático</div>
-          </div>
-        </article>
-      </div>
-    `,
-    empreender: `
-      <div class="grid-row">
-        <article class="card">
-          <div class="card-title">
-            <svg class="icon" viewBox="0 0 24 24">
-              <path d="M3 12l8-8 10 10-8 8z"/>
-              <circle cx="12" cy="12" r="2"/>
-            </svg>
-            Empreender Solar
-          </div>
-          <div class="card-sub">
-            Modelos prontos para oficinas, adegas, cafés, estúdios e serviços rodando com energia solar.
-            <div class="chip">Negócios locais</div>
-          </div>
-        </article>
-        <article class="card">
-          <div class="card-title">
-            <svg class="icon" viewBox="0 0 24 24">
-              <path d="M4 20V10l8-6 8 6v10"/>
-              <path d="M9 21v-6h6v6"/>
-            </svg>
-            Nosso Lar Solar
-          </div>
-          <div class="card-sub">
-            Cada casa como um micro-hub: energia, microservidor, rituais e conexão com o bairro.
-            <div class="chip">NÓS.S°LAR</div>
-          </div>
-        </article>
-      </div>
-    `,
-    educacao: `
-      <div class="grid-row">
-        <article class="card">
-          <div class="card-title">
-            <svg class="icon" viewBox="0 0 24 24">
-              <path d="M4 7l8-4 8 4-8 4-8-4z"/>
-              <path d="M6 10v5l6 3 6-3v-5"/>
-            </svg>
-            Educação Solar em Escolas
-          </div>
-          <div class="card-sub">
-            Programas para alunos entenderem energia, clima, tecnologia e futuro Afrikafuturo.
-            <div class="chip">Crianças & Jovens</div>
-          </div>
-        </article>
-        <article class="card">
-          <div class="card-title">
-            <svg class="icon icon-gold" viewBox="0 0 24 24">
-              <rect x="2" y="8" width="20" height="12" rx="3"/>
-              <path d="M6 8V5h12v3"/>
-            </svg>
-            Telhados Públicos
-          </div>
-          <div class="card-sub">
-            Inventário de escolas, postos de saúde, prédios públicos e espaços culturais para implantação solar.
-            <div class="chip">Mapa Solar Urbano</div>
-          </div>
-        </article>
-      </div>
-    `,
-    bairro: `
-      <div class="grid-row">
-        <article class="card">
-          <div class="card-title">
-            <svg class="icon" viewBox="0 0 24 24">
-              <path d="M3 10h18M3 16h18M5 10v10M19 10v10"/>
-            </svg>
-            Comércio Solar
-          </div>
-          <div class="card-sub">
-            Lojas, mercados, padarias, bares e serviços rodando com energia solar e suporte Infodose.
-            <div class="chip">Economia real</div>
-          </div>
-        </article>
-        <article class="card">
-          <div class="card-title">
-            <svg class="icon" viewBox="0 0 24 24">
-              <path d="M3 12l3-3 3 3 3-3 3 3 3-3 3 3"/>
-              <path d="M4 18h16"/>
-            </svg>
-            Bairro Solar
-          </div>
-          <div class="card-sub">
-            Bairros-nó que se organizam como pequenos ecossistemas, conectando lares, comércios e servidores solares.
-            <div class="chip">Bairros-Nó</div>
-          </div>
-        </article>
-      </div>
-    `,
-    servidores: `
-      <div class="grid-row">
-        <article class="card">
-          <div class="card-title">
-            <svg class="icon" viewBox="0 0 24 24">
-              <rect x="3" y="4" width="18" height="7" rx="2"/>
-              <rect x="3" y="13" width="18" height="7" rx="2"/>
-              <circle cx="8" cy="7.5" r="0.8"/>
-              <circle cx="8" cy="16.5" r="0.8"/>
-            </svg>
-            Servidores Solares Urbanos
-          </div>
-          <div class="card-sub">
-            Micro data-centers distribuídos em lares, comércios e hubs, rodando Infodose e serviços locais.
-            <div class="chip">Edge Solar</div>
-          </div>
-        </article>
-      </div>
-      <div class="grid-row">
-        <article class="card">
-          <div class="card-title">
-            <svg class="icon icon-gold" viewBox="0 0 24 24">
-              <circle cx="12" cy="12" r="6"/>
-              <path d="M12 2v3M12 19v3M4 12H2M22 12h-2"/>
-            </svg>
-            Blueprint Afrikafuturo Brasil
-          </div>
-          <div class="card-sub">
-            Conexão com incubadoras africanas, hubs solares, projetos como Desert-to-Power e centros em Marrocos, Namíbia, Nigéria e Quênia.
-            <div class="chip">Eixo Brasil–África</div>
-          </div>
-        </article>
-      </div>
-    `
-  };
-
-  function setView(name){
-    if(!views[name]) return;
-    hub.innerHTML = views[name];
-  }
-
-  function wireTabs(){
-    document.querySelectorAll(".tab-btn").forEach(btn => {
-      btn.addEventListener("click", () => {
-        document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
-        btn.classList.add("active");
-        const tab = btn.getAttribute("data-tab");
-        log("change_tab", tab);
-        setView(tab);
-      });
-    });
-  }
-
-  // ---------------- PERFIL / LOCALSTORAGE ----------------
-  function loadProfile() {
-    try {
-      const raw = localStorage.getItem(PROFILE_KEY);
-      if (!raw) return;
-      const data = JSON.parse(raw);
-      if (data.nome) document.getElementById("perfilNome").value = data.nome;
-      if (data.whatsapp) document.getElementById("perfilWhatsapp").value = data.whatsapp;
-      if (data.assistente) document.getElementById("perfilAssistente").value = data.assistente;
-      if (data.cidade) document.getElementById("perfilCidade").value = data.cidade;
-      if (data.intencao) document.getElementById("perfilIntencao").value = data.intencao;
-      updateProfileJsonView(data);
-    } catch (e) {
-      console.warn("Erro ao carregar perfil:", e);
-    }
-  }
-
-  function saveProfile() {
-    const nome = (document.getElementById("perfilNome").value || "").trim();
-    const whatsapp = (document.getElementById("perfilWhatsapp").value || "").trim();
-
-    if (!nome || !whatsapp) {
-      alert("Coloca pelo menos seu nome e WhatsApp pra ativar o Nó Solar. 🌞");
-      return;
-    }
-
-    const data = {
-      nome,
-      whatsapp,
-      assistente: (document.getElementById("perfilAssistente").value || "").trim(),
-      cidade: (document.getElementById("perfilCidade").value || "").trim(),
-      intencao: (document.getElementById("perfilIntencao").value || "").trim(),
-      updatedAt: new Date().toISOString()
-    };
-    localStorage.setItem(PROFILE_KEY, JSON.stringify(data));
-    updateProfileJsonView(data);
-    alert("Perfil salvo no aparelho. ✨");
-  }
-
-  function updateProfileJsonView(data) {
-    const el = document.getElementById("perfilJsonView");
-    if (!el) return;
-    el.textContent = JSON.stringify(data, null, 2);
-  }
-
-  function exportProfileJson() {
-    try {
-      const raw = localStorage.getItem(PROFILE_KEY) || "{}";
-      const data = JSON.parse(raw);
-      const payload = {
-        type: "infodose_profile",
-        version: "1.0",
-        symbol: "NOS_SLAR",
-        profile: data,
-        location: lastLocation
-      };
-      const json = JSON.stringify(payload, null, 2);
-
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(json).then(() => {
-          alert("JSON copiado! Cole direto na Infodose / IA. ⚡");
-        }).catch(() => {
-          downloadJsonFile(json);
-        });
-      } else {
-        downloadJsonFile(json);
-      }
-    } catch (e) {
-      console.warn("Erro ao exportar JSON:", e);
-      alert("Não consegui exportar o JSON agora.");
-    }
-  }
-
-  function downloadJsonFile(json) {
-    const blob = new Blob([json], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "nos_slar_profile.json";
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    URL.revokeObjectURL(url);
-  }
-
-  // ---------------- LOCAIS / REDE SOLAR ----------------
-  function addLocal(nome = "", gasto = "") {
-    const container = document.getElementById("locaisContainer");
-    if (!container) return;
-    const id = `local-${locaisIndex++}`;
-    const div = document.createElement("div");
-    div.className = "locais-row";
-    div.dataset.localId = id;
-    div.innerHTML = `
-      <div class="locais-row-header">
-        <span>${nome || "Local"} <span class="tiny">(casa, estúdio, escritório...)</span></span>
-        <button class="btn-small" onclick="removerLocal('${id}')">remover</button>
-      </div>
-      <div>
-        <div class="field-label">Nome do local</div>
-        <input class="field-input" type="text" placeholder="Ex: Casa Sorocaba, Estúdio, Escritório"
-               data-field="nome" value="${nome}">
-      </div>
-      <div>
-        <div class="field-label">Gasto médio mensal em energia (R$)</div>
-        <input class="field-input" type="number" min="0" step="10" placeholder="Ex: 300"
-               data-field="gasto" value="${gasto}">
-      </div>
-    `;
+  dicas.forEach(function(d) {
+    const div = document.createElement('div');
+    div.className = 'tip-block';
+    div.innerHTML =
+      '<strong>' + d.titulo + '</strong>' +
+      '<span>' + d.texto + '</span>';
     container.appendChild(div);
+  });
+
+  const extra = document.createElement('p');
+  extra.style.marginTop = '8px';
+  extra.style.fontSize = '0.78rem';
+  extra.style.color = 'var(--muted)';
+  extra.textContent =
+    'Geo base simbólica atual: ' + latInfo + ' / ' + lngInfo +
+    ' · corpo humano e corpo da rede aprendendo juntos.';
+  container.appendChild(extra);
+
+  nvStopLoading();
+}
+
+/* GERADOR DE TEMPLATES LIVRO VIVO + TTS */
+function nvGenerateTemplate(tipo) {
+  nvStartLoading();
+  const ta = document.getElementById('nv-template-output');
+  if (!ta) {
+    nvStopLoading();
+    return;
   }
 
-  function removerLocal(id) {
-    const container = document.getElementById("locaisContainer");
-    if (!container) return;
-    const row = Array.from(container.children).find(el => el.dataset.localId === id);
-    if (row) container.removeChild(row);
+  let md = '';
+
+  if (tipo === 'basico') {
+    md = [
+      '# ☀️ Projeto Solar Básico — Nos.S°lar · dual.infodose',
+      '',
+      '::info',
+      'Proposta inicial de micro-usina solar conectada à camada simbólica do Nos.S°lar.',
+      'Este documento pode ser expandido no InfoDocs / Livro Vivo.',
+      '::',
+      '',
+      '## 🎯 Objetivo',
+      '- Reduzir custos de energia;',
+      '- Criar base para micro data center local;',
+      '- Conectar o imóvel à rede simbólica Nos.S°lar.',
+      '',
+      '## 📍 Local & Perfil de Consumo',
+      '- Endereço / Bairro:',
+      '- Consumo médio (kWh/mês):',
+      '- Telhado disponível (m²) / orientação:',
+      '',
+      '## ⚙️ Dimensionamento Inicial',
+      '- Potência estimada (kWp):',
+      '- Nº de módulos:',
+      '- Inversor / microinversores:',
+      '',
+      '## 🤝 Modelo de Parceria',
+      '- Tipo: Equity / Serviço / Híbrido;',
+      '- Participação proposta;',
+      '- Benefícios para o cliente;',
+      '- Benefícios para a rede Nos.S°lar.',
+      '',
+      '## 📡 Camada Digital & Simbólica',
+      '- Integração com painel Nos.S°lar;',
+      '- Monitoramento simbólico (estado solar, dicas);',
+      '- Rotina 3·6·9 de revisão energética.',
+      ''
+    ].join('\\n');
+  } else if (tipo === 'escola') {
+    md = [
+      '# 🏫 Educação Solar em Escolas — Nos.S°lar · dual.infodose',
+      '',
+      '::info',
+      'Documento-modelo para projetos de educação solar em escolas,',
+      'conectando energia, tecnologia e formação de estudantes.',
+      '::',
+      '',
+      '## 🎯 Objetivos do Programa',
+      '- Ensinar fundamentos de energia solar;',
+      '- Integrar laboratório vivo (telhado da escola);',
+      '- Conectar trilhas 3·6·9 de formação (alunos, professores, comunidade).',
+      '',
+      '## 🧩 Componentes do Projeto',
+      '- Instalação de sistema fotovoltaico (mini-usina);',
+      '- Painel Nos.S°lar na escola (visualização em tempo real);',
+      '- Atividades didáticas (experimentos, desafios, jogos).',
+      '',
+      '## 📚 Trilhas 3·6·9',
+      '- 3 encontros introdutórios (energia, sol, comunidade);',
+      '- 6 encontros práticos (medição, dados, projeto);',
+      '- 9 atividades abertas (feiras, apresentações, mentorias).',
+      '',
+      '## 🤝 Parcerias',
+      '- Empresa de solar / Parque Tecnológico;',
+      '- Secretaria de Educação / Prefeitura;',
+      '- Comunidade local / associações.',
+      '',
+      '## 🔁 Monitoramento & Expansão',
+      '- Métricas de aprendizado;',
+      '- Economia de energia;',
+      '- Rotas para expansão a outros bairros / escolas.',
+      ''
+    ].join('\\n');
+  } else if (tipo === 'parque') {
+    md = [
+      '# 🏭 Parque Tecnológico & Micro Data Center Solar — Nos.S°lar',
+      '',
+      '::info',
+      'Modelo de documento para integrar parque tecnológico, empresas residentes e',
+      'micro data centers alimentados por energia solar distribuída.',
+      '::',
+      '',
+      '## 🎯 Visão Geral',
+      '- Transformar o parque em nó central da rede Nos.S°lar;',
+      '- Alojar micro data centers dedicados a IA / serviços digitais;',
+      '- Construir spin-off cooperativa com empresas parceiras.',
+      '',
+      '## 🧱 Componentes de Infraestrutura',
+      '- Telhados e áreas disponíveis para painéis;',
+      '- Sala técnica / contêiner de dados (micro data center);',
+      '- Conectividade (fibra, redundância, monitoramento).',
+      '',
+      '## 🤝 Modelo de Participação (Equity / Receita)',
+      '- Percentual de participação por empresa;',
+      '- Regras de entrada / saída;',
+      '- Uso da marca “Nos.S°lar — dual.infodose";',
+      '- Mecanismos de reinvestimento no próprio parque.',
+      '',
+      '## 🔧 Stack Digital & Simbólica',
+      '- Painéis web / apps móveis (como este Nos.S°lar);',
+      '- Monitoramento de energia + uso de servidores;',
+      '- Integração com Livro Vivo / InfoDocs para documentação contínua.',
+      '',
+      '## 🔭 Roadmap 5–10 anos',
+      '- Expansão para bairros e cidades vizinhas;',
+      '- Parcerias com iniciativas africanas (Afrikafuturo);',
+      '- Conexão com hubs solares globais.',
+      ''
+    ].join('\\n');
   }
 
-  function calcularRedeSolar() {
-    const container = document.getElementById("locaisContainer");
-    const resultado = document.getElementById("resultadoRede");
-    if (!container || !resultado) return;
+  ta.value = md;
 
-    const custoKwp = parseFloat(document.getElementById("inputCustoKwp").value || "0") || 0;
-    if (custoKwp <= 0) {
-      alert("Defina um custo por kWp válido.");
-      return;
-    }
+  try {
+    localStorage.setItem('nossolar_last_template', md);
+  } catch(e) {}
 
-    const locaisEls = Array.from(container.getElementsByClassName("locais-row"));
-    if (locaisEls.length === 0) {
-      alert("Adicione pelo menos um local.");
-      return;
-    }
+  nvStopLoading();
+}
 
-    const tarifaKwh = 0.9;
-    const kwhPorKwpMes = 120;
+/* TTS básico de boas-vindas */
+let nvTtsInitDone = false;
+let nvVoices = [];
 
-    const fotosPorServidor = 40000;
-    const horasStreamingPorServidorMes = 200;
-    const conexoesSimultaneasPorServidor = 40;
+function nvInitVoices() {
+  if (!('speechSynthesis' in window)) return;
+  nvVoices = window.speechSynthesis.getVoices() || [];
+  nvTtsInitDone = true;
+}
 
-    let totalKwp = 0;
-    let totalCustoBruto = 0;
-    let totalConta = 0;
-    let totalServidores = 0;
+if ('speechSynthesis' in window) {
+  window.speechSynthesis.onvoiceschanged = function() {
+    nvInitVoices();
+  };
+  nvInitVoices();
+}
 
-    let texto = "📊 Estimativa simbólica da Rede Solar:\n\n";
+function nvPickPtBrVoice() {
+  if (!nvVoices || !nvVoices.length) return null;
+  // Procura vozes PT-BR primeiro
+  let pt = nvVoices.find(v =>
+    /pt[-_]?BR/i.test(v.lang || '') ||
+    /portuguese.*brazil/i.test((v.name || '') + ' ' + (v.lang || ''))
+  );
+  if (pt) return pt;
+  // fallback para qualquer PT
+  pt = nvVoices.find(v => /^pt[-_]/i.test(v.lang || ''));
+  if (pt) return pt;
+  return nvVoices[0] || null;
+}
 
-    locaisEls.forEach((row, idx) => {
-      const nomeInput = row.querySelector('input[data-field="nome"]');
-      const gastoInput = row.querySelector('input[data-field="gasto"]');
-      const nome = (nomeInput?.value || `Local ${idx + 1}`).trim();
-      const gasto = parseFloat(gastoInput?.value || "0") || 0;
+function nvSpeakWelcome() {
+  const text =
+    'Bem-vindo ao painel Nos Solar, dual Infodose. ' +
+    'Aqui você conecta energia, dados e livro vivo em um só lugar. ' +
+    'Gere um template, leve para o InfoDocs e continue o fluxo do seu projeto solar.';
 
-      const consumoKwhMes = gasto > 0 ? gasto / tarifaKwh : 0;
-      const kwpNecessario = consumoKwhMes > 0 ? consumoKwhMes / kwhPorKwpMes : 0;
-      const custoSistema = kwpNecessario * custoKwp;
-
-      totalKwp += kwpNecessario;
-      totalCustoBruto += custoSistema;
-      totalConta += gasto;
-
-      const kwhSolarMes = kwpNecessario * kwhPorKwpMes;
-      const servidores = kwpNecessario > 0
-        ? Math.floor(kwhSolarMes / 72)
-        : 0;
-
-      totalServidores += servidores;
-
-      texto += `• ${nome}  
-  Conta atual ≈ R$ ${gasto.toFixed(0)} / mês  
-  Sistema estimado ≈ ${kwpNecessario.toFixed(1)} kWp  
-  Geração solar ≈ ${kwhSolarMes.toFixed(0)} kWh/mês  
-  Custo bruto ≈ R$ ${custoSistema.toFixed(0)}  
-  Mini-servidores solares ≈ ${servidores} (100W contínuos)\n\n`;
-    });
-
-    const n = locaisEls.length;
-    const fatorRede = Math.pow(0.9, Math.max(0, n - 1));
-    const custoRede = totalCustoBruto * fatorRede;
-    const economiaAnual = totalConta * 12;
-    const paybackAnos = economiaAnual > 0 ? custoRede / economiaAnual : 0;
-
-    const totalFotos = totalServidores * fotosPorServidor;
-    const totalHorasVideo = totalServidores * horasStreamingPorServidorMes;
-    const totalConexoes = totalServidores * conexoesSimultaneasPorServidor;
-
-    texto += `🌐 Rede com ${n} local(is)  
-Custo bruto somado ≈ R$ ${totalCustoBruto.toFixed(0)}  
-Fator de rede (desconto simbólico) ≈ ${(fatorRede * 100).toFixed(0)}%  
-Custo estimado em rede ≈ R$ ${custoRede.toFixed(0)}  
-
-💰 Economia estimada (se zerar a conta):  
-≈ R$ ${totalConta.toFixed(0)} / mês  
-≈ R$ ${economiaAnual.toFixed(0)} / ano  
-
-⏳ Payback simbólico ≈ ${paybackAnos.toFixed(1)} anos  
-(Quanto mais nós na rede, mais esse número tende a cair.)\n\n`;
-
-    texto += `💾 Capacidade digital local (estimada)  
-Servidores solares possíveis ≈ ${totalServidores} nós de 100W  
-
-• Armazenamento distribuído ≈ ${totalFotos.toLocaleString("pt-BR")} fotos de 5MB  
-• Streaming local ≈ ${totalHorasVideo.toLocaleString("pt-BR")} horas de vídeo por mês  
-• Conexões simultâneas ≈ ${totalConexoes.toLocaleString("pt-BR")} sessões (apps, chat, Infodose)  
-
-Isso significa que uma parte das coisas que hoje iriam para a nuvem (ex: Amazon, Google, etc.)  
-poderiam rodar em servidores solares espalhados nos lares e comércios do seu bairro,  
-com menor latência, mais controle e mais sentido comunitário.`;
-
-    resultado.style.display = "block";
-    resultado.textContent = texto;
+  if (!('speechSynthesis' in window)) {
+    alert(text);
+    return;
   }
 
-  // ---------------- BLOCO MD COPIÁVEL ----------------
-  function copyMarkdownBlock(id) {
-    const el = document.getElementById(id);
-    if (!el) return alert("Bloco MD não encontrado.");
-    const text = el.textContent;
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text).then(() => {
-        alert("Markdown copiado! Cole na IA ou em qualquer editor. 💊");
-      }).catch(err => {
-        console.warn("Erro ao copiar:", err);
-        fallbackSelectText(el);
-      });
-    } else {
-      fallbackSelectText(el);
-    }
+  const utter = new SpeechSynthesisUtterance(text);
+  const voice = nvPickPtBrVoice();
+  if (voice) utter.voice = voice;
+  utter.rate = 1.02;
+  utter.pitch = 1.0;
+  window.speechSynthesis.cancel();
+  window.speechSynthesis.speak(utter);
+}
+
+/* LS STATUS interno do Nos.S°lar */
+function nvLsScan() {
+  nvStartLoading();
+  const out = document.getElementById('nv-ls-output');
+  if (!out) {
+    nvStopLoading();
+    return;
   }
 
-  function fallbackSelectText(el) {
-    const range = document.createRange();
-    range.selectNodeContents(el);
-    const sel = window.getSelection();
-    sel.removeAllRanges();
-    sel.addRange(range);
-    alert("Texto selecionado. Agora toque em copiar no seu aparelho. 📋");
+  try {
+    const ls = window.localStorage;
+    const len = ls.length;
+    let totalBytes = 0;
+    let lines = [];
+
+    for (let i = 0; i < len; i++) {
+      const key = ls.key(i);
+      const val = ls.getItem(key);
+      const size = (key.length + (val ? val.length : 0)) * 2; // aprox bytes
+      totalBytes += size;
+      lines.push('- ' + key + '  ~  ' + size + ' bytes aprox.');
+    }
+
+    const header =
+      'Chaves armazenadas: ' + len + '\\n' +
+      'Tamanho aproximado total: ' + totalBytes + ' bytes\\n';
+
+    out.textContent = header + (lines.length ? '\\n' + lines.join('\\n') : '\\n(nenhuma chave encontrada)');
+  } catch (e) {
+    out.textContent = 'Erro ao ler localStorage: ' + e;
   }
 
-  // Genérico: copiar qualquer container de resposta (result-box etc)
-  function copyElementText(id) {
-    const el = document.getElementById(id);
-    if (!el) {
-      alert("Bloco não encontrado.");
-      return;
-    }
-    const text = el.innerText || el.textContent || "";
-    if (!text.trim()) {
-      alert("Nada para copiar ainda. Rode a análise primeiro. ⚡");
-      return;
-    }
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text).then(() => {
-        alert("Texto copiado! Cole onde quiser (IA, notas, etc). 📋");
-      }).catch(err => {
-        console.warn("Erro ao copiar:", err);
-        fallbackSelectText(el);
-      });
-    } else {
-      fallbackSelectText(el);
-    }
-  }
+  nvStopLoading();
+}
 
-  // ---------------- GEOLOCALIZAÇÃO (ON DEMAND) ----------------
-  function askLocationOnce() {
-    if (!("geolocation" in navigator)) {
-      const box = document.getElementById("solarAutoBox");
-      if (box) {
-        box.style.display = "block";
-        box.textContent = "Seu navegador não suporta localização automática. Você pode usar os campos normalmente.";
+function nvLsClear() {
+  const out = document.getElementById('nv-ls-output');
+  if (!out) return;
+  if (!window.confirm('Deseja limpar as chaves do Nos.S°lar neste navegador?')) return;
+
+  nvStartLoading();
+  try {
+    const ls = window.localStorage;
+    // Limpa apenas chaves com prefixo nossolar_
+    const toRemove = [];
+    for (let i = 0; i < ls.length; i++) {
+      const key = ls.key(i);
+      if (key && key.indexOf('nossolar_') === 0) {
+        toRemove.push(key);
       }
-      return;
     }
+    toRemove.forEach(k => ls.removeItem(k));
 
-    navigator.geolocation.getCurrentPosition(
-      position => {
-        lastLocation = {
-          lat: position.coords.latitude,
-          lon: position.coords.longitude,
-          accuracy: position.coords.accuracy
-        };
-        log("Localização capturada:", lastLocation);
-        updateSolarFromLocation(lastLocation);
-      },
-      err => {
-        console.warn("Usuário não permitiu localização ou falhou:", err);
-        const box = document.getElementById("solarAutoBox");
-        if (box) {
-          box.style.display = "block";
-          box.textContent = "Não consegui pegar sua localização agora. Você ainda pode preencher os valores manualmente.";
-        }
-      },
-      { enableHighAccuracy: false, timeout: 8000, maximumAge: 60000 }
-    );
+    out.textContent =
+      'Chaves com prefixo "nossolar_" removidas. ' +
+      'Use "Ver estado atual do LS" para conferir.';
+  } catch (e) {
+    out.textContent = 'Erro ao limpar localStorage: ' + e;
   }
-
-  function estimateSolarByLat(latAbs) {
-    if (latAbs < 10) {
-      return { classe: "muito alto", solHorasDia: 5.5, kwhAnoPorKwp: 1900 };
-    } else if (latAbs < 20) {
-      return { classe: "alto", solHorasDia: 5.0, kwhAnoPorKwp: 1750 };
-    } else if (latAbs < 30) {
-      return { classe: "bom", solHorasDia: 4.5, kwhAnoPorKwp: 1600 };
-    } else if (latAbs < 40) {
-      return { classe: "moderado", solHorasDia: 4.0, kwhAnoPorKwp: 1450 };
-    } else {
-      return { classe: "baixo", solHorasDia: 3.5, kwhAnoPorKwp: 1300 };
-    }
-  }
-
-  function updateSolarFromLocation(loc) {
-    const box = document.getElementById("solarAutoBox");
-    if (!box) return;
-
-    const lat = loc.lat;
-    const lon = loc.lon;
-    const latAbs = Math.abs(lat);
-
-    const est = estimateSolarByLat(latAbs);
-    const kwhAnoPorKwp = est.kwhAnoPorKwp;
-    const kwhMesPorKwp = kwhAnoPorKwp / 12;
-
-    const tarifaKwh = 0.9;
-    const economiaMensal1Kwp = kwhMesPorKwp * tarifaKwh;
-    const economiaAnual1Kwp = kwhAnoPorKwp * tarifaKwh;
-
-    const kwhServidorMes = kwhMesPorKwp * 0.25;
-    const servidores1Kwp = Math.floor(kwhServidorMes / 72);
-
-    const fotosPorServidor = 40000;
-    const horasStreamingPorServidorMes = 200;
-    const conexoesSimultaneasPorServidor = 40;
-
-    const fotos1Kwp = servidores1Kwp * fotosPorServidor;
-    const horasVideo1Kwp = servidores1Kwp * horasStreamingPorServidorMes;
-    const conexoes1Kwp = servidores1Kwp * conexoesSimultaneasPorServidor;
-
-    const sistema3KwpEconomiaMensal = economiaMensal1Kwp * 3;
-    const sistema3KwpEconomiaAnual = economiaAnual1Kwp * 3;
-
-    if (!localDetectadoCriado) {
-      let gastoInicial = economiaMensal1Kwp * 2;
-      if (gastoInicial < 150) gastoInicial = 150;
-      if (gastoInicial > 450) gastoInicial = 450;
-
-      addLocal("Local detectado (geo)", gastoInicial.toFixed(0));
-      localDetectadoCriado = true;
-
-      const cidadeInput = document.getElementById("perfilCidade");
-      if (cidadeInput && !cidadeInput.value) {
-        cidadeInput.value = `Bairro solar (lat ${lat.toFixed(2)}, lon ${lon.toFixed(2)})`;
-      }
-    }
-
-    box.style.display = "block";
-    box.innerHTML =
-`<details open>
-  <summary>Resumo rápido da sua região solar</summary>
-  <div class="tiny" style="margin-top:4px;">
-    <strong>Latitude aproximada:</strong> ${lat.toFixed(3)}° · <strong>Longitude:</strong> ${lon.toFixed(3)}°<br>
-    Classe solar: <strong>${est.classe.toUpperCase()}</strong><br>
-    Sol pleno médio: <strong>${est.solHorasDia.toFixed(1)} h/dia</strong><br><br>
-    1 kWp na sua região gera ≈ <strong>${kwhAnoPorKwp.toFixed(0)} kWh/ano</strong>  
-    (≈ ${kwhMesPorKwp.toFixed(0)} kWh/mês)<br>
-    Economia simbólica: ≈ <strong>R$ ${economiaMensal1Kwp.toFixed(0)}/mês</strong> por 1 kWp
-  </div>
-</details>
-
-<details style="margin-top:6px;">
-  <summary>Ver detalhes técnicos & servidores solares</summary>
-  <div class="tiny" style="margin-top:4px;">
-    Exemplo de sistema de <strong>3 kWp</strong>:<br>
-    • Economia ≈ <strong>R$ ${sistema3KwpEconomiaMensal.toFixed(0)}/mês</strong><br>
-    • Economia ≈ <strong>R$ ${sistema3KwpEconomiaAnual.toFixed(0)}/ano</strong><br><br>
-
-    Reservando ~25% da energia de 1 kWp só para servidores solares:<br>
-    • Mini-servidores de 100W 24/7 ≈ <strong>${servidores1Kwp}</strong> nós<br>
-    • Armazenamento ≈ <strong>${fotos1Kwp.toLocaleString("pt-BR")}</strong> fotos (5MB)<br>
-    • Streaming local ≈ <strong>${horasVideo1Kwp.toLocaleString("pt-BR")}</strong> h de vídeo/mês<br>
-    • Conexões simultâneas ≈ <strong>${conexoes1Kwp.toLocaleString("pt-BR")}</strong> sessões<br><br>
-
-    Isso é a base para:<br>
-    • Storage de fotos e vídeos do bairro sem depender só de nuvem externa<br>
-    • Servidores de chat/Infodose rodando no próprio território<br>
-    • Conexões mais rápidas e com mais sentido comunitário.
-  </div>
-</details>`;
-  }
-
-  // ---------------- COMPARTILHAR / SHARE ----------------
-  function shareNoSolar() {
-    const raw = localStorage.getItem(PROFILE_KEY) || "{}";
-    let profile;
-    try { profile = JSON.parse(raw); } catch { profile = {}; }
-
-    const nome = profile.nome || "Alguém";
-    const cidade = profile.cidade || "meu bairro";
-    const assistente = profile.assistente || "NÓS.S°LAR";
-
-    const text = `${nome} está ativando o Nó Solar em ${cidade} com o assistente ${assistente}.  
-Rede de lares conectados por energia solar, mini-servidores e cuidado com a casa.  
-Vamos conectar seu lar também?`;
-
-    const url = location.href;
-
-    if (navigator.share) {
-      navigator.share({ title: "NÓS.S°LAR · Nosso Lar", text, url })
-        .catch(err => console.warn("Share cancelado/erro:", err));
-    } else if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text + "\n\n" + url)
-        .then(() => alert("Texto de convite copiado! Cole no WhatsApp, Instagram, etc. ⚡"))
-        .catch(err => {
-          console.warn("Erro ao copiar convite:", err);
-          alert("Não consegui copiar, mas você pode selecionar manualmente.");
-        });
-    } else {
-      alert("Seu navegador não suporta compartilhamento direto, mas você pode copiar o link da barra.");
-    }
-  }
-
-  // ---------------- START ----------------
-  window.addEventListener("load", initApp);
-  </script>
+  nvStopLoading();
+}
+</script>
 </body>
 </html>
