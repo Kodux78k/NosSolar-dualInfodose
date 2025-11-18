@@ -288,35 +288,6 @@
     border:1px solid rgba(255,255,255,0.15);
     color:var(--text-soft);
   }
-
-/* CARDS COMO ACCORDION (SANFONA) DENTRO DO PAINEL */
-details.card {
-  padding: 0;
-  overflow: hidden;
-}
-
-details.card > summary {
-  list-style: none;
-  cursor: pointer;
-  padding: 10px 14px;
-}
-
-details.card > summary::-webkit-details-marker {
-  display: none;
-}
-
-details.card > summary .card-header {
-  margin-bottom: 0;
-}
-
-details.card[open] > summary {
-  border-bottom: 1px solid rgba(255,255,255,0.08);
-}
-
-details.card .card-content {
-  padding: 8px 14px 10px;
-}
-
   .action {
     border-radius: var(--radius-pill);
     border:none;
@@ -602,144 +573,130 @@ details.card .card-content {
         <button class="overlay-close" onclick="closeSolarOverlay()">fechar</button>
       </div>
 
-     <div class="overlay-body">
+      <div class="overlay-body">
+        <!-- PERFIL -->
+        <section class="card">
+          <div class="card-header">
+            <div class="card-title">Perfil do Lar</div>
+            <div class="card-tag">config</div>
+          </div>
+          <p class="tiny">
+            Só precisa informar <strong>seu nome</strong> e <strong>WhatsApp</strong>.<br>
+            Assistente, cidade e intenção são opcionais. Tudo fica salvo no aparelho (localStorage).
+          </p>
 
-  <!-- PERFIL DO LAR (SANFONA 1) -->
-  <details class="card" open>
-    <summary>
-      <div class="card-header">
-        <div class="card-title">Perfil do Lar</div>
-        <div class="card-tag">config</div>
-      </div>
-    </summary>
-    <div class="card-content">
-      <p class="tiny">
-        Só precisa informar <strong>seu nome</strong> e <strong>WhatsApp</strong>.<br>
-        Assistente, cidade e intenção são opcionais. Tudo fica salvo no aparelho (localStorage).
-      </p>
+          <div style="display:flex;flex-direction:column;gap:6px;margin-top:6px;">
+            <div>
+              <div class="field-label">Seu nome</div>
+              <input id="perfilNome" class="field-input" type="text" placeholder="Seu nome">
+            </div>
 
-      <div style="display:flex;flex-direction:column;gap:6px;margin-top:6px;">
-        <div>
-          <div class="field-label">Seu nome</div>
-          <input id="perfilNome" class="field-input" type="text" placeholder="Seu nome">
-        </div>
+            <div>
+              <div class="field-label">WhatsApp</div>
+              <input id="perfilWhatsapp" class="field-input" type="tel" placeholder="(11) 9 9999-9999">
+            </div>
 
-        <div>
-          <div class="field-label">WhatsApp</div>
-          <input id="perfilWhatsapp" class="field-input" type="tel" placeholder="(11) 9 9999-9999">
-        </div>
+            <div>
+              <div class="field-label">Nome do assistente</div>
+              <input id="perfilAssistente" class="field-input" type="text" placeholder="Ex: Nosso Lar, Nó Solar, Alumini...">
+            </div>
+            <div>
+              <div class="field-label">Cidade / Região</div>
+              <input id="perfilCidade" class="field-input" type="text" placeholder="Cidade / bairro">
+            </div>
+            <div>
+              <div class="field-label">Intenção do Lar</div>
+              <textarea id="perfilIntencao" class="field-textarea" rows="2"
+                placeholder="Ex: Cuidar melhor da casa, da mente e da energia."></textarea>
+            </div>
+          </div>
 
-        <div>
-          <div class="field-label">Nome do assistente</div>
-          <input id="perfilAssistente" class="field-input" type="text"
-            placeholder="Ex: Nosso Lar, Nó Solar, Alumini...">
-        </div>
-        <div>
-          <div class="field-label">Cidade / Região</div>
-          <input id="perfilCidade" class="field-input" type="text" placeholder="Cidade / bairro">
-        </div>
-        <div>
-          <div class="field-label">Intenção do Lar</div>
-          <textarea id="perfilIntencao" class="field-textarea" rows="2"
-            placeholder="Ex: Cuidar melhor da casa, da mente e da energia."></textarea>
-        </div>
-      </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;">
+            <button class="action" onclick="saveProfile()">salvar perfil</button>
+            <button class="action btn-share" onclick="exportProfileJson()">exportar json infodose</button>
+          </div>
 
-      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;">
-        <button class="action" onclick="saveProfile()">salvar perfil</button>
-        <button class="action btn-share" onclick="exportProfileJson()">exportar json infodose</button>
-      </div>
+          <details style="margin-top:6px;font-size:0.75rem;opacity:0.9;">
+            <summary>Ver JSON atual</summary>
+            <pre id="perfilJsonView" style="margin-top:4px;font-size:0.7rem;white-space:pre-wrap;"></pre>
+          </details>
+        </section>
 
-      <details style="margin-top:6px;font-size:0.75rem;opacity:0.9;">
-        <summary>Ver JSON atual</summary>
-        <pre id="perfilJsonView" style="margin-top:4px;font-size:0.7rem;white-space:pre-wrap;"></pre>
-      </details>
-    </div>
-  </details>
+        <!-- REDE SOLAR & SERVIDORES (COM GLOBO ANIMADO + SANFONAS) -->
+        <section class="card">
+          <div class="card-header">
+            <div class="card-title">Rede Solar & Servidores</div>
+            <div class="card-tag">cálculo simbólico</div>
+          </div>
+          <div class="solar-orb-wrap">
+            <div class="solar-orb">
+              <svg class="solar-orb-oca" viewBox="0 0 64 64">
+                <path d="M12 32 L32 16 L52 32" />
+                <path d="M16 32 L16 46 L48 46 L48 32" />
+                <path d="M26 46 L26 36 L38 36 L38 46" />
+              </svg>
+            </div>
+            <div class="tiny" style="text-align:center;margin-top:4px;">
+              Globo-Nó Afrikafuturo: sua região vista como ponto solar.
+            </div>
+          </div>
 
-  <!-- REDE SOLAR & SERVIDORES (SANFONA 2) -->
-  <details class="card">
-    <summary>
-      <div class="card-header">
-        <div class="card-title">Rede Solar & Servidores</div>
-        <div class="card-tag">cálculo simbólico</div>
-      </div>
-    </summary>
-    <div class="card-content">
-      <div class="solar-orb-wrap">
-        <div class="solar-orb">
-          <svg class="solar-orb-oca" viewBox="0 0 64 64">
-            <path d="M12 32 L32 16 L52 32" />
-            <path d="M16 32 L16 46 L48 46 L48 32" />
-            <path d="M26 46 L26 36 L38 36 L38 46" />
-          </svg>
-        </div>
-        <div class="tiny" style="text-align:center;margin-top:4px;">
-          Globo-Nó Afrikafuturo: sua região vista como ponto solar.
-        </div>
-      </div>
+          <p class="tiny">
+            Clique para o app estimar o Sol da sua região, o tamanho do sistema
+            e quantos mini-servidores solares cabem simbolicamente no seu território.
+          </p>
 
-      <p class="tiny">
-        Clique para o app estimar o Sol da sua região, o tamanho do sistema
-        e quantos mini-servidores solares cabem simbolicamente no seu território.
-      </p>
+          <button class="action" style="margin-top:8px;width:100%;" onclick="startGeoActivation()">
+            analisar minha região pelo Sol
+          </button>
+          <div class="tiny" style="margin-top:4px;text-align:center;">
+            Ao clicar, o app pede sua localização uma vez e salva o resultado abaixo.
+          </div>
 
-      <button class="action" style="margin-top:8px;width:100%;" onclick="startGeoActivation()">
-        analisar minha região pelo Sol
-      </button>
-      <div class="tiny" style="margin-top:4px;text-align:center;">
-        Ao clicar, o app pede sua localização uma vez e salva o resultado abaixo.
-      </div>
+          <div id="solarAutoBox" class="result-box" style="display:none;margin-top:8px;">
+            <!-- preenchido via JS -->
+          </div>
+          <button class="btn-small" style="margin-top:4px;" onclick="copyElementText('solarAutoBox')">
+            copiar análise solar
+          </button>
 
-      <div id="solarAutoBox" class="result-box" style="display:none;margin-top:8px;">
-        <!-- preenchido via JS -->
-      </div>
-      <button class="btn-small" style="margin-top:4px;" onclick="copyElementText('solarAutoBox')">
-        copiar análise solar
-      </button>
+          <div style="margin-top:10px;">
+            <div class="field-label">Custo médio por kWp instalado (R$)</div>
+            <input id="inputCustoKwp" class="field-input" type="number" value="5000" min="1000" step="100">
+            <div class="tiny">Valor genérico (ajustável). Ex: R$ 4.000–6.000 / kWp.</div>
+          </div>
 
-      <div style="margin-top:10px;">
-        <div class="field-label">Custo médio por kWp instalado (R$)</div>
-        <input id="inputCustoKwp" class="field-input" type="number" value="5000" min="1000" step="100">
-        <div class="tiny">Valor genérico (ajustável). Ex: R$ 4.000–6.000 / kWp.</div>
-      </div>
+          <div style="margin-top:8px;">
+            <div class="locais-row-header">
+              <span class="tiny">Locais na rede</span>
+              <button class="btn-small" onclick="addLocal()">+ adicionar local</button>
+            </div>
+            <div id="locaisContainer"></div>
+          </div>
 
-      <div style="margin-top:8px;">
-        <div class="locais-row-header">
-          <span class="tiny">Locais na rede</span>
-          <button class="btn-small" onclick="addLocal()">+ adicionar local</button>
-        </div>
-        <div id="locaisContainer"></div>
-      </div>
+          <button class="action" style="margin-top:4px;" onclick="calcularRedeSolar()">
+            calcular rede solar
+          </button>
 
-      <button class="action" style="margin-top:4px;" onclick="calcularRedeSolar()">
-        calcular rede solar
-      </button>
+          <div id="resultadoRede" class="result-box" style="display:none;"></div>
+          <button class="btn-small" style="margin-top:4px;" onclick="copyElementText('resultadoRede')">
+            copiar resumo da rede
+          </button>
+        </section>
 
-      <div id="resultadoRede" class="result-box" style="display:none;"></div>
-      <button class="btn-small" style="margin-top:4px;" onclick="copyElementText('resultadoRede')">
-        copiar resumo da rede
-      </button>
-    </div>
-  </details>
+        <!-- BLOCOS MD -->
+        <section class="card">
+          <div class="card-header">
+            <div class="card-title">Blocos MD · Nó & Servidor Solar</div>
+            <div class="card-tag">md</div>
+          </div>
+          <p class="tiny">
+            Copie estes blocos em Markdown e cole em qualquer IA ou editor para explicar o NÓS.S°LAR
+            e a ideia de servidores solares independentes de nuvenzona.
+          </p>
 
-  <!-- BLOCOS MD (SANFONA 3) -->
-  <details class="card">
-    <summary>
-      <div class="card-header">
-        <div class="card-title">Blocos MD · Nó & Servidor Solar</div>
-        <div class="card-tag">md</div>
-      </div>
-    </summary>
-    <div class="card-content">
-      <p class="tiny">
-        Copie estes blocos em Markdown e cole em qualquer IA ou editor para explicar o NÓS.S°LAR
-        e a ideia de servidores solares independentes de nuvenzona.
-      </p>
-
-      <!-- BLOCO 1 — VISÃO GERAL -->
-      <pre id="md-nosslar-basico"
-        style="margin-top:6px;font-size:0.75rem;white-space:pre-wrap;background:rgba(0,0,0,0.5);padding:8px;border-radius:10px;">
+          <!-- BLOCO 1 — VISÃO GERAL -->
+          <pre id="md-nosslar-basico" style="margin-top:6px;font-size:0.75rem;white-space:pre-wrap;background:rgba(0,0,0,0.5);padding:8px;border-radius:10px;">
 # NÓS.S°LAR · Nosso Lar  
 Um hub solar-vivo que conecta lares, bairros, parque tecnológico e Afrikafuturo.  
 Cada casa vira um nó: energia fotovoltaica, mini-servidores, rotinas de cuidado e rede de apoio local.  
@@ -747,15 +704,14 @@ Cada casa vira um nó: energia fotovoltaica, mini-servidores, rotinas de cuidado
 - Perfil do lar salvo localmente (nome, assistente, cidade, intenção)  
 - Simulação simbólica de sistema solar (custo, payback, servidores possíveis)  
 - Expansão em rede: quanto mais lares conectados, menor o custo médio e maior o ganho coletivo.  
-      </pre>
+          </pre>
 
-      <button class="action" style="margin-top:4px;" onclick="copyMarkdownBlock('md-nosslar-basico')">
-        copiar md visão geral
-      </button>
+          <button class="action" style="margin-top:4px;" onclick="copyMarkdownBlock('md-nosslar-basico')">
+            copiar md visão geral
+          </button>
 
-      <!-- BLOCO 2 — SERVIDOR SOLAR / NUVEM LOCAL -->
-      <pre id="md-nosslar-servidor"
-        style="margin-top:8px;font-size:0.75rem;white-space:pre-wrap;background:rgba(0,0,0,0.5);padding:8px;border-radius:10px;">
+          <!-- BLOCO 2 — SERVIDOR SOLAR / NUVEM LOCAL -->
+          <pre id="md-nosslar-servidor" style="margin-top:8px;font-size:0.75rem;white-space:pre-wrap;background:rgba(0,0,0,0.5);padding:8px;border-radius:10px;">
 ## Servidores solares urbanos · Menos Amazon, mais bairro  
 
 O NÓS.S°LAR calcula o potencial solar da região a partir da localização (lat/long)  
@@ -776,34 +732,30 @@ pode ser reservada para rodar:
 A ideia não é excluir a nuvem (Amazon, Google etc.),  
 mas equilibrar: o bairro vira uma camada de nuvem própria,  
 alimentada pelo sol, mais perto das pessoas e da história delas.  
-      </pre>
+          </pre>
 
-      <button class="action" style="margin-top:4px;" onclick="copyMarkdownBlock('md-nosslar-servidor')">
-        copiar md servidores solares
-      </button>
-    </div>
-  </details>
+          <button class="action" style="margin-top:4px;" onclick="copyMarkdownBlock('md-nosslar-servidor')">
+            copiar md servidores solares
+          </button>
+        </section>
 
-  <!-- COMPARTILHAR (SANFONA 4) -->
-  <details class="card">
-    <summary>
-      <div class="card-header">
-        <div class="card-title">Compartilhar Nó Solar</div>
-        <div class="card-tag">rede</div>
-      </div>
-    </summary>
-    <div class="card-content">
-      <p class="tiny">
-        Envie o link ou resumo do seu Nó Solar para amigos, vizinhos ou grupos.
-        Quanto mais nós, menor o custo médio e maior a redistribuição.
-      </p>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;">
-        <button class="btn-small btn-share" onclick="shareNoSolar()">compartilhar agora</button>
+        <!-- COMPARTILHAR -->
+        <section class="card">
+          <div class="card-header">
+            <div class="card-title">Compartilhar Nó Solar</div>
+            <div class="card-tag">rede</div>
+          </div>
+          <p class="tiny">
+            Envie o link ou resumo do seu Nó Solar para amigos, vizinhos ou grupos.
+            Quanto mais nós, menor o custo médio e maior a redistribuição.
+          </p>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;">
+            <button class="btn-small btn-share" onclick="shareNoSolar()">compartilhar agora</button>
+          </div>
+        </section>
       </div>
     </div>
-  </details>
-
-</div>
+  </div>
 
   <script>
   const log = (...args) => console.log("[NOS_SLAR_NOSOLAR]", ...args);
