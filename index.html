@@ -736,12 +736,12 @@ body.bg-fake::before{
 
   /* imagem vem de uma CSS var pra poder trocar só no HTML */
   background:
-    var(--bg-fake-img, url("./icons/icon-traco-512.png"))
+    var(--bg-fake-img, url("icons/icon-traco-512.png"))
     center center /
     cover no-repeat;
 
   /* tipo de mistura: teste lighten, screen, multiply… */
-  mix-blend-mode: var(--bg-fake-mode, lighten);
+  mix-blend-mode: var(--bg-fake-mode, multiply);
   opacity: var(--bg-fake-opacity, .55);
 }
 
