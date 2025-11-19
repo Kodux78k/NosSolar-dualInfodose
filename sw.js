@@ -1,11 +1,11 @@
 /* Dual HTML Lab — Service Worker */
-const VERSION = 'v1.0.1';
+const VERSION = 'v1.0.2';
 const CORE = [
   './',
-  './index.html',
-  './manifest.webmanifest',
-  './icons/icon-192.png',
-  './icons/icon-512.png'
+  'index.html',
+  'manifest.webmanifest',
+  'icons/icon-192.png',
+  'icons/icon-traco-512.png'
 ];
 self.addEventListener('install', (e)=>{
   e.waitUntil(caches.open(VERSION).then(c=>c.addAll(CORE)));
