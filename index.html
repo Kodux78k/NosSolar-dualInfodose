@@ -4,11 +4,7 @@
 <meta charset="UTF-8">
 <title>Nos.S°lar — Stack Solar Dinâmica</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="manifest" href="manifest.webmanifest" />
-<link rel="icon" href="icons/icon-192.png" />
-<link rel="apple-touch-icon" href="icons/icon-192.png" />
 
-  
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
@@ -279,6 +275,10 @@ body {
   color: var(--muted);
 }
 
+.app-subtitle strong {
+  color: var(--ink);
+}
+
 /* STACK DE CARDS (SANFONA) */
 .card-stack {
   display: flex;
@@ -341,7 +341,7 @@ body {
 .card-body-inner p:first-of-type {
   position: relative;
   margin: 0 0 8px;
-  padding-left: 10px;
+  padding-left: 14px;
   font-size: 0.9rem;
   color: var(--muted);
 }
@@ -349,7 +349,7 @@ body {
 .card-body-inner p:first-of-type::before {
   content: "#";
   position: absolute;
-  left: -2px;
+  left: 0;
   top: 0;
   font-size: 0.78rem;
   color: var(--accent);
@@ -454,6 +454,21 @@ body {
 .wave.wave2 {
   opacity: 0.4;
   animation-duration: 5s;
+}
+
+/* Dicas */
+.tip-block {
+  margin-top: 10px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.04);
+  text-align: left;
+}
+
+.tip-block strong {
+  display: block;
+  font-size: 0.85rem;
+  margin-bottom: 4px;
 }
 
 /* Área do template do Livro Vivo */
@@ -576,7 +591,7 @@ body.mode-night .sun {
         <div class="splash-portal"></div>
       </div>
       <div class="splash-text">Nos.S°lar — dual.infodose</div>
-      <div class="splash-sub">(carregando o holar & o pôr do sol na oca...)</div>
+      <div class="splash-sub">(toque para entrar na oca solar)</div>
     </div>
   </div>
 
@@ -602,10 +617,11 @@ body.mode-night .sun {
   <div class="app-shell">
     <header class="app-header">
       <div class="tag-solar">
-        ☀️ <span>Nos.S°lar · Rede Solar Simbólica</span>
+        ☀️ <span><strong>Nos.S°lar</strong> · Rede Solar Simbólica</span>
       </div>
       <h1 class="app-title">Stack Solar Dinâmica</h1>
       <p class="app-subtitle">
+        <strong>Energia</strong>, <strong>dados</strong> e <strong>história viva</strong> em um painel só:
         Dia → Pôr do Sol → Noite · Estado solar local · Dicas Meta-Humano-Máquina · Livro Vivo
       </p>
     </header>
@@ -625,32 +641,48 @@ body.mode-night .sun {
           <div class="card-body-inner">
             <p>
               <span class="md-tag">::info</span>
-              Este card é a porta de entrada do <strong>Nos.S°lar</strong> com o
-              <strong>Livro Vivo / InfoDocs</strong>: aqui você gera templates de documentos,
-              testa voz (TTS) e copia o conteúdo direto para o Hub principal.
+              <strong>Este card é o pitch vivo do Nos.S°lar.</strong>
+              Ele se apresenta, gera documentos e fala em voz alta:
+              é o ponto onde o <strong>Kodux</strong>, o <strong>sol</strong> e o
+              <strong>Livro Vivo</strong> se encontram na mesma tela.
+            </p>
+
+            <p>
+              Quando você toca em um dos botões abaixo, o app não só preenche um template —
+              ele escreve o <strong>primeiro capítulo</strong> da sua rede solar:
+              casa, escola, parque tecnológico, bairro inteiro.
             </p>
 
             <div class="btn-row">
               <button class="btn" onclick="nvGenerateTemplate('basico'); event.stopPropagation();">
-                ✨<span>Gerar template — Documento Solar Básico</span>
+                ✨<span><strong>Documento Solar Básico</strong> — 1º nó da rede</span>
               </button>
               <button class="btn" onclick="nvGenerateTemplate('escola'); event.stopPropagation();">
-                🏫<span>Gerar template — Educação Solar em Escolas</span>
+                🏫<span><strong>Educação Solar em Escolas</strong> — laboratório vivo</span>
               </button>
               <button class="btn" onclick="nvGenerateTemplate('parque'); event.stopPropagation();">
-                🏭<span>Gerar template — Parque Tecnológico & Micro Data Center</span>
+                🏭<span><strong>Parque Tecnológico & Micro Data Center</strong></span>
               </button>
               <button class="btn" onclick="nvSpeakWelcome(); event.stopPropagation();">
-                🔊<span>Ouvir boas-vindas (TTS)</span>
+                🔊<span><strong>Ouvir boas-vindas (TTS)</strong></span>
               </button>
             </div>
 
             <p style="font-size:0.8rem;color:var(--muted);margin-top:8px;">
-              Copie o conteúdo abaixo e cole no painel principal do InfoDocs / Livro Vivo para
-              continuar a edição completa.
+              Copie o conteúdo abaixo e cole no painel principal do <strong>InfoDocs / Livro Vivo</strong>
+              para continuar a edição completa — é o Nos.S°lar se auto-vendendo em texto.
             </p>
 
             <textarea id="nv-template-output" placeholder="# Seu template Livro Vivo aparecerá aqui..."></textarea>
+
+            <p style="margin-top:10px;">
+              <span class="md-tag">::story</span>
+              <strong>História simbólica rápida:</strong> Um dia, você percebeu que o
+              <strong>sol de Sorocaba</strong> já alimentava metade do planeta — menos a sua própria rede.
+              O Nos.S°lar nasceu como essa piada séria: se o sol já está aqui, por que não fazer
+              do seu bairro um <strong>micro data center vivo</strong>, onde cada telhado é capítulo
+              e cada documento InfoDocs é episódio da mesma série?
+            </p>
           </div>
         </div>
       </section>
@@ -668,22 +700,28 @@ body.mode-night .sun {
           <div class="card-body-inner">
             <p>
               <span class="md-tag">::ls</span>
-              Leitura simbólica do <strong>localStorage</strong> deste micro-app:
-              quantas chaves existem, quais são e quanto espaço aproximado ocupam.
+              <strong>Aqui o app mostra a própria memória.</strong>
+              É o espelho do <strong>localStorage</strong>: quantas chaves existem,
+              quanto espaço ocupam e o que pode ser limpo sem medo.
+            </p>
+
+            <p>
+              É o Nos.S°lar dizendo: “<strong>olha como eu estou guardando sua história</strong>”.
+              Perfeito para testar, depurar e ajustar sem abrir o painel grande de LS_STATUS.
             </p>
 
             <div class="btn-row">
               <button class="btn" onclick="nvLsScan(); event.stopPropagation();">
-                🔍<span>Ver estado atual do LS</span>
+                🔍<span><strong>Ver estado atual do LS</strong></span>
               </button>
               <button class="btn" onclick="nvLsClear(); event.stopPropagation();">
-                🧹<span>Limpar chaves do Nos.S°lar</span>
+                🧹<span><strong>Limpar chaves do Nos.S°lar</strong></span>
               </button>
             </div>
 
             <p style="font-size:0.8rem;color:var(--muted);margin-top:8px;">
-              Este card é o “espelho local” do armazenamento: perfeito para debug leve sem
-              abrir o painel LS_STATUS completo.
+              Por padrão, a limpeza só afeta chaves com prefixo <strong>"nossolar_"</strong>.
+              O resto da memória do Hub permanece intacto.
             </p>
 
             <div id="nv-ls-output" aria-label="Saída de LocalStorage"></div>
@@ -704,18 +742,24 @@ body.mode-night .sun {
           <div class="card-body-inner">
             <p>
               <span class="md-tag">::ciclo</span>
-              Controle visual do ciclo solar: de <strong>captação máxima</strong> à
-              <strong>rede de dados iluminada</strong>.
+              <strong>Este é o botão de humor do céu.</strong>
+              Cada modo muda o fundo, o brilho e a metáfora:
+              do dia de <strong>captação máxima</strong> à noite em que a
+              <strong>lua menor guarda os dados</strong> do que foi carregado.
+            </p>
+            <p>
+              O cliente vê e entende em segundos: “<strong>aqui é onde meu telhado vira painel
+              e meu painel vira servidor</strong>”.
             </p>
             <div class="btn-row">
               <button class="btn" onclick="setMode('day'); event.stopPropagation();">
-                ☀️<span>Dia — Captação Solar Máxima</span>
+                ☀️<span><strong>Dia</strong> — Captação Solar Máxima</span>
               </button>
               <button class="btn" onclick="setMode('sunset'); event.stopPropagation();">
-                🌇<span>Pôr do Sol — Transição Energia → Dados</span>
+                🌇<span><strong>Pôr do Sol</strong> — Transição Energia → Dados</span>
               </button>
               <button class="btn" onclick="setMode('night'); event.stopPropagation();">
-                🌙<span>Noite — Lua · Rede de Dados Ativa</span>
+                🌙<span><strong>Noite</strong> — Lua · Rede de Dados Ativa</span>
               </button>
             </div>
             <div class="mode-indicator" id="modeIndicator">
@@ -738,15 +782,19 @@ body.mode-night .sun {
           <div class="card-body-inner">
             <p>
               <span class="md-tag">::geo</span>
-              Detecta sua posição na Terra, exibe <strong>lat/long simbólicas</strong> e
-              ativa duas ondas sonoras que dançam com o seu estado solar.
+              <strong>Quando você permite a localização, o app olha onde o seu corpo está na Terra</strong>
+              e responde com lat/long simbólicas. A partir disso, duas frequências sonoras dançam
+              com o seu ponto no mapa — é o <strong>som do seu telhado</strong>.
+            </p>
+            <p>
+              Isso transforma uma permissão chata em experiência: “<strong>eu ouço onde estou no planeta</strong>”.
             </p>
             <div class="btn-row">
               <button class="btn" onclick="pedirLocalizacao(event)">
-                📍<span>Descobrir minha posição solar</span>
+                📍<span><strong>Descobrir minha posição solar</strong></span>
               </button>
               <button class="btn" onclick="toggleOndas(event)">
-                🔊<span>Ativar / Pausar ondas gêmeas</span>
+                🔊<span><strong>Ativar / Pausar ondas gêmeas</strong></span>
               </button>
             </div>
             <div class="geo-indicator" id="geoIndicator">
@@ -774,12 +822,17 @@ body.mode-night .sun {
           <div class="card-body-inner">
             <p>
               <span class="md-tag">::dicas</span>
-              Gera três dicas: <strong>manhã, tarde e noite</strong>, correlacionando o
-              seu corpo com o corpo simbiótico da rede Nos.S°lar.
+              <strong>Aqui o app lembra que quem manda ainda é o corpo humano.</strong>
+              São três dicas — manhã, tarde e noite — conectando o jeito que você usa o
+              corpo com o jeito que a rede Nos.S°lar distribui energia e dados.
+            </p>
+            <p>
+              É onde o cliente entende que o sistema não é só painel e cabo:
+              é um <strong>ritual diário de cuidado</strong> consigo e com a infraestrutura.
             </p>
             <div class="btn-row">
               <button class="btn" onclick="gerarDicas(event)">
-                💫<span>Gerar dicas para hoje</span>
+                💫<span><strong>Gerar dicas para hoje</strong></span>
               </button>
             </div>
             <div class="tips-indicator" id="tipsIndicator">
@@ -796,16 +849,16 @@ body.mode-night .sun {
   </div>
 
 <script>
-/* SPLASH HANDLER */
+/* SPLASH HANDLER — no preview aparece só o splash até tocar */
 window.addEventListener('load', function() {
   var splash = document.getElementById('splash-nosolar');
   if (!splash) return;
-  setTimeout(function() {
+  splash.addEventListener('click', function() {
     splash.classList.add('hide');
     setTimeout(function() {
       splash.style.display = 'none';
     }, 900);
-  }, 900);
+  });
 });
 
 /* LOADER >600ms */
@@ -1074,7 +1127,7 @@ function nvGenerateTemplate(tipo) {
       '- Monitoramento simbólico (estado solar, dicas);',
       '- Rotina 3·6·9 de revisão energética.',
       ''
-    ].join('\\n');
+    ].join('\n');
   } else if (tipo === 'escola') {
     md = [
       '# 🏫 Educação Solar em Escolas — Nos.S°lar · dual.infodose',
@@ -1109,7 +1162,7 @@ function nvGenerateTemplate(tipo) {
       '- Economia de energia;',
       '- Rotas para expansão a outros bairros / escolas.',
       ''
-    ].join('\\n');
+    ].join('\n');
   } else if (tipo === 'parque') {
     md = [
       '# 🏭 Parque Tecnológico & Micro Data Center Solar — Nos.S°lar',
@@ -1145,7 +1198,7 @@ function nvGenerateTemplate(tipo) {
       '- Parcerias com iniciativas africanas (Afrikafuturo);',
       '- Conexão com hubs solares globais.',
       ''
-    ].join('\\n');
+    ].join('\n');
   }
 
   ta.value = md;
@@ -1232,10 +1285,10 @@ function nvLsScan() {
     }
 
     const header =
-      'Chaves armazenadas: ' + len + '\\n' +
-      'Tamanho aproximado total: ' + totalBytes + ' bytes\\n';
+      'Chaves armazenadas: ' + len + '\n' +
+      'Tamanho aproximado total: ' + totalBytes + ' bytes\n';
 
-    out.textContent = header + (lines.length ? '\\n' + lines.join('\\n') : '\\n(nenhuma chave encontrada)');
+    out.textContent = header + (lines.length ? '\n' + lines.join('\n') : '\n(nenhuma chave encontrada)');
   } catch (e) {
     out.textContent = 'Erro ao ler localStorage: ' + e;
   }
