@@ -732,16 +732,16 @@ body.bg-fake::before{
   position: fixed;
   inset: 0;
   pointer-events: none;
-  z-index: 0;
+  z-index: -1;
 
   /* imagem vem de uma CSS var pra poder trocar só no HTML */
   background:
-    var(--bg-fake-img, url("icons/icon-traco-512.png"))
+    var(--bg-fake-img, url("icons/icon-traco-512.PNG"))
     center center /
     cover no-repeat;
 
   /* tipo de mistura: teste lighten, screen, multiply… */
-  mix-blend-mode: var(--bg-fake-mode, screen);
+  mix-blend-mode: var(--bg-fake-mode, overlay);
   opacity: var(--bg-fake-opacity, .78);
 }
 
