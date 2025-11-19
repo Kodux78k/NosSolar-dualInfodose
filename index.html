@@ -8,7 +8,7 @@
 <!-- 🔥 Cabeçalho PWA / Manifest / Ícones -->
 <link rel="manifest" href="manifest.webmanifest">
 
-<link rel="apple-touch-icon" sizes="180x180" href="icons/icon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="icons/icon-180.png">
 <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
 <link rel="icon" type="image/png" sizes="512x512" href="icons/icon-512.png">
 
@@ -637,10 +637,22 @@ body.mode-night .sun {
   transform: translateY(0);
 }
 
+/* Estado visual extra para arpejo solar */
+.wave-container.is-arp-active {
+  box-shadow:
+    0 0 0 1px rgba(190, 242, 100, 0.75),
+    0 22px 40px rgba(15, 23, 42, 0.98);
+}
+
+.wave-container.is-arp-active .wave-dot {
+  background: rgba(190, 242, 100, 0.95);
+  box-shadow: 0 0 14px rgba(190, 242, 100, 0.9);
+}
+
 /* Toast */
 #nv-toast {
   position: fixed;
-  bottom: 22px;
+  bottom: 222px;
   left: 50%;
   transform: translateX(-50%) translateY(40px);
   background: rgba(0,0,0,0.7);
@@ -718,47 +730,6 @@ body.mode-night .sun {
     padding-top: 26px;
   }
 }
-
-  /* ===== BG FAKE UNIVERSAL – overlay simbólico ===== */
-
-body.bg-fake{
-  position: relative;
-  overflow-x: hidden;
-}
-
-/* Camada falsa por cima do BG real */
-body.bg-fake::before{
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: -1;
-
-  /* imagem vem de uma CSS var pra poder trocar só no HTML */
-  background:
-    var(--bg-fake-img, url("icons/icon-traco-512.PNG"))
-    center center /
-    cover no-repeat;
-
-  /* tipo de mistura: teste lighten, screen, multiply… */
-  mix-blend-mode: var(--bg-fake-mode, overlay);
-  opacity: var(--bg-fake-opacity, .78);
-}
-
-/* opcional: glow suave */
-/* body.bg-fake::after{
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: -2;
-  background:
-    radial-gradient(circle at center,
-      rgba(255,255,255,.16) 0,
-      transparent 55%);
-  mix-blend-mode: soft-light;
-  opacity: .6;
-} */
 </style>
 </head>
 <body class="mode-day">
@@ -1404,6 +1375,189 @@ function gerarDicas(ev) {
   nvToast('Dicas Meta-Humano-Máquina geradas.');
 }
 
+/* MOTION: captura acelerômetro para modular o arpejo */
+function nvHandleMotion(ev) {
+  if (!ev || !ev.accelerationIncludingGravity) return;
+  const ax = ev.accelerationIncludingGravity.x || 0;
+  const ay = ev.accelerationIncludingGravity.y || 0;
+  const az = ev.accelerationIncludingGravity.z || 0;
+
+  const mag = Math.sqrt(ax*ax + ay*ay + az*az);
+  // Normaliza em algo entre 0 e ~1
+  motionIntensity = Math.max(0, Math.min(1, mag / 20));
+}
+
+function nvInitMotion() {
+  if (motionInitialized) return;
+  motionInitialized = true;
+
+  if (typeof DeviceMotionEvent !== 'undefined' &&
+      typeof DeviceMotionEvent.requestPermission === 'function') {
+    // iOS-style permission
+    DeviceMotionEvent.requestPermission()
+      .then(state => {
+        if (state === 'granted') {
+          window.addEventListener('devicemotion', nvHandleMotion);
+        }
+      })
+      .catch(() => {
+        // se negar, só ignora; arpejo usa movimento 0
+      });
+  } else if (typeof DeviceMotionEvent !== 'undefined') {
+    // Android / outros
+    window.addEventListener('devicemotion', nvHandleMotion);
+  }
+}
+
+/* Escalas solares básicas (em semitons) */
+const NV_SOLAR_SCALES = [
+  { name: 'Dórica',  steps: [0, 2, 3, 5, 7, 9, 10] },
+  { name: 'Maior',   steps: [0, 2, 4, 5, 7, 9, 11] },
+  { name: 'Menor',   steps: [0, 2, 3, 5, 7, 8, 10] },
+  { name: 'Lócria',  steps: [0, 1, 3, 5, 6, 8, 10] },
+  { name: 'Mixolídia', steps: [0, 2, 4, 5, 7, 9, 10] }
+];
+
+function nvPickSolarScale() {
+  let lat = geoLat != null ? geoLat : -23.5;
+  let lng = geoLng != null ? geoLng : -47.5;
+
+  // índice da escala a partir de lat/lng (modo super simples, mas simbólico)
+  const mix = Math.abs(Math.round(lat) + Math.round(lng));
+  const idx = mix % NV_SOLAR_SCALES.length;
+  return NV_SOLAR_SCALES[idx];
+}
+
+/* ARPEJO SOLAR: lat/long + movimento (acelerômetro) */
+async function toggleArpejo(ev) {
+  ev.stopPropagation();
+  nvStartLoading();
+
+  const indicator = document.getElementById('geoIndicator');
+  const waveBox = document.querySelector('.wave-container');
+
+  try {
+    await nvEnsureAudioCtx();
+    nvInitMotion();
+
+    if (!arpActive) {
+      // LIGAR ARPEJO
+      const scale = nvPickSolarScale();
+
+      // base em torno de 220–320 Hz, dependendo da latitude
+      const latBase = geoLat != null ? Math.abs(geoLat) : 23.5;
+      const lngBase = geoLng != null ? Math.abs(geoLng) : 47.5;
+      const baseFreq = 200 + (latBase % 30) * 2; // 200–260 Hz
+
+      arpGain = audioCtx.createGain();
+      arpGain.gain.value = 0.0; // sobe suave
+
+      arpOscMain = audioCtx.createOscillator();
+      arpOscOct  = audioCtx.createOscillator();
+
+      arpOscMain.type = 'sine';
+      arpOscOct.type  = 'sine';
+
+      arpOscMain.connect(arpGain);
+      arpOscOct.connect(arpGain);
+      arpGain.connect(audioCtx.destination);
+
+      const stepCount = scale.steps.length;
+      let step = 0;
+
+      const updateNote = () => {
+        // velocidade em função do movimento (0 = lento, 1 = rápido)
+        const speedFactor = 1 - Math.min(0.9, motionIntensity * 0.8); 
+        // base 320ms -> 120ms
+        const intervalMs = 120 + speedFactor * 200;
+
+        const semitones = scale.steps[step % stepCount];
+        const freqMain = baseFreq * Math.pow(2, semitones / 12);
+        const freqOct  = freqMain * 2;
+
+        arpOscMain.frequency.setValueAtTime(freqMain, audioCtx.currentTime);
+        arpOscOct.frequency.setValueAtTime(freqOct, audioCtx.currentTime);
+
+        // attack/decay suave no ganho
+        const now = audioCtx.currentTime;
+        const targetGain = 0.04 + motionIntensity * 0.08; // aumenta com movimento
+        arpGain.gain.cancelScheduledValues(now);
+        arpGain.gain.linearRampToValueAtTime(targetGain, now + 0.03);
+        arpGain.gain.linearRampToValueAtTime(0.01, now + (intervalMs / 1000) * 0.9);
+
+        step++;
+
+        // re-agenda o próximo passo respeitando intensidade atual
+        arpTimer = setTimeout(updateNote, intervalMs);
+      };
+
+      // iniciar osciladores e primeira nota
+      arpOscMain.start();
+      arpOscOct.start();
+      arpActive = true;
+      updateNote();
+
+      // feedback textual
+      const chosenScale = nvPickSolarScale();
+      indicator.textContent +=
+        ' · ARPEJO ATIVO (' +
+        chosenScale.name + ' · base ~' + baseFreq.toFixed(1) + 'Hz).';
+
+      // feedback visual
+      if (waveBox) {
+        waveBox.classList.add('is-arp-active');
+        const prev = waveBox.getAttribute('data-freq-label') || 'binaural nos.s°lar';
+        if (!/arpejo/i.test(prev)) {
+          waveBox.setAttribute('data-freq-label', prev + ' · + arpejo');
+        }
+      }
+    } else {
+      // DESLIGAR ARPEJO
+      if (arpTimer) {
+        clearTimeout(arpTimer);
+        arpTimer = null;
+      }
+      if (arpOscMain) {
+        arpOscMain.stop();
+        arpOscMain.disconnect();
+      }
+      if (arpOscOct) {
+        arpOscOct.stop();
+        arpOscOct.disconnect();
+      }
+      if (arpGain) {
+        arpGain.disconnect();
+      }
+
+      arpOscMain = null;
+      arpOscOct = null;
+      arpGain = null;
+      arpActive = false;
+
+      // limpa texto
+      indicator.textContent = indicator.textContent.replace(/ · ARPEJO ATIVO.*$/, '');
+
+      // feedback visual off
+      if (waveBox) {
+        waveBox.classList.remove('is-arp-active');
+        // mantém o label do binaural, só tira o " + arpejo"
+        const prev = waveBox.getAttribute('data-freq-label');
+        if (prev) {
+          waveBox.setAttribute('data-freq-label', prev.replace(/ · \+ arpejo/i, ''));
+        }
+      }
+    }
+  } catch (e) {
+    const indicator = document.getElementById('geoIndicator');
+    if (indicator) {
+      indicator.textContent =
+        'ARPEJO: não foi possível iniciar (áudio / motion / política do navegador).';
+    }
+  } finally {
+    nvStopLoading();
+  }
+}
+
 /* GERADOR DE TEMPLATES LIVRO VIVO + TTS */
 function nvGenerateTemplate(tipo) {
   nvStartLoading();
@@ -1725,7 +1879,7 @@ function nvAnalyzeEnv(ev) {
 }
 </script>
 
- <!-- PATCH: UNIFICAÇÃO EM 3 CARDS · NOS.S°LAR -->
+<!-- PATCH: UNIFICAÇÃO EM 3 CARDS · NOS.S°LAR -->
 <style>
 /* Subcards dentro do card principal (welcome + LS + ambiente, geo + dicas) */
 
@@ -1987,6 +2141,6 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 });
 </script>
- 
+
 </body>
 </html>
