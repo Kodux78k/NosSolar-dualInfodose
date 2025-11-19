@@ -738,7 +738,7 @@ body.bg-fake::before{
   background:
     var(--bg-fake-img, url("./icons/icon-traco-512.png"))
     center center /
-    min(80vw, 640px) no-repeat;
+    cover no-repeat;
 
   /* tipo de mistura: teste lighten, screen, multiply… */
   mix-blend-mode: var(--bg-fake-mode, lighten);
