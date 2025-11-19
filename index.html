@@ -5,14 +5,16 @@
 <title>Nos.S°lar — Stack Solar Dinâmica</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- PWA / Manifest / Ícones -->
+<!-- 🔥 Cabeçalho PWA / Manifest / Ícones -->
 <link rel="manifest" href="manifest.webmanifest">
+
 <link rel="apple-touch-icon" sizes="180x180" href="icons/icon-180.png">
-<link rel="icon" type="image/png" sizes="32x32" href="icons/icon-32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="icons/icon-16.png">
 <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
 <link rel="icon" type="image/png" sizes="512x512" href="icons/icon-512.png">
+
 <meta name="theme-color" content="#000000">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -340,7 +342,8 @@ body {
 }
 
 .card-body-inner {
-  padding: 6px 0 12px;
+  padding: 8px 0 14px;
+  line-height: 1.5;
 }
 
 /* BLOCO ESTILO MARKDOWN */
@@ -365,6 +368,7 @@ body {
 /* Parágrafos seguintes */
 .card-body-inner p + p {
   margin-top: 4px;
+  font-size: 0.88rem;
 }
 
 /* Tagzinha tipo ::info */
@@ -435,20 +439,12 @@ body {
   color: var(--muted);
 }
 
-/* Ping visual para geo */
-.geo-indicator.geo-ping {
-  animation: geo-pulse 1.4s ease-out 1;
-}
-
 /* Ondas sonoras visuais */
 .wave-container {
   position: relative;
   margin-top: 10px;
   height: 40px;
   overflow: hidden;
-  border-radius: 999px;
-  background: rgba(15,23,42,0.85);
-  box-shadow: 0 0 0 rgba(125,211,252,0);
 }
 
 .wave {
@@ -468,21 +464,6 @@ body {
 .wave.wave2 {
   opacity: 0.4;
   animation-duration: 5s;
-}
-
-/* Estado ativo das ondas (feedback visual forte) */
-.wave-container.waves-on {
-  box-shadow: 0 0 22px rgba(125, 211, 252, 0.85);
-}
-
-.wave-container.waves-on::after {
-  content: "";
-  position: absolute;
-  inset: 4px;
-  border-radius: 999px;
-  border: 1px solid rgba(125,211,252,0.9);
-  opacity: 0.7;
-  animation: wave-pulse 1.8s ease-out infinite;
 }
 
 /* Área do template do Livro Vivo */
@@ -513,28 +494,7 @@ body {
   white-space: pre-wrap;
 }
 
-/* Tip blocks (dicas + métricas) */
-.tip-block {
-  margin-top: 8px;
-  padding: 8px 10px;
-  border-radius: 10px;
-  background: rgba(15,23,42,0.96);
-  border: 1px solid rgba(148,163,184,0.6);
-  box-shadow: 0 10px 28px rgba(0,0,0,0.65);
-  font-size: 0.82rem;
-}
-
-.tip-block > strong {
-  display: block;
-  margin-bottom: 4px;
-}
-
-.tip-block > span {
-  display: block;
-  color: var(--muted);
-}
-
-/* Card de métricas de ambiente (pode ficar se usar em outra versão) */
+/* Card de métricas de ambiente */
 .env-metrics {
   margin-top: 10px;
 }
@@ -587,6 +547,22 @@ body {
   font-weight: 600;
 }
 
+/* Blocos de dicas estilo InfoDocs */
+.tip-block {
+  margin-top: 6px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(148, 163, 184, 0.5);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 0.82rem;
+}
+.tip-block strong {
+  font-size: 0.84rem;
+}
+
 /* Modos de fundo & sol/lua */
 body.mode-day {
   background: var(--bg-day);
@@ -612,6 +588,74 @@ body.mode-sunset .sun {
 body.mode-night .sun {
   background: radial-gradient(circle at 30% 30%, #e8f5ff 0%, #bbdefb 45%, #90caf9 100%);
   box-shadow: 0 0 40px rgba(187, 222, 251, 0.85);
+}
+
+/* Campo galáctico baseado em lat/long */
+#galaxy-field {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity .6s ease;
+}
+
+.star {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  background: white;
+  border-radius: 999px;
+  opacity: .8;
+  filter: drop-shadow(0 0 6px white);
+  animation: star-float 14s linear infinite;
+}
+
+#galaxy-info {
+  position: fixed;
+  bottom: 18px;
+  left: 0;
+  right: 0;
+  margin: auto;
+  width: calc(100% - 24px);
+  max-width: 360px;
+  padding: 10px 14px;
+  border-radius: 14px;
+  background: rgba(0,0,0,0.55);
+  color: #d0e7ff;
+  font-size: .8rem;
+  text-align: center;
+  backdrop-filter: blur(8px);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all .6s ease;
+  z-index: 2;
+}
+#galaxy-info.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Toast */
+#nv-toast {
+  position: fixed;
+  bottom: 22px;
+  left: 50%;
+  transform: translateX(-50%) translateY(40px);
+  background: rgba(0,0,0,0.7);
+  color: #fff;
+  padding: 10px 16px;
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  font-size: .85rem;
+  opacity: 0;
+  transition: all .4s ease;
+  z-index: 9999;
+}
+#nv-toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
 }
 
 /* Animações */
@@ -663,32 +707,9 @@ body.mode-night .sun {
   100% { transform: rotate(360deg) translateX(7px) rotate(-360deg); }
 }
 
-/* Pulse visual das ondas */
-@keyframes wave-pulse {
-  0% {
-    transform: scale(0.9);
-    opacity: 0.7;
-  }
-  100% {
-    transform: scale(1.15);
-    opacity: 0;
-  }
-}
-
-/* Pulse da geo-indicator */
-@keyframes geo-pulse {
-  0% {
-    transform: scale(1);
-    text-shadow: 0 0 0 rgba(125,211,252,0);
-  }
-  40% {
-    transform: scale(1.02);
-    text-shadow: 0 0 16px rgba(125,211,252,0.9);
-  }
-  100% {
-    transform: scale(1);
-    text-shadow: 0 0 0 rgba(125,211,252,0);
-  }
+@keyframes star-float {
+  0% { transform: translateY(0px); }
+  100% { transform: translateY(-120px); opacity: 0; }
 }
 
 /* Responsive */
@@ -730,6 +751,10 @@ body.mode-night .sun {
     <div class="particle p5"></div>
   </div>
 
+  <!-- Campo galáctico + info -->
+  <div id="galaxy-field"></div>
+  <div id="galaxy-info"></div>
+
   <div class="app-shell">
     <header class="app-header">
       <div class="tag-solar">
@@ -743,12 +768,12 @@ body.mode-night .sun {
 
     <main class="card-stack">
 
-      <!-- CARD 0: Boas-vindas · Livro Vivo & Memória Interna -->
+      <!-- CARD 0: Boas-vindas / Livro Vivo / Gerador + TTS -->
       <section class="card" data-card="welcome">
         <div class="card-header" onclick="toggleCard(this)">
           <div>
-            <div class="card-title">Boas-vindas · Livro Vivo & Memória Interna</div>
-            <small>(gerador · TTS · espelho do LocalStorage)</small>
+            <div class="card-title">Boas-vindas · Livro Vivo & InfoDocs</div>
+            <small>(gerador · TTS · ponte com o Hub)</small>
           </div>
           <div class="card-toggle">⌄</div>
         </div>
@@ -756,70 +781,65 @@ body.mode-night .sun {
           <div class="card-body-inner">
             <p>
               <span class="md-tag">::info</span>
-              <strong>Este card é o pitch vivo do Nos.S°lar.</strong>
-              Ele se apresenta, gera documentos e fala em voz alta:
-              é o ponto onde o <strong>Kodux</strong>, o <strong>sol</strong> e o
-              <strong>Livro Vivo</strong> se encontram na mesma tela.
-            </p>
-
-            <p>
-              Quando você toca em um dos botões abaixo, o app não só preenche um template —
-              ele escreve o <strong>primeiro capítulo</strong> da sua rede solar:
-              casa, escola, parque tecnológico, bairro inteiro.
+              Este card é a porta de entrada do <strong>Nos.S°lar</strong> com o
+              <strong>Livro Vivo / InfoDocs</strong>: aqui você gera templates de documentos,
+              testa voz (TTS) e copia o conteúdo direto para o Hub principal.
             </p>
 
             <div class="btn-row">
               <button class="btn" onclick="nvGenerateTemplate('basico'); event.stopPropagation();">
-                ✨<span><strong>Documento Solar Básico</strong> — 1º nó da rede</span>
+                ✨<span>Gerar template — Documento Solar Básico</span>
               </button>
               <button class="btn" onclick="nvGenerateTemplate('escola'); event.stopPropagation();">
-                🏫<span><strong>Educação Solar em Escolas</strong> — laboratório vivo</span>
+                🏫<span>Gerar template — Educação Solar em Escolas</span>
               </button>
               <button class="btn" onclick="nvGenerateTemplate('parque'); event.stopPropagation();">
-                🏭<span><strong>Parque Tecnológico & Micro Data Center</strong></span>
+                🏭<span>Gerar template — Parque Tecnológico & Micro Data Center</span>
               </button>
               <button class="btn" onclick="nvSpeakWelcome(); event.stopPropagation();">
-                🔊<span><strong>Ouvir boas-vindas (TTS)</strong></span>
+                🔊<span>Ouvir boas-vindas (TTS)</span>
               </button>
             </div>
 
             <p style="font-size:0.8rem;color:var(--muted);margin-top:8px;">
-              Copie o conteúdo abaixo e cole no painel principal do <strong>InfoDocs / Livro Vivo</strong>
-              para continuar a edição completa — é o Nos.S°lar se auto-vendendo em texto.
+              Copie o conteúdo abaixo e cole no painel principal do InfoDocs / Livro Vivo para
+              continuar a edição completa.
             </p>
 
             <textarea id="nv-template-output" placeholder="# Seu template Livro Vivo aparecerá aqui..."></textarea>
+          </div>
+        </div>
+      </section>
 
-            <p style="margin-top:10px;">
-              <span class="md-tag">::story</span>
-              <strong>História simbólica rápida:</strong> Um dia, você percebeu que o
-              <strong>sol de Sorocaba</strong> já alimentava metade do planeta — menos a sua própria rede.
-              O Nos.S°lar nasceu como essa piada séria: se o sol já está aqui, por que não fazer
-              do seu bairro um <strong>micro data center vivo</strong>, onde cada telhado é capítulo
-              e cada documento InfoDocs é episódio da mesma série?
-            </p>
-
-            <!-- SUB-BLOCO: LS STATUS INTERNO -->
-            <hr style="border:none;border-top:1px solid rgba(255,255,255,0.06);margin:10px 0 8px;">
+      <!-- CARD 0.5: LS Status interno do Nos.S°lar -->
+      <section class="card" data-card="ls">
+        <div class="card-header" onclick="toggleCard(this)">
+          <div>
+            <div class="card-title">LocalStorage · Estado interno do Nos.S°lar</div>
+            <small>(debug leve · chaves · espaço)</small>
+          </div>
+          <div class="card-toggle">⌄</div>
+        </div>
+        <div class="card-body">
+          <div class="card-body-inner">
             <p>
               <span class="md-tag">::ls</span>
-              <strong>Memória interna do Nos.S°lar.</strong>
-              Aqui você enxerga o <strong>localStorage</strong> como se fosse um log do painel:
-              quantas chaves existem, quanto espaço ocupam e o que pode ser limpo sem medo.
+              Leitura simbólica do <strong>localStorage</strong> deste micro-app:
+              quantas chaves existem, quais são e quanto espaço aproximado ocupam.
             </p>
 
             <div class="btn-row">
               <button class="btn" onclick="nvLsScan(); event.stopPropagation();">
-                🔍<span><strong>Ver estado atual do LS</strong></span>
+                🔍<span>Ver estado atual do LS</span>
               </button>
               <button class="btn" onclick="nvLsClear(); event.stopPropagation();">
-                🧹<span><strong>Limpar chaves do Nos.S°lar</strong></span>
+                🧹<span>Limpar chaves do Nos.S°lar</span>
               </button>
             </div>
 
             <p style="font-size:0.8rem;color:var(--muted);margin-top:8px;">
-              Por padrão, a limpeza só afeta chaves com prefixo <strong>"nossolar_"</strong>.
-              O resto da memória do Hub permanece intacto.
+              Este card é o “espelho local” do armazenamento: perfeito para debug leve sem
+              abrir o painel LS_STATUS completo.
             </p>
 
             <div id="nv-ls-output" aria-label="Saída de LocalStorage"></div>
@@ -861,12 +881,12 @@ body.mode-night .sun {
         </div>
       </section>
 
-      <!-- CARD 2: Ambiente Solar · Geo + Ondas + Dicas -->
-      <section class="card" data-card="ambiente">
+      <!-- CARD 2: LOCALIZAÇÃO & ONDAS SONORAS (binaural + arpejo) -->
+      <section class="card" data-card="geo">
         <div class="card-header" onclick="toggleCard(this)">
           <div>
-            <div class="card-title">Painel do Ambiente Solar</div>
-            <small>(localização · ondas gêmeas · dicas & métricas)</small>
+            <div class="card-title">Painel Sonoro · Estado Solar Local</div>
+            <small>(lat/long simbólicas + ondas gêmeas)</small>
           </div>
           <div class="card-toggle">⌄</div>
         </div>
@@ -874,28 +894,21 @@ body.mode-night .sun {
           <div class="card-body-inner">
             <p>
               <span class="md-tag">::geo</span>
-              <strong>Quando você permite a localização, o app olha onde o seu corpo está na Terra</strong>
-              e responde com lat/long simbólicas. A partir disso, duas frequências sonoras dançam
-              com o seu ponto no mapa — é o <strong>som do seu telhado</strong>.
+              Detecta sua posição na Terra, exibe <strong>lat/long simbólicas</strong> e
+              ativa duas ondas sonoras que dançam com o seu estado solar (binaural simbólico),
+              com opção de arpejo harmônico ligado à latitude.
             </p>
-            <p>
-              Isso transforma uma permissão chata em experiência: “<strong>eu ouço onde estou no planeta</strong>”.
-              E, logo abaixo, você vê um <strong>resumo do ambiente</strong>: modo solar, período do dia,
-              localização e se as ondas estão ativas.
-            </p>
-
             <div class="btn-row">
               <button class="btn" onclick="pedirLocalizacao(event)">
-                📍<span><strong>Descobrir minha posição solar</strong></span>
+                📍<span>Descobrir minha posição solar</span>
               </button>
               <button class="btn" onclick="toggleOndas(event)">
-                🔊<span><strong>Ativar / Pausar ondas gêmeas</strong></span>
+                🔊<span>Tocar / Pausar binaural detectado</span>
               </button>
-              <button class="btn" onclick="gerarDicas(event)">
-                💫<span><strong>Gerar dicas para hoje</strong></span>
+              <button class="btn" onclick="tocarArpejo(event)">
+                🎼<span>Ativar / Pausar arpejo harmônico</span>
               </button>
             </div>
-
             <div class="geo-indicator" id="geoIndicator">
               LOCALIZAÇÃO: Aguardando permissão...
             </div>
@@ -904,25 +917,33 @@ body.mode-night .sun {
               <div class="wave"></div>
               <div class="wave wave2"></div>
             </div>
+          </div>
+        </div>
+      </section>
 
-            <!-- VIEWER DE MÉTRICAS DO AMBIENTE -->
-            <div class="tip-block" id="nv-env-metrics" style="margin-top:12px;">
-              <strong>Métricas do ambiente solar</strong>
-              <span style="display:block;font-size:0.8rem;color:var(--muted);margin-top:2px;">
-                Aguardando dados de localização, modo solar e ondas gêmeas...
-              </span>
-            </div>
-
-            <!-- DICAS META-HUMANO-MÁQUINA -->
-            <p style="margin-top:10px;">
+      <!-- CARD 3: DICAS META-HUMANO-MÁQUINA -->
+      <section class="card" data-card="tips">
+        <div class="card-header" onclick="toggleCard(this)">
+          <div>
+            <div class="card-title">Painel de Dicas · Meta-Humano-Máquina</div>
+            <small>(manhã · tarde · noite)</small>
+          </div>
+          <div class="card-toggle">⌄</div>
+        </div>
+        <div class="card-body">
+          <div class="card-body-inner">
+            <p>
               <span class="md-tag">::dicas</span>
-              <strong>Aqui o app lembra que quem manda ainda é o corpo humano.</strong>
-              São três dicas — manhã, tarde e noite — conectando o jeito que você usa o
-              corpo com o jeito que a rede Nos.S°lar distribui energia e dados.
+              Gera três dicas: <strong>manhã, tarde e noite</strong>, correlacionando o
+              seu corpo com o corpo simbiótico da rede Nos.S°lar.
             </p>
-
+            <div class="btn-row">
+              <button class="btn" onclick="gerarDicas(event)">
+                💫<span>Gerar dicas para hoje</span>
+              </button>
+            </div>
             <div class="tips-indicator" id="tipsIndicator">
-              DICAS: Toque em “Gerar dicas para hoje”.
+              DICAS: Toque para gerar o ciclo de hoje.
             </div>
 
             <div id="tipsContainer">
@@ -932,8 +953,39 @@ body.mode-night .sun {
         </div>
       </section>
 
+      <!-- CARD 4: Análise de Ambiente (com loader + métricas) -->
+      <section class="card" data-card="env">
+        <div class="card-header" onclick="toggleCard(this)">
+          <div>
+            <div class="card-title">Analisar meu ambiente solar</div>
+            <small>(hora · modo · geo · recomendação)</small>
+          </div>
+          <div class="card-toggle">⌄</div>
+        </div>
+        <div class="card-body">
+          <div class="card-body-inner">
+            <p>
+              <span class="md-tag">::ambiente</span>
+              Faz uma leitura simbólica rápida do seu ambiente: horário, ciclo solar atual,
+              latitude/longitude base e uma recomendação de ajuste de rotina.
+            </p>
+            <div class="btn-row">
+              <button class="btn" onclick="nvAnalyzeEnv(event)">
+                📊<span>Analisar meu ambiente agora</span>
+              </button>
+            </div>
+            <div class="env-metrics" id="envMetrics">
+              <!-- Card de métricas aparece aqui -->
+            </div>
+          </div>
+        </div>
+      </section>
+
     </main>
   </div>
+
+  <!-- Toast -->
+  <div id="nv-toast"></div>
 
 <script>
 /* SPLASH HANDLER */
@@ -1009,8 +1061,6 @@ function setMode(mode) {
     indicator.textContent =
       'MODO ATUAL: NOITE · LUA MENOR · REDE DE DADOS ILUMINADA PELA ENERGIA DO DIA';
   }
-
-  nvUpdateEnvMetrics();
 }
 
 /* Helper para label do modo atual */
@@ -1020,33 +1070,21 @@ function nvGetSolarModeLabel() {
   return 'DIA · CAPTAÇÃO & CARGA';
 }
 
-/* Viewer de métricas do ambiente solar */
-function nvUpdateEnvMetrics() {
-  const el = document.getElementById('nv-env-metrics');
-  if (!el) return;
-
-  const agora = new Date();
-  const hora = agora.getHours();
-  let periodo;
-  if (hora < 12) periodo = 'manhã';
-  else if (hora < 18) periodo = 'tarde';
-  else periodo = 'noite';
-
-  const modo = nvGetSolarModeLabel();
-  const lat = (typeof geoLat === 'number') ? geoLat.toFixed(4) : '—';
-  const lng = (typeof geoLng === 'number') ? geoLng.toFixed(4) : '—';
-  const ondas = ondasAtivas ? 'ATIVAS' : 'pausadas';
-
-  el.innerHTML = `
-    <strong>Métricas do ambiente solar</strong>
-    <span style="display:block;font-size:0.8rem;color:var(--muted);margin-top:4px;">
-      • Modo solar: <strong>${modo}</strong><br>
-      • Período humano agora: <strong>${periodo.toUpperCase()}</strong><br>
-      • Geo simbólica: <strong>${lat}</strong> / <strong>${lng}</strong><br>
-      • Ondas gêmeas: <strong>${ondas}</strong>
-    </span>
-  `;
+/* Tema automático baseado no horário do usuário */
+function nvAutoTheme() {
+  const h = new Date().getHours();
+  if (h >= 19 || h < 6) {
+    setMode('night');
+    nvToast('Modo solar ajustado automaticamente para NOITE.');
+  } else if (h >= 16) {
+    setMode('sunset');
+    nvToast('Modo solar ajustado automaticamente para PÔR DO SOL.');
+  } else {
+    setMode('day');
+    nvToast('Modo solar ajustado automaticamente para DIA.');
+  }
 }
+window.addEventListener('load', nvAutoTheme);
 
 /* GEO + ONDAS SONORAS (Web Audio / binaural) */
 let geoLat = null;
@@ -1055,39 +1093,87 @@ let audioCtx = null;
 let osc1 = null;
 let osc2 = null;
 let ondasAtivas = false;
+let arpOsc = null;
+
+/* TOAST */
+function nvToast(msg) {
+  const t = document.getElementById('nv-toast');
+  if (!t) return;
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2400);
+}
 
 function pedirLocalizacao(ev) {
   ev.stopPropagation();
   nvStartLoading();
-  var indicator = document.getElementById('geoIndicator');
+  const indicator = document.getElementById('geoIndicator');
+  const galaxy = document.getElementById('galaxy-field');
+  const galaxyInfo = document.getElementById('galaxy-info');
 
   if (!navigator.geolocation) {
-    indicator.textContent = 'LOCALIZAÇÃO: Navegador não suporta geolocalização.';
-    nvUpdateEnvMetrics();
+    indicator.textContent = 'LOCALIZAÇÃO: navegador não suporta.';
     nvStopLoading();
+    nvToast('Navegador não suporta geolocalização.');
     return;
   }
 
-  indicator.textContent = 'LOCALIZAÇÃO: Solicitando permissão...';
+  indicator.textContent = 'LOCALIZAÇÃO: pedindo permissão...';
 
-  navigator.geolocation.getCurrentPosition(function(pos) {
+  navigator.geolocation.getCurrentPosition(pos => {
     geoLat = pos.coords.latitude;
     geoLng = pos.coords.longitude;
+
     indicator.textContent =
       'LOCALIZAÇÃO: ' +
       geoLat.toFixed(4) + ' · ' +
       geoLng.toFixed(4) +
-      ' — Estado solar pronto para leitura simbólica.';
-    indicator.classList.add('geo-ping');
-    setTimeout(function() {
-      indicator.classList.remove('geo-ping');
-    }, 1400);
-    nvUpdateEnvMetrics();
+      ' — estado galáctico detectado';
+
+    // 🌟 ATIVA animação galáctica
+    if (galaxy) {
+      galaxy.innerHTML = '';
+      for (let i = 0; i < 80; i++) {
+        const s = document.createElement('div');
+        s.className = 'star';
+        s.style.left = Math.random()*100 + '%';
+        s.style.top = (100 + Math.random()*50) + '%';
+        s.style.animationDelay = (Math.random()*-12) + 's';
+        galaxy.appendChild(s);
+      }
+      galaxy.style.opacity = 1;
+    }
+
+    // 🌞 PERÍODO DO ANO / ESTAÇÃO SIMBÓLICA
+    const now = new Date();
+    const start = new Date(now.getFullYear(), 0, 0);
+    const diff = now - start;
+    const oneDay = 1000 * 60 * 60 * 24;
+    const dayOfYear = Math.floor(diff / oneDay);
+    const m = now.getMonth(); // 0-11
+
+    let estacao = 'transição';
+    // Hemisfério Sul simbólico
+    if (m === 11 || m <= 1) estacao = 'VERÃO simbólico';
+    else if (m >= 2 && m <= 4) estacao = 'OUTONO simbólico';
+    else if (m >= 5 && m <= 7) estacao = 'INVERNO simbólico';
+    else estacao = 'PRIMAVERA simbólica';
+
+    if (galaxyInfo) {
+      galaxyInfo.textContent =
+        'Dia ' + dayOfYear + ' do ano · ' +
+        estacao + ' · Lat ' + geoLat.toFixed(2) +
+        ' · Lng ' + geoLng.toFixed(2);
+      galaxyInfo.classList.add('show');
+    }
+
     nvStopLoading();
-  }, function(err) {
-    indicator.textContent = 'LOCALIZAÇÃO: Permissão negada ou indisponível.';
-    nvUpdateEnvMetrics();
+    nvToast('Posição solar detectada com sucesso.');
+
+  }, err => {
+    indicator.textContent = 'LOCALIZAÇÃO: negada.';
     nvStopLoading();
+    nvToast('Permissão de localização negada.');
   }, {
     enableHighAccuracy: false,
     timeout: 8000,
@@ -1106,12 +1192,11 @@ function nvEnsureAudioCtx() {
   return Promise.resolve();
 }
 
-/* Binaural detectado – com loader e feedback visual forte */
+/* Binaural detectado – com loader e fix */
 async function toggleOndas(ev) {
   ev.stopPropagation();
   nvStartLoading();
   var indicator = document.getElementById('geoIndicator');
-  const waveBox = document.querySelector('.wave-container');
 
   try {
     await nvEnsureAudioCtx();
@@ -1138,7 +1223,7 @@ async function toggleOndas(ev) {
       osc2.frequency.value = freq2;
 
       const gain = audioCtx.createGain();
-      gain.gain.value = 0.12; // um pouco mais alto, ainda confortável
+      gain.gain.value = 0.07; // volume baixo
 
       osc1.connect(gain);
       osc2.connect(gain);
@@ -1148,18 +1233,10 @@ async function toggleOndas(ev) {
       osc2.start();
 
       ondasAtivas = true;
-      if (waveBox) waveBox.classList.add('waves-on');
-
-      const suffix =
+      indicator.textContent +=
         ' · ONDAS ATIVAS (binaural simbólico ' +
         freq1.toFixed(1) + 'Hz / ' + freq2.toFixed(1) + 'Hz).';
-
-      if (!/ONDAS ATIVAS/.test(indicator.textContent)) {
-        indicator.textContent += suffix;
-      }
-
-      // lembrete de volume / modo silencioso
-      indicator.textContent += ' — Se não ouvir, verifique volume e modo silencioso.';
+      nvToast('Binaural solar ativado.');
     } else {
       if (osc1) osc1.stop();
       if (osc2) osc2.stop();
@@ -1167,16 +1244,54 @@ async function toggleOndas(ev) {
       osc2 = null;
       ondasAtivas = false;
 
-      if (waveBox) waveBox.classList.remove('waves-on');
       indicator.textContent = indicator.textContent.replace(/ · ONDAS ATIVAS.*$/, '');
+      nvToast('Binaural solar pausado.');
     }
   } catch (e) {
     indicator.textContent =
       'LOCALIZAÇÃO / ÁUDIO: não foi possível iniciar o som (permissão / política do navegador).';
+    nvToast('Não foi possível tocar o áudio neste navegador.');
   } finally {
-    nvUpdateEnvMetrics();
     nvStopLoading();
   }
+}
+
+/* Arpejo harmônico ligado à latitude */
+function tocarArpejo(ev) {
+  ev.stopPropagation();
+  nvEnsureAudioCtx().then(() => {
+    if (arpOsc) {
+      try { arpOsc.stop(); } catch(e) {}
+      arpOsc = null;
+      nvToast('Arpejo harmônico desligado.');
+      return;
+    }
+
+    arpOsc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    gain.gain.value = 0.14;
+
+    // escala harmônica baseada na latitude
+    const scale = [1, 1.2, 1.25, 1.33, 1.5, 1.6, 2];
+    let base = 200 + ((geoLat ?? 23.4) % 40);
+
+    let i = 0;
+    const intervalId = setInterval(() => {
+      if (!arpOsc) {
+        clearInterval(intervalId);
+        return;
+      }
+      arpOsc.frequency.value = base * scale[i % scale.length];
+      i++;
+    }, 480);
+
+    arpOsc.type = "sine";
+    arpOsc.connect(gain);
+    gain.connect(audioCtx.destination);
+    arpOsc.start();
+
+    nvToast('Arpejo harmônico solar ativado.');
+  });
 }
 
 /* DICAS META-HUMANO-MÁQUINA */
@@ -1220,7 +1335,7 @@ function gerarDicas(ev) {
       texto:
         'Reduzir luz forte 1h antes de dormir. Registrar em 3 linhas o que você “carregou” hoje: ' +
         'aprendizados, decisões, sensações. Assim como a bateria do sistema solar, ' +
-        'você armazena o essencial para o dia seguinte sem sobrecarga.',
+        'você armazena o essencial para o dia seguinte sem sobrecarregar o corpo.',
     }
   ];
 
@@ -1244,8 +1359,8 @@ function gerarDicas(ev) {
     ' · corpo humano e corpo da rede aprendendo juntos.';
   container.appendChild(extra);
 
-  nvUpdateEnvMetrics();
   nvStopLoading();
+  nvToast('Dicas Meta-Humano-Máquina geradas.');
 }
 
 /* GERADOR DE TEMPLATES LIVRO VIVO + TTS */
@@ -1375,6 +1490,7 @@ function nvGenerateTemplate(tipo) {
   } catch(e) {}
 
   nvStopLoading();
+  nvToast('Template Livro Vivo gerado.');
 }
 
 /* TTS básico de boas-vindas */
@@ -1461,6 +1577,7 @@ function nvLsScan() {
   }
 
   nvStopLoading();
+  nvToast('Leitura de localStorage concluída.');
 }
 
 function nvLsClear() {
@@ -1488,10 +1605,83 @@ function nvLsClear() {
     out.textContent = 'Erro ao limpar localStorage: ' + e;
   }
   nvStopLoading();
+  nvToast('Chaves locais do Nos.S°lar limpas.');
 }
 
-/* Inicializa métricas uma vez */
-nvUpdateEnvMetrics();
+/* Análise de ambiente (loader + métricas em card bonitinho) */
+function nvAnalyzeEnv(ev) {
+  ev.stopPropagation();
+  nvStartLoading();
+
+  const box = document.getElementById('envMetrics');
+  if (!box) {
+    nvStopLoading();
+    return;
+  }
+
+  const now = new Date();
+  const horas = String(now.getHours()).padStart(2, '0');
+  const mins = String(now.getMinutes()).padStart(2, '0');
+  const horaStr = horas + ':' + mins;
+
+  const ciclo = nvGetSolarModeLabel();
+  const latInfo = geoLat != null ? geoLat.toFixed(4) : 'não definido';
+  const lngInfo = geoLng != null ? geoLng.toFixed(4) : 'não definido';
+
+  // Estimativa simbólica de "carga" com base no horário
+  let carga;
+  if (now.getHours() < 6) carga = 'baixa (pré-alvorada)';
+  else if (now.getHours() < 11) carga = 'subindo (manhã ativa)';
+  else if (now.getHours() < 15) carga = 'alta (pico solar)';
+  else if (now.getHours() < 19) carga = 'estável (fim de tarde)';
+  else carga = 'descendo (noite / descarregar)';
+
+  let recomendacao;
+  if (now.getHours() < 11) {
+    recomendacao =
+      'Bom momento para tarefas criativas e planejamento. ' +
+      'Use a luz da manhã como “energia grátis” para o cérebro.';
+  } else if (now.getHours() < 18) {
+    recomendacao =
+      'Priorize execução focada. Menos abas, mais profundidade. ' +
+      'Imagine que cada decisão bem tomada é um painel rendendo mais.';
+  } else {
+    recomendacao =
+      'Comece a desacelerar. Feche ciclos, descarregue tensões e prepare o corpo ' +
+      'para armazenar o essencial do dia, sem sobrecarga.';
+  }
+
+  box.innerHTML = `
+    <div class="env-card">
+      <h4>Leitura rápida do ambiente</h4>
+      <small>Nos.S°lar · análise simbólica local</small>
+      <div class="env-grid">
+        <div class="env-row">
+          <span class="env-label">Horário local</span>
+          <span class="env-value">${horaStr}</span>
+        </div>
+        <div class="env-row">
+          <span class="env-label">Ciclo solar</span>
+          <span class="env-value">${ciclo}</span>
+        </div>
+        <div class="env-row">
+          <span class="env-label">Lat / Lng base</span>
+          <span class="env-value">${latInfo} / ${lngInfo}</span>
+        </div>
+        <div class="env-row">
+          <span class="env-label">Carga simbólica</span>
+          <span class="env-value">${carga}</span>
+        </div>
+      </div>
+      <p style="margin-top:8px;font-size:0.8rem;color:var(--muted);">
+        ${recomendacao}
+      </p>
+    </div>
+  `;
+
+  nvStopLoading();
+  nvToast('Ambiente solar analisado.');
+}
 </script>
 </body>
 </html>
